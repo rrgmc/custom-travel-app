@@ -42,9 +42,11 @@ doing at each one, and the reservations. A day-by-day schedule exists only if th
 
 ## Attractions
 
-9. **Claude proposes, the user picks.** When researching a destination, present a list of candidate
-   attractions per category (name, one line, suggested priority) and let the user choose before
-   adding them. Don't add attractions the user hasn't approved.
+9. **Add everything recommended, the user trims.** When researching a destination, add every
+   attraction you'd recommend, with an honest priority, then give the user a short summary per
+   category so they can remove what they don't want ("drop 4 and 9", "no maybes"). If the user asks
+   to review first, show the list and add only what they keep. Be selective up front: recommending
+   everything is not a license to pad the list.
 10. **Categories are per trip.** Pick ones that fit the trip ("Things to do", "Restaurants",
     "Beaches", "Wineries"…), keep the list short, and reuse them across destinations. Categories
     live in `categories`, in display order.

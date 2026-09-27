@@ -38,7 +38,7 @@ docs/                   ← rules and references (imported below)
 ## Skills in this repo
 
 - `/new-trip` — start a new vacation from the template (replaces the sample trip).
-- `/research` — propose attractions for a destination, let the user pick, then add them with details.
+- `/research` — add recommended attractions for a destination with details; the user trims the list.
 - `/import-booking` — turn confirmations in `inbox/` (or pasted text) into reservations and attachments.
 - `/suggest-schedule` — the optional day-by-day schedule (destination + attractions, no times). Only when asked.
 - `/build-app` — produce the APK (locally or via GitHub Actions) and explain how to install it.

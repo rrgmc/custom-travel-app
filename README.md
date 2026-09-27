@@ -32,8 +32,8 @@ runs fully offline. English and Brazilian Portuguese UI; light and dark mode.
 1. On GitHub: **Use this template → Create a new repository**. Make it **private**.
 2. Clone it and open [Claude Code](https://claude.com/claude-code) in the folder.
 3. Run `/new-trip` and say where you'll stay and which nearby towns you'll visit.
-4. `/research` each destination: Claude proposes attractions per category, nearby towns included,
-   and you pick.
+4. `/research` each destination: Claude adds the attractions it recommends per category, nearby
+   towns included, and you trim the list.
 5. Drop booking confirmations (PDFs, emails, screenshots) into `inbox/` and run `/import-booking`.
    If you want a day-by-day plan, ask for it with `/suggest-schedule`.
 6. Push, then tag `v1` (or run `/build-app`). GitHub Actions builds the APK and publishes a Release
