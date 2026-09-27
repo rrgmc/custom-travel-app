@@ -1,18 +1,23 @@
 name: Android app
 
+# Builds only when asked, to save Actions minutes (the repo is private): push a tag like `v1`
+# for a Release, or run it by hand from the Actions tab. Validation already runs locally.
 on:
   push:
-    branches: [main, master]
     tags: ["v*"]
-  pull_request:
   workflow_dispatch:
 
 permissions:
   contents: write # to create releases on tags
 
+concurrency:
+  group: android-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     env:
       VERSION_CODE: ${{ github.run_number }}
       VERSION_NAME: ${{ github.ref_type == 'tag' && github.ref_name || format('build-{0}', github.run_number) }}
@@ -29,6 +34,7 @@ jobs:
         with:
           distribution: temurin
           java-version: 21
+          cache: gradle # later builds skip most dependency downloads
 
       - run: npm ci
 
@@ -60,10 +66,14 @@ jobs:
           mkdir -p ../out
           cp "$src" "../out/${id}-${VERSION_NAME}.apk"
 
+      # Manual runs: short-lived artifact (artifact storage counts against the private-repo quota).
+      # Tags: the Release below holds the APK instead.
       - uses: actions/upload-artifact@v4
+        if: github.ref_type != 'tag'
         with:
           name: apk
           path: out/*.apk
+          retention-days: 7
 
       - name: Release
         if: github.ref_type == 'tag'

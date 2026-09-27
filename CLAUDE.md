@@ -28,7 +28,7 @@ docs/                   ← rules and references (imported below)
   trip (interpreted in the trip timezone; it sticks for the browser session).
 - `npm run build` — validate + icons + typecheck + production build into `dist/`.
 - `npm run android:sync` — build, copy into `android/`, apply the trip's app id/name/icon.
-- `npm run android:apk` — the above plus a debug APK (needs a local Android SDK). CI builds it otherwise.
+- `npm run android:apk` — the above plus a debug APK (needs a local Android SDK). Otherwise CI builds it, only on a `v*` tag or a manual run.
 
 ## Skills in this repo
 

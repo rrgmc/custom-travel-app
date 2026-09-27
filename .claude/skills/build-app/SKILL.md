@@ -11,9 +11,11 @@ disable-model-invocation: true
 3. **If a local Android SDK is available** (`ANDROID_HOME` set or `sdkmanager` on PATH):
    `cd android && ./gradlew assembleDebug` produces
    `android/app/build/outputs/apk/debug/app-debug.apk`.
-4. **Otherwise use CI:** commit and push. The "Android app" workflow builds on every push to `main` or `master`
-   and attaches the APK to the run. Pushing a tag like `v3` also creates a GitHub Release with the
-   APK, which is the easiest download on a phone.
+4. **Otherwise use CI**, which runs only on a `v*` tag or a manual run: the repo is private and each
+   build costs Actions minutes, so **ask the user before tagging**, and build once per real
+   version, not after every edit. Commit and push, then tag the next version (see existing tags
+   with `git tag -l 'v*'`), e.g. `git tag v3 && git push origin v3`. That builds the APK and creates
+   a GitHub Release with it, which is the easiest download on a phone.
 5. Explain installing: open the APK on the phone and allow "install unknown apps" for the browser or
    Files app once. Without signing secrets (docs/android-build.md), each CI build uses a different
    debug key, so Android refuses to update over the previous install: uninstall first, or set up

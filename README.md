@@ -28,8 +28,9 @@ runs fully offline. English and Brazilian Portuguese UI; light and dark mode.
 3. Run `/new-trip` and answer a few questions.
 4. Drop booking confirmations (PDFs, emails, screenshots) into `inbox/` and run `/import-booking`.
 5. `/plan-days` to build the daily plans, `/check-trip` before leaving.
-6. Push. GitHub Actions builds the APK; tag `v1` to get a Release you can download on the phone
-   (see [docs/android-build.md](docs/android-build.md), including one-time signing setup).
+6. Push, then tag `v1` (or run `/build-app`). GitHub Actions builds the APK and publishes a Release
+   you can download on the phone. Plain pushes don't build, to save Actions minutes (see
+   [docs/android-build.md](docs/android-build.md), including one-time signing setup).
 
 Improvements to this template can later be pulled into a trip repo with `/update-base`.
 

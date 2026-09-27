@@ -18,9 +18,13 @@ The Java namespace stays `io.github.rrgmc.travel` for every trip, so no source f
 
 ## Building
 
-- **GitHub Actions** (`.github/workflows/android.yml`): every push to `main` or `master` builds an APK and
-  attaches it to the run (Actions → run → Artifacts). A tag like `v1` also publishes a Release with
-  the APK — the easiest thing to download on a phone.
+- **GitHub Actions** (`.github/workflows/android.yml`): builds **only when asked**, because trip repos
+  are private and every build (roughly 5 minutes) uses the account's Actions minutes. Ordinary
+  pushes build nothing; validation already runs locally.
+  - Push a tag like `v1` (`git tag v1 && git push origin v1`): builds and publishes a Release with the
+    APK, the easiest thing to download on a phone. Use the next number for each new version.
+  - Or Actions → "Android app" → **Run workflow**: builds and attaches the APK to the run
+    (Artifacts, kept 7 days). Good for a test build without a Release.
 - **Locally**: install Android Studio (or the command-line SDK) and JDK 21, then
   `npm run android:apk`. Or `npm run android:sync` and open `android/` in Android Studio.
 
