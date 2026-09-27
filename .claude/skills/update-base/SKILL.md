@@ -11,11 +11,13 @@ Update by copying files, not by merging.
 
 1. Make sure the working tree is clean (`git status`). If it isn't, stop and ask.
 2. Add the remote if missing: `git remote add template https://github.com/rrgmc/custom-travel-app.git`
-   (private template: the user's git credentials must have access). Then `git fetch template main`.
-3. Show `git diff --stat HEAD template/main -- . ':!trip/trip.yaml' ':!trip/files'` and summarize
+   (private template: the user's git credentials must have access). Then
+   `git fetch template && git remote set-head template --auto`, so `template/HEAD` points at the
+   template's default branch whatever it is called (`main` or `master`).
+3. Show `git diff --stat HEAD template/HEAD -- . ':!trip/trip.yaml' ':!trip/files'` and summarize
    what would change.
 4. After the user agrees, take everything except the trip data:
-   `git checkout template/main -- . ':!trip/trip.yaml' ':!trip/files'`
+   `git checkout template/HEAD -- . ':!trip/trip.yaml' ':!trip/files'`
    (this does update `trip/trip.schema.json`).
 5. If the schema changed, migrate `trip/trip.yaml` (renamed or newly required fields).
    If package.json changed, run `npm install`.

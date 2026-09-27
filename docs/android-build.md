@@ -18,7 +18,7 @@ The Java namespace stays `io.github.rrgmc.travel` for every trip, so no source f
 
 ## Building
 
-- **GitHub Actions** (`.github/workflows/android.yml`): every push to `main` builds an APK and
+- **GitHub Actions** (`.github/workflows/android.yml`): every push to `main` or `master` builds an APK and
   attaches it to the run (Actions → run → Artifacts). A tag like `v1` also publishes a Release with
   the APK — the easiest thing to download on a phone.
 - **Locally**: install Android Studio (or the command-line SDK) and JDK 21, then

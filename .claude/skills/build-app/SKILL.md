@@ -11,7 +11,7 @@ disable-model-invocation: true
 3. **If a local Android SDK is available** (`ANDROID_HOME` set or `sdkmanager` on PATH):
    `cd android && ./gradlew assembleDebug` produces
    `android/app/build/outputs/apk/debug/app-debug.apk`.
-4. **Otherwise use CI:** commit and push. The "Android app" workflow builds on every push to `main`
+4. **Otherwise use CI:** commit and push. The "Android app" workflow builds on every push to `main` or `master`
    and attaches the APK to the run. Pushing a tag like `v3` also creates a GitHub Release with the
    APK, which is the easiest download on a phone.
 5. Explain installing: open the APK on the phone and allow "install unknown apps" for the browser or
