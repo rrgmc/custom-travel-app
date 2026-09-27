@@ -14,6 +14,8 @@ The sample `trip/trip.yaml` in the template shows every field in use.
   - Default zone is the destination's `timezone`, else `trip.timezone`. When a reservation starts or
     ends elsewhere (e.g. a flight from home), set `startTimezone` / `endTimezone`. The app then shows
     a small offset like `GMT-3`.
+- **Phone numbers** (`phone`, `contact`) are in international format, `+55 54 3286-4055`, so the
+  Call button dials correctly from any phone, abroad or not.
 - Text fields (`summary`, `tips`, `description`, `notes`): a blank line starts a new paragraph and
   lines starting with `- ` form a list.
 - YAML gotcha: inside `{ ... }` a comma ends the value. Quote any value containing a comma:
