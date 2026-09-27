@@ -33,6 +33,10 @@ The Java namespace stays `io.github.rrgmc.travel` for every trip, so no source f
 Download the APK on the phone and open it. Android asks once to allow installs from that app
 (browser or Files). Each trip installs as a separate app, so old trips can stay or be uninstalled.
 
+The trip repo is private, so downloading from its Release page needs a GitHub login in the phone's
+browser (or the GitHub app). For travel companions without access, download the APK once and send
+them the file directly.
+
 ## Stable signing (recommended)
 
 Without a signing key, CI builds a debug APK signed with a random key each run, and Android won't
@@ -44,10 +48,14 @@ keytool -genkeypair -v -keystore travel.jks -alias travel -keyalg RSA -keysize 2
 base64 -w0 travel.jks   # macOS: base64 -i travel.jks
 ```
 
-Then in the repo (or once at the account level, as organization/user secrets):
-Settings → Secrets and variables → Actions → add `ANDROID_KEYSTORE_BASE64`,
-`ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS` (`travel`), `ANDROID_KEY_PASSWORD`.
+Then add these secrets to **each trip repo** (Settings → Secrets and variables → Actions):
+`ANDROID_KEYSTORE_BASE64`, `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS` (`travel`),
+`ANDROID_KEY_PASSWORD`.
 CI then builds a signed release APK. Keep `travel.jks` somewhere safe outside git.
+
+Personal GitHub accounts have no account-wide Actions secrets, so the four secrets are set per repo.
+If the trip repos live in a GitHub organization, they can be set once as organization secrets
+instead.
 
 ## Web version
 
