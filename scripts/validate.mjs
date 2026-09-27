@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Validates trip/trip.yaml against the schema and the business rules in docs/business-rules.md.
-// Errors break the build. Warnings are things a human should look at before the trip.
+// Errors break the build. Warnings are things a human should look at.
 //
 // Usage: node scripts/validate.mjs [path/to/trip.yaml]
 
@@ -64,8 +64,9 @@ function offsetMinutes(epochMs, tz) {
   const asUtc = Date.UTC(+p.year, +p.month - 1, +p.day, +p.hour, +p.minute, +p.second);
   return (asUtc - Math.floor(epochMs / 1000) * 1000) / 60000;
 }
-function toEpoch(localDateTime, tz) {
-  const [d, t] = localDateTime.split("T");
+/** Epoch for a wall-clock date or date-time in a zone (a bare date counts as 00:00). */
+function toEpoch(dateOrDateTime, tz) {
+  const [d, t = "00:00"] = dateOrDateTime.split("T");
   const [y, m, day] = d.split("-").map(Number);
   const [h, min] = t.split(":").map(Number);
   const guess = Date.UTC(y, m - 1, day, h, min);
@@ -78,131 +79,124 @@ const addDays = (date, n) => {
   d.setUTCDate(d.getUTCDate() + n);
   return d.toISOString().slice(0, 10);
 };
-const dateOf = (ldt) => ldt.slice(0, 10);
+const dateOf = (v) => v.slice(0, 10);
 function realDate(date) {
   const d = new Date(`${date}T00:00:00Z`);
   return !isNaN(d) && d.toISOString().slice(0, 10) === date;
 }
 
 // ---------- semantic checks ----------
-const { trip, places, reservations, days, contacts = [] } = data;
-const placeIds = new Map();
-const resIds = new Map();
+const { trip, categories, destinations, attractions, reservations, schedule = [] } = data;
+
+/** Indexes a list by id, reporting duplicates. */
+function index(list, label) {
+  const map = new Map();
+  list.forEach((x, i) => {
+    if (map.has(x.id)) err(`${label}[${i}] '${x.id}'`, `duplicate ${label} id`);
+    map.set(x.id, x);
+  });
+  return map;
+}
+const categoryById = index(categories, "categories");
+const destById = index(destinations, "destinations");
+const attrById = index(attractions, "attractions");
+const resById = index(reservations, "reservations");
+
+const checkRef = (where, map, id, field) => {
+  if (id !== undefined && !map.has(id)) err(where, `${field} '${id}' does not exist`);
+};
 
 // Trip
-for (const k of ["start", "end"]) if (!realDate(trip[k])) err(`trip.${k}`, `'${trip[k]}' is not a real date`);
-if (trip.end < trip.start) err("trip", `end (${trip.end}) is before start (${trip.start})`);
 if (!validTimezone(trip.timezone)) err("trip.timezone", `unknown timezone '${trip.timezone}'`);
-const tripDates = [];
-for (let d = trip.start; d <= trip.end && tripDates.length < 400; d = addDays(d, 1)) tripDates.push(d);
-const inTrip = (d) => d >= trip.start && d <= trip.end;
 
-// Places
-places.forEach((p, i) => {
-  const where = `places[${i}] '${p.id}'`;
-  if (placeIds.has(p.id)) err(where, "duplicate place id");
-  placeIds.set(p.id, p);
-  if (!p.location && !p.address) warn(where, "no location or address — map button will search by name only");
+// Destinations
+let prev;
+destinations.forEach((d, i) => {
+  const where = `destinations[${i}] '${d.id}'`;
+  if (d.timezone && !validTimezone(d.timezone)) err(where, `unknown timezone '${d.timezone}'`);
+  if (!d.from) return;
+  for (const k of ["from", "to"]) if (!realDate(d[k])) err(where, `${k} '${d[k]}' is not a real date`);
+  if (d.to < d.from) err(where, `to (${d.to}) is before from (${d.from})`);
+  // Travel days are shared (one ends the day the next starts), so only a longer overlap is suspicious.
+  if (prev && d.from < prev.to) warn(where, `dates overlap '${prev.id}' (${prev.from} to ${prev.to}); destinations should be in travel order`);
+  prev = d;
 });
 
-const checkPlace = (where, id, field = "place") => {
-  if (id !== undefined && !placeIds.has(id)) err(where, `${field} '${id}' does not exist in places`);
-};
+// Attractions
+const usedCategories = new Set();
+const attractionsPerDest = new Map();
+attractions.forEach((a, i) => {
+  const where = `attractions[${i}] '${a.id}'`;
+  checkRef(where, destById, a.destination, "destination");
+  checkRef(where, categoryById, a.category, "category");
+  usedCategories.add(a.category);
+  attractionsPerDest.set(a.destination, (attractionsPerDest.get(a.destination) ?? 0) + 1);
+  if (!a.location && !a.address)
+    warn(where, "no location or address — the map button will search by name only");
+});
+for (const c of categories) if (!usedCategories.has(c.id)) warn(`categories '${c.id}'`, "not used by any attraction");
+for (const d of destinations) if (!attractionsPerDest.get(d.id)) warn(`destinations '${d.id}'`, "has no attractions yet");
 
 // Reservations
 reservations.forEach((r, i) => {
   const where = `reservations[${i}] '${r.id}'`;
-  if (resIds.has(r.id)) err(where, "duplicate reservation id");
-  resIds.set(r.id, r);
-  checkPlace(where, r.place);
-  checkPlace(where, r.to, "to");
+  checkRef(where, destById, r.destination, "destination");
+  checkRef(where, attrById, r.attraction, "attraction");
+  const a = r.attraction && attrById.get(r.attraction);
+  if (a && r.destination && a.destination !== r.destination)
+    warn(where, `destination is '${r.destination}' but attraction '${a.id}' is in '${a.destination}'`);
+  if (!r.destination && !a) warn(where, "no destination — it will only appear under Reservations");
 
   for (const k of ["startTimezone", "endTimezone"])
     if (r[k] && !validTimezone(r[k])) err(where, `unknown ${k} '${r[k]}'`);
   for (const k of ["start", "end"])
     if (r[k] && !realDate(dateOf(r[k]))) err(where, `${k} '${r[k]}' is not a real date`);
+  if (r.end && !r.start) err(where, "has an end but no start");
 
-  if (r.end) {
-    const s = toEpoch(r.start, r.startTimezone ?? trip.timezone);
-    const e = toEpoch(r.end, r.endTimezone ?? r.startTimezone ?? trip.timezone);
+  if (r.start && r.end) {
+    const zone = (a && destById.get(a.destination)?.timezone) ?? destById.get(r.destination)?.timezone ?? trip.timezone;
+    const s = toEpoch(r.start, r.startTimezone ?? zone);
+    const e = toEpoch(r.end, r.endTimezone ?? r.startTimezone ?? zone);
     if (e < s) err(where, `ends (${r.end}) before it starts (${r.start})`);
   }
-  if (r.type === "lodging" && !r.end) err(where, "lodging needs an end (check-out)");
-  if (["flight", "train", "bus", "transfer"].includes(r.type) && !r.to)
-    warn(where, "transport without 'to' (arrival place)");
+  if (r.type === "lodging" && !(r.start && r.end)) err(where, "lodging needs start (check-in) and end (check-out)");
+  if (["flight", "train", "bus", "transfer"].includes(r.type) && !(r.from && r.to))
+    warn(where, "transport without 'from' and 'to'");
 
-  const startDate = dateOf(r.start);
-  if (!inTrip(startDate) && startDate !== addDays(trip.start, -1))
-    warn(where, `starts ${startDate}, outside the trip (${trip.start} to ${trip.end})`);
-
-  if (r.status === "pending") warn(where, "still pending — confirm before the trip");
-  if (r.status !== "cancelled" && !r.confirmation && ["lodging", "flight", "train", "car-rental"].includes(r.type))
-    warn(where, "no confirmation code");
-
-  (r.attachments ?? []).forEach((a, j) => {
-    for (const f of [a.file, a.preview].filter(Boolean))
+  (r.attachments ?? []).forEach((att, j) => {
+    for (const f of [att.file, att.preview].filter(Boolean))
       if (!existsSync(join(tripDir, f))) err(`${where} attachments[${j}]`, `file not found: trip/${f}`);
   });
 });
 
-// Lodging: overlaps and gaps (a "night" is identified by the date you check in for it)
-const lodging = reservations.filter((r) => r.type === "lodging" && r.status !== "cancelled" && r.end);
+// Lodging: two stays can't cover the same night (a night is the date you check in for it)
 const nightOwner = new Map();
-for (const r of lodging) {
+for (const r of reservations.filter((r) => r.type === "lodging" && r.status !== "cancelled" && r.start && r.end)) {
   for (let n = dateOf(r.start); n < dateOf(r.end); n = addDays(n, 1)) {
-    if (nightOwner.has(n)) err(`lodging`, `'${r.id}' and '${nightOwner.get(n).id}' both cover the night of ${n}`);
+    if (nightOwner.has(n)) err("lodging", `'${r.id}' and '${nightOwner.get(n).id}' both cover the night of ${n}`);
     else nightOwner.set(n, r);
   }
 }
-for (const n of tripDates.slice(0, -1)) {
-  if (!nightOwner.has(n)) warn("lodging", `no lodging reservation for the night of ${n}`);
-}
 
-// Days
-const seenDates = new Set();
+// Schedule (optional)
 let prevDate = "";
-days.forEach((d, i) => {
-  const where = `days[${i}] ${d.date}`;
-  if (!realDate(d.date)) err(where, "not a real date");
-  if (seenDates.has(d.date)) err(where, "duplicate day");
-  seenDates.add(d.date);
-  if (!inTrip(d.date)) err(where, `outside the trip (${trip.start} to ${trip.end})`);
-  if (d.date < prevDate) err(where, "days are not in date order");
-  prevDate = d.date;
-  checkPlace(where, d.base, "base");
-
-  const owner = nightOwner.get(d.date);
-  if (d.base && owner?.place && owner.place !== d.base)
-    warn(where, `base is '${d.base}' but lodging reservation '${owner.id}' is at '${owner.place}'`);
-
-  const checkItems = (items, label) => {
-    let prevTime = "";
-    items.forEach((it, j) => {
-      const w = `${where} ${label}[${j}] '${it.title}'`;
-      checkPlace(w, it.place);
-      if (it.reservation !== undefined) {
-        const r = resIds.get(it.reservation);
-        if (!r) err(w, `reservation '${it.reservation}' does not exist`);
-        else {
-          if (r.status === "cancelled") warn(w, `uses cancelled reservation '${r.id}'`);
-          const touches = [dateOf(r.start), r.end && dateOf(r.end)].filter(Boolean);
-          if (!touches.includes(d.date)) warn(w, `reservation '${r.id}' is not on ${d.date}`);
-        }
-      }
-      if (it.end && it.time && it.end < it.time) err(w, `end ${it.end} is before time ${it.time}`);
-      if (it.time) {
-        if (it.time < prevTime) warn(w, `time ${it.time} is out of order`);
-        prevTime = it.time;
-      }
-    });
-  };
-  checkItems(d.items, "items");
-  (d.alternatives ?? []).forEach((a, k) => checkItems(a.items, `alternatives[${k}]`));
-});
-for (const d of tripDates) if (!seenDates.has(d)) warn("days", `no schedule for ${d}`);
-
-contacts.forEach((c, i) => {
-  if (!c.phone && !c.email) warn(`contacts[${i}] '${c.name}'`, "no phone or email");
+const seenDates = new Set();
+schedule.forEach((day, i) => {
+  const where = `schedule[${i}] ${day.date}`;
+  if (!realDate(day.date)) err(where, "not a real date");
+  if (seenDates.has(day.date)) err(where, "duplicate day");
+  seenDates.add(day.date);
+  if (day.date < prevDate) err(where, "days are not in date order");
+  prevDate = day.date;
+  checkRef(where, destById, day.destination, "destination");
+  const dest = destById.get(day.destination);
+  if (dest?.from && (day.date < dest.from || day.date > dest.to))
+    warn(where, `'${dest.id}' is dated ${dest.from} to ${dest.to}`);
+  (day.attractions ?? []).forEach((id) => {
+    const a = attrById.get(id);
+    if (!a) err(where, `attraction '${id}' does not exist`);
+    else if (a.destination !== day.destination) warn(where, `attraction '${id}' is in '${a.destination}', not '${day.destination}'`);
+  });
 });
 
 report();

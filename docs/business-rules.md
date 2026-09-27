@@ -1,19 +1,22 @@
 # Business rules
 
-These govern what goes into a trip and how days are planned. `scripts/validate.mjs` enforces the
-mechanical ones; the rest are judgment calls Claude is expected to follow.
+These govern what goes into a trip. `scripts/validate.mjs` enforces the mechanical ones; the rest
+are judgment calls Claude is expected to follow.
+
+The app is a **loose trip guide**, not an hour-by-hour plan: a list of destinations, what's worth
+doing at each one, and the reservations. A day-by-day schedule exists only if the user asks for one.
 
 ## Truth and sources
 
 1. **Never invent booking facts.** Confirmation codes, prices, times, seats, addresses and names on a
    reservation come only from the user or from their documents. If something is missing, leave the
    field out and tell the user. Never fill in a plausible-looking value.
-2. **Researched facts are labeled.** Opening hours, prices and tips found on the web go in `hours`,
-   `price` or `notes` with the month they were checked, for example `09:00–18:00 (checked Sep 2026)`.
-   Ask before adding researched places the user didn't request.
-3. **Keep status honest.** A booking is `confirmed` only when there is a confirmation (code, email or
-   voucher). Requests waiting for an answer are `pending`. Cancelled bookings stay in the file with
-   `status: cancelled` rather than being deleted, so nobody wonders later whether it was cancelled.
+2. **Researched facts are labeled.** Opening hours, prices and closed days found on the web go in
+   `hours`, `price`, `closed` with the month they were checked, e.g. `09:00–18:00 (checked Sep 2026)`.
+   If you couldn't confirm something, leave it out or say so rather than guessing.
+3. **Keep status honest.** A reservation is `confirmed` only when there is a confirmation (code,
+   email or voucher). Requests waiting for an answer are `pending`. Cancelled reservations stay in the
+   file with `status: cancelled` rather than being deleted, so nobody wonders later.
 4. When a new document contradicts the file (changed time, new room), update the data and tell the
    user what changed. Flight schedule changes are common; always point them out.
 
@@ -25,42 +28,54 @@ mechanical ones; the rest are judgment calls Claude is expected to follow.
 6. Raw emails and PDFs stay in `inbox/` (never committed). Only the voucher itself is copied to
    `trip/files/` when it will be shown at a counter or gate.
 
-## Attachments
+## Destinations
 
-7. Copy vouchers, e-tickets and boarding passes into `trip/files/` with clear names:
-   `<reservation-id>.pdf`, `<reservation-id>-2.pdf`.
-8. For every PDF with a QR code or barcode, also save a PNG preview of that page as `preview`
-   (`pdftoppm -png -r 150 -f N -l N in.pdf trip/files/<id>`), so it shows instantly offline without
-   opening another app. Keep each file under ~2 MB.
+7. `destinations` are the cities or regions of the trip, **in travel order**. Dates (`from`/`to`)
+   are optional: add them when the user knows them. A travel day belongs to both destinations (one's
+   `to` equals the next one's `from`).
+8. Each destination gets a short `summary` (what it's like, why go) and, when useful, `tips`
+   (getting around, money, safety, customs). Practical and brief.
 
-## Lodging and transport
+## Attractions
 
-9. Every night of the trip should be covered by exactly one lodging reservation. Overlaps are errors;
-   gaps are warnings the user must acknowledge (e.g. staying with family, overnight train).
-10. A day's `base` is where you sleep that night and must match the lodging reservation.
-11. Transport reservations (flight, train, bus, transfer) have `place` (departure) and `to` (arrival).
-    Flights and anything crossing a timezone set `startTimezone`/`endTimezone`.
+9. **Claude proposes, the user picks.** When researching a destination, present a list of candidate
+   attractions per category (name, one line, suggested priority) and let the user choose before
+   adding them. Don't add attractions the user hasn't approved.
+10. **Categories are per trip.** Pick ones that fit the trip ("Things to do", "Restaurants",
+    "Beaches", "Wineries"…), keep the list short, and reuse them across destinations. Categories
+    live in `categories`, in display order.
+11. **Priority is required**: `must` (must-see, would regret missing), `want` (if there's time),
+    `maybe` (only if it fits or for a rainy day). Be selective with `must`; a few per destination.
+12. Each attraction gets a `description` (what it is, why go) and, when useful: `tips`, `hours`,
+    `closed`, `price`, `duration` (how long a visit takes), `booking` (whether to book ahead and how),
+    and `location` so the map buttons work. Add `address` if coordinates aren't certain.
+13. Restaurants and cafés are attractions too, in their own categories.
 
-## Planning days
+## Reservations
 
-12. **Be realistic.** At most 2–3 main activities per day, plus meals. Include travel time between
-    places (look at the distances) and a buffer of at least 30 minutes around fixed-time bookings.
-13. **Respect opening hours and closed days.** Don't schedule a museum on its closing day. If you're
-    not sure of hours, say so in `notes` rather than guessing.
-14. **Arrival and departure days are light.** After a long flight, nothing demanding. On departure
-    days plan backwards from the flight: international flights, be at the airport 3 hours before;
-    domestic, 2 hours; check-out time from the lodging reservation.
-15. **Outdoor days get a rain plan.** Beaches, hikes, viewpoints and open-air tours get an
-    `alternatives` entry with `when: If it rains` (in the trip language).
-16. Nice-to-have activities are `optional: true`. Places worth visiting but not yet scheduled are
-    `wishlist: true` in `places`.
-17. With children, older people or anyone with specific needs among `travelers`, adapt pace and
-    distances accordingly and mention the constraint in the day's `notes` when it shaped the plan.
-18. Link rather than repeat: a schedule item that corresponds to a booking uses `reservation:`;
-    one at a known place uses `place:`. Don't duplicate addresses or codes in `notes`.
+14. Link each reservation to its `destination` (where it's used) and, for tickets and restaurant
+    bookings, to its `attraction`. It then shows on that destination's and attraction's pages.
+15. Lodging has `start` (check-in) and `end` (check-out). Two stays can't cover the same night.
+16. Transport (flight, train, bus, transfer) has `from` and `to`. Anything crossing a timezone sets
+    `startTimezone`/`endTimezone`. Times are as printed on the ticket, never converted.
+17. Open-dated tickets (passes, museum cards) have no `start`.
+18. Copy vouchers, e-tickets and boarding passes into `trip/files/` as `<reservation-id>.pdf`. For a
+    PDF with a QR code or barcode, also save a PNG `preview` of that page
+    (`pdftoppm -png -r 150 -f N -l N in.pdf trip/files/<id>`), so it shows instantly offline.
+    Keep each file under ~2 MB.
+
+## Schedule (only when asked)
+
+19. Never create `schedule` unless the user asks for it. It's a suggestion, one entry per day:
+    the destination and a few attractions in a sensible order. **No times.**
+20. Be realistic: 2–3 main attractions a day plus a meal, grouped by area. Put `must` attractions
+    first in the trip's days, respect `closed` days, and keep arrival and departure days light.
+    Days with fixed reservations (timed tickets, trains) are planned around them.
+21. Use `notes` for what the list can't say: "Afternoon train to Porto", "If it rains, swap for the
+    Oceanário".
 
 ## Writing
 
-19. Short, plain, useful on the street: "Board at the first stop to get a seat", not tourism copy.
-20. Everything the user will read is in `trip.language`. Place names stay in their local form.
-21. Money amounts are written as on the document, with currency: `R$ 1.240,00`, `€ 30,00`.
+22. Short, plain, useful on the street: "Board at the first stop to get a seat", not tourism copy.
+23. Everything the user will read is in `trip.language`. Place names stay in their local form.
+24. Money amounts are written as on the document, with currency: `R$ 1.240,00`, `€ 30,00`.

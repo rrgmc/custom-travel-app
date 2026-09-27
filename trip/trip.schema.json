@@ -5,12 +5,7 @@
   "description": "All data for one vacation. The app renders only what is in this file. See docs/data-model.md.",
   "type": "object",
   "additionalProperties": false,
-  "required": [
-    "trip",
-    "places",
-    "reservations",
-    "days"
-  ],
+  "required": ["trip", "categories", "destinations", "attractions", "reservations"],
   "definitions": {
     "id": {
       "type": "string",
@@ -21,14 +16,10 @@
       "type": "string",
       "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
     },
-    "time": {
+    "dateOrDateTime": {
       "type": "string",
-      "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
-    },
-    "localDateTime": {
-      "type": "string",
-      "pattern": "^\\d{4}-\\d{2}-\\d{2}T([01]\\d|2[0-3]):[0-5]\\d$",
-      "description": "Wall-clock time at the place where it happens, no offset. Example: 2026-10-10T15:00"
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}(T([01]\\d|2[0-3]):[0-5]\\d)?$",
+      "description": "YYYY-MM-DD, or YYYY-MM-DDTHH:MM as wall-clock time at the place, no offset. Example: 2026-10-10T15:00"
     },
     "timezone": {
       "type": "string",
@@ -38,224 +29,106 @@
     "location": {
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "lat",
-        "lng"
-      ],
+      "required": ["lat", "lng"],
       "properties": {
-        "lat": {
-          "type": "number",
-          "minimum": -90,
-          "maximum": 90
-        },
-        "lng": {
-          "type": "number",
-          "minimum": -180,
-          "maximum": 180
-        }
+        "lat": { "type": "number", "minimum": -90, "maximum": 90 },
+        "lng": { "type": "number", "minimum": -180, "maximum": 180 }
       }
     },
-    "attachment": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "file",
-        "label"
-      ],
-      "properties": {
-        "file": {
-          "type": "string",
-          "pattern": "^files/[A-Za-z0-9._-]+$",
-          "description": "Path relative to trip/, always inside trip/files/"
-        },
-        "label": {
-          "type": "string",
-          "minLength": 1
-        },
-        "preview": {
-          "type": "string",
-          "pattern": "^files/[A-Za-z0-9._-]+\\.(png|jpg|jpeg|webp)$",
-          "description": "Image shown inline (e.g. first page of a PDF voucher, so QR codes work offline)"
-        }
-      }
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Plain text. A blank line starts a new paragraph; lines starting with '- ' form a list."
     },
-    "scheduleItem": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "title"
-      ],
-      "properties": {
-        "time": {
-          "$ref": "#/definitions/time"
-        },
-        "end": {
-          "$ref": "#/definitions/time"
-        },
-        "title": {
-          "type": "string",
-          "minLength": 1
-        },
-        "place": {
-          "$ref": "#/definitions/id"
-        },
-        "reservation": {
-          "$ref": "#/definitions/id"
-        },
-        "notes": {
-          "type": "string"
-        },
-        "optional": {
-          "type": "boolean",
-          "default": false
-        }
-      }
-    }
+    "url": { "type": "string", "pattern": "^https?://" },
+    "phone": { "type": "string", "pattern": "^[+0-9][0-9 ()-]{2,}$" }
   },
   "properties": {
     "trip": {
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "id",
-        "title",
-        "start",
-        "end",
-        "timezone",
-        "language"
-      ],
+      "required": ["id", "title", "timezone", "language"],
       "properties": {
         "id": {
           "type": "string",
-          "pattern": "^[a-z][a-z0-9]*$",
-          "maxLength": 30,
-          "description": "Short lowercase slug, used in the Android application id (io.github.rrgmc.travel.<id>)"
+          "pattern": "^[a-z][a-z0-9]{1,30}$",
+          "description": "Lowercase letters and digits only; becomes part of the Android app id."
         },
-        "title": {
-          "type": "string",
-          "minLength": 1,
-          "maxLength": 40
-        },
-        "subtitle": {
-          "type": "string"
-        },
-        "start": {
-          "$ref": "#/definitions/date"
-        },
-        "end": {
-          "$ref": "#/definitions/date"
-        },
+        "title": { "type": "string", "minLength": 1, "maxLength": 40, "description": "App name on the phone." },
+        "subtitle": { "type": "string" },
         "timezone": {
-          "$ref": "#/definitions/timezone"
+          "$ref": "#/definitions/timezone",
+          "description": "Default timezone for destinations and reservations that don't set their own."
         },
-        "language": {
-          "type": "string",
-          "enum": [
-            "en",
-            "pt-BR"
-          ]
-        },
-        "currency": {
-          "type": "string",
-          "pattern": "^[A-Z]{3}$"
-        },
-        "travelers": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "required": [
-              "name"
-            ],
-            "properties": {
-              "name": {
-                "type": "string",
-                "minLength": 1
-              },
-              "notes": {
-                "type": "string"
-              }
-            }
-          }
-        },
-        "accent": {
-          "type": "string",
-          "pattern": "^#[0-9A-Fa-f]{6}$",
-          "description": "Optional accent color for this trip's app"
-        },
-        "icon": {
-          "type": "string",
-          "minLength": 1,
-          "maxLength": 2,
-          "description": "1–2 characters shown on the app icon. Defaults to the first letter of the title."
-        }
+        "language": { "enum": ["en", "pt-BR"] },
+        "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
+        "accent": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" },
+        "icon": { "type": "string", "minLength": 1, "maxLength": 2, "description": "1–2 characters for the launcher icon." }
       }
     },
-    "places": {
+    "categories": {
       "type": "array",
+      "minItems": 1,
+      "description": "Attraction categories for this trip, in display order.",
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": [
-          "id",
-          "name",
-          "kind"
-        ],
+        "required": ["id", "name"],
         "properties": {
-          "id": {
-            "$ref": "#/definitions/id"
+          "id": { "$ref": "#/definitions/id" },
+          "name": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "destinations": {
+      "type": "array",
+      "minItems": 1,
+      "description": "Cities or regions, in travel order.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name"],
+        "properties": {
+          "id": { "$ref": "#/definitions/id" },
+          "name": { "type": "string", "minLength": 1 },
+          "country": { "type": "string" },
+          "from": { "$ref": "#/definitions/date", "description": "First day there (optional; set together with 'to')." },
+          "to": { "$ref": "#/definitions/date", "description": "Last day there." },
+          "timezone": { "$ref": "#/definitions/timezone", "description": "Only when different from trip.timezone." },
+          "location": { "$ref": "#/definitions/location" },
+          "summary": { "$ref": "#/definitions/text", "description": "A short intro: what the place is like, why go." },
+          "tips": { "$ref": "#/definitions/text", "description": "Getting around, money, safety, local customs." }
+        },
+        "dependencies": { "from": ["to"], "to": ["from"] }
+      }
+    },
+    "attractions": {
+      "type": "array",
+      "description": "Everything worth doing or eating at each destination.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "destination", "category", "name", "priority"],
+        "properties": {
+          "id": { "$ref": "#/definitions/id" },
+          "destination": { "$ref": "#/definitions/id" },
+          "category": { "$ref": "#/definitions/id" },
+          "name": { "type": "string", "minLength": 1 },
+          "priority": {
+            "enum": ["must", "want", "maybe"],
+            "description": "must = must-see, want = if there's time, maybe = only if it fits."
           },
-          "name": {
-            "type": "string",
-            "minLength": 1
-          },
-          "kind": {
-            "type": "string",
-            "enum": [
-              "lodging",
-              "attraction",
-              "restaurant",
-              "transport",
-              "shopping",
-              "service",
-              "other"
-            ]
-          },
-          "city": {
-            "type": "string"
-          },
-          "address": {
-            "type": "string"
-          },
-          "location": {
-            "$ref": "#/definitions/location"
-          },
-          "hours": {
-            "type": "string"
-          },
-          "phone": {
-            "type": "string"
-          },
-          "url": {
-            "type": "string",
-            "format": "uri"
-          },
-          "price": {
-            "type": "string"
-          },
-          "notes": {
-            "type": "string"
-          },
-          "tags": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "wishlist": {
-            "type": "boolean",
-            "description": "Worth visiting but not scheduled on any day"
-          }
+          "description": { "$ref": "#/definitions/text" },
+          "tips": { "$ref": "#/definitions/text" },
+          "hours": { "type": "string", "description": "Opening hours as researched, with the month checked." },
+          "closed": { "type": "string", "description": "Closed days, e.g. 'Mondays'." },
+          "price": { "type": "string" },
+          "duration": { "type": "string", "description": "How long a visit takes, e.g. '2–3 h'." },
+          "booking": { "type": "string", "description": "Whether and how to book ahead." },
+          "address": { "type": "string" },
+          "location": { "$ref": "#/definitions/location" },
+          "phone": { "$ref": "#/definitions/phone" },
+          "url": { "$ref": "#/definitions/url" }
         }
       }
     },
@@ -264,242 +137,86 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": [
-          "id",
-          "type",
-          "title",
-          "start",
-          "status"
-        ],
+        "required": ["id", "type", "title", "status"],
         "properties": {
-          "id": {
-            "$ref": "#/definitions/id"
-          },
+          "id": { "$ref": "#/definitions/id" },
           "type": {
-            "type": "string",
-            "enum": [
-              "lodging",
-              "flight",
-              "train",
-              "bus",
-              "car-rental",
-              "transfer",
-              "restaurant",
-              "activity",
-              "ticket",
-              "other"
-            ]
+            "enum": ["lodging", "ticket", "flight", "train", "bus", "car-rental", "transfer", "restaurant", "other"],
+            "description": "Grouped in the app as Stays (lodging), Tickets (ticket), Transport (flight, train, bus, car-rental, transfer) and Other."
           },
-          "title": {
-            "type": "string",
-            "minLength": 1
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "confirmed",
-              "pending",
-              "cancelled"
-            ]
-          },
-          "place": {
-            "$ref": "#/definitions/id",
-            "description": "Where it starts (hotel, departure airport, restaurant...)"
-          },
-          "to": {
-            "$ref": "#/definitions/id",
-            "description": "Arrival place, for transport"
-          },
-          "start": {
-            "$ref": "#/definitions/localDateTime"
-          },
-          "end": {
-            "$ref": "#/definitions/localDateTime"
-          },
-          "startTimezone": {
-            "$ref": "#/definitions/timezone"
-          },
-          "endTimezone": {
-            "$ref": "#/definitions/timezone"
-          },
-          "provider": {
-            "type": "string"
-          },
-          "confirmation": {
-            "type": "string"
-          },
+          "title": { "type": "string", "minLength": 1 },
+          "status": { "enum": ["confirmed", "pending", "cancelled"] },
+          "destination": { "$ref": "#/definitions/id", "description": "Where this reservation is used; shown on that destination's page." },
+          "attraction": { "$ref": "#/definitions/id", "description": "For tickets: the attraction it gets you into." },
+          "start": { "$ref": "#/definitions/dateOrDateTime", "description": "Check-in, departure, entry time. Leave out for open-dated tickets." },
+          "end": { "$ref": "#/definitions/dateOrDateTime" },
+          "startTimezone": { "$ref": "#/definitions/timezone" },
+          "endTimezone": { "$ref": "#/definitions/timezone" },
+          "from": { "type": "string", "description": "Transport: departure, e.g. 'Lisbon (LIS)'." },
+          "to": { "type": "string", "description": "Transport: arrival." },
+          "provider": { "type": "string" },
+          "confirmation": { "type": "string", "minLength": 1 },
           "details": {
             "type": "array",
-            "description": "Extra labeled facts: seat, gate, room type, pickup point...",
             "items": {
               "type": "object",
               "additionalProperties": false,
-              "required": [
-                "label",
-                "value"
-              ],
+              "required": ["label", "value"],
               "properties": {
-                "label": {
-                  "type": "string"
-                },
-                "value": {
-                  "type": "string"
-                }
+                "label": { "type": "string", "minLength": 1 },
+                "value": { "type": "string" }
               }
             }
           },
           "payment": {
             "type": "object",
             "additionalProperties": false,
-            "required": [
-              "status"
-            ],
+            "required": ["status"],
             "properties": {
-              "status": {
-                "type": "string",
-                "enum": [
-                  "paid",
-                  "partial",
-                  "at-location",
-                  "unpaid"
-                ]
-              },
-              "amount": {
-                "type": "string",
-                "description": "As written, with currency, e.g. 'R$ 1.240,00'"
-              },
-              "notes": {
-                "type": "string"
-              }
+              "status": { "enum": ["paid", "partial", "at-location", "unpaid"] },
+              "amount": { "type": "string" },
+              "notes": { "type": "string" }
             }
           },
-          "cancellation": {
-            "type": "string",
-            "description": "Free-cancellation deadline or policy"
-          },
-          "contact": {
-            "type": "string"
-          },
-          "url": {
-            "type": "string",
-            "format": "uri"
-          },
+          "cancellation": { "type": "string" },
+          "contact": { "$ref": "#/definitions/phone" },
+          "url": { "$ref": "#/definitions/url" },
+          "address": { "type": "string" },
+          "location": { "$ref": "#/definitions/location" },
           "attachments": {
             "type": "array",
             "items": {
-              "$ref": "#/definitions/attachment"
-            }
-          },
-          "notes": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "days": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "date",
-          "items"
-        ],
-        "properties": {
-          "date": {
-            "$ref": "#/definitions/date"
-          },
-          "title": {
-            "type": "string"
-          },
-          "base": {
-            "$ref": "#/definitions/id",
-            "description": "Place where you sleep that night"
-          },
-          "notes": {
-            "type": "string"
-          },
-          "items": {
-            "type": "array",
-            "items": {
-              "$ref": "#/definitions/scheduleItem"
-            }
-          },
-          "alternatives": {
-            "type": "array",
-            "description": "Other possible plans for the day (rain plan, slow day...)",
-            "items": {
               "type": "object",
               "additionalProperties": false,
-              "required": [
-                "title",
-                "items"
-              ],
+              "required": ["file", "label"],
               "properties": {
-                "title": {
-                  "type": "string"
-                },
-                "when": {
-                  "type": "string",
-                  "description": "When to switch to this plan, e.g. 'If it rains'"
-                },
-                "items": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/scheduleItem"
-                  }
-                }
+                "file": { "type": "string", "pattern": "^files/[^/]+$" },
+                "label": { "type": "string", "minLength": 1 },
+                "preview": { "type": "string", "pattern": "^files/[^/]+\\.(png|jpg|jpeg|webp)$" }
               }
             }
-          }
+          },
+          "notes": { "$ref": "#/definitions/text" }
         }
       }
     },
-    "contacts": {
+    "schedule": {
       "type": "array",
+      "description": "Optional suggested schedule, one entry per day. Only present when the user asked for one.",
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": [
-          "name"
-        ],
+        "required": ["date", "destination"],
         "properties": {
-          "name": {
-            "type": "string"
+          "date": { "$ref": "#/definitions/date" },
+          "destination": { "$ref": "#/definitions/id" },
+          "title": { "type": "string" },
+          "attractions": {
+            "type": "array",
+            "items": { "$ref": "#/definitions/id" },
+            "description": "Attractions for the day, in suggested order."
           },
-          "role": {
-            "type": "string"
-          },
-          "phone": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "notes": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "info": {
-      "type": "array",
-      "description": "Free-form notes: documents checklist, tips, phrases, currency...",
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "title",
-          "body"
-        ],
-        "properties": {
-          "title": {
-            "type": "string"
-          },
-          "body": {
-            "type": "string",
-            "description": "Plain text; blank lines separate paragraphs, lines starting with '- ' are list items"
-          }
+          "notes": { "$ref": "#/definitions/text" }
         }
       }
     }

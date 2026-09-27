@@ -3,7 +3,16 @@ import { AppLauncher } from "@capacitor/app-launcher";
 import { Clipboard } from "@capacitor/clipboard";
 import { Filesystem, Directory } from "@capacitor/filesystem";
 import { FileOpener } from "@capawesome-team/capacitor-file-opener";
-import type { Place } from "../types";
+import type { Location } from "../types";
+
+/** Anything the map buttons can point at: an attraction, a destination, a hotel reservation. */
+export interface Mappable {
+  name: string;
+  address?: string;
+  location?: Location;
+  /** Added to name-only searches to find the right place (e.g. the destination name). */
+  near?: string;
+}
 
 export const isNative = Capacitor.isNativePlatform();
 
@@ -23,12 +32,12 @@ export async function copyText(text: string) {
   else await navigator.clipboard.writeText(text);
 }
 
-const target = (p: Place) =>
-  p.location ? `${p.location.lat},${p.location.lng}` : [p.name, p.address, p.city].filter(Boolean).join(", ");
+const target = (p: Mappable) =>
+  p.location ? `${p.location.lat},${p.location.lng}` : [p.name, p.address, p.near].filter(Boolean).join(", ");
 
 /** Google Maps universal URLs: open the Maps app on Android (offline areas work) or the website elsewhere. */
-export const mapUrl = (p: Place) => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(target(p))}`;
-export const directionsUrl = (p: Place) => `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(target(p))}`;
+export const mapUrl = (p: Mappable) => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(target(p))}`;
+export const directionsUrl = (p: Mappable) => `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(target(p))}`;
 export const telUrl = (phone: string) => `tel:${phone.replace(/[^\d+]/g, "")}`;
 
 const MIME: Record<string, string> = {

@@ -7,7 +7,7 @@
   --line: #d9e3e3;       /* mist */
   --accent: #0e6e6b;     /* harbor teal */
   --on-accent: #ffffff;
-  --signal: #f0a202;     /* now / next / pending */
+  --signal: #f0a202;     /* here now / today / pending */
   --danger: #b3261e;
   --radius: 14px;
   --font: "Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -81,40 +81,6 @@ h2 { font-size: 19px; font-weight: 700; margin: 32px 0 12px; }
 .rich ul { margin: 0 0 10px; padding-left: 20px; }
 .rich li { margin: 4px 0; }
 
-/* Timeline */
-.timeline { list-style: none; margin: 0; padding: 0; }
-.tl-item {
-  display: grid; grid-template-columns: 56px 1fr; gap: 14px;
-  position: relative; padding: 10px 0 14px;
-}
-.tl-item::before { /* the rail */
-  content: ""; position: absolute; left: 70px; top: 0; bottom: 0; width: 2px; background: var(--line);
-}
-.tl-item::after { /* the stop */
-  content: ""; position: absolute; left: 65px; top: 17px; width: 12px; height: 12px;
-  border-radius: 50%; background: var(--bg); border: 2px solid var(--accent);
-}
-.tl-item.is-past { opacity: 0.55; }
-.tl-item.is-past::after { background: var(--accent); }
-.tl-item.is-next::after { border-color: var(--signal); background: var(--signal); box-shadow: 0 0 0 4px color-mix(in srgb, var(--signal) 30%, transparent); }
-.tl-item.is-next { padding-top: 26px; }
-.tl-item.is-next::after { top: 33px; }
-.tl-item.is-optional .tl-title { color: var(--muted); }
-.tl-time { font-weight: 700; font-variant-numeric: tabular-nums; text-align: right; padding-top: 1px; }
-.tl-time small { display: block; font-weight: 400; color: var(--muted); font-size: 13px; }
-.tl-body { padding-left: 18px; min-width: 0; }
-.tl-title { font-weight: 600; }
-.tl-link { display: flex; align-items: center; gap: 6px; font-size: 15px; margin-top: 2px; }
-.tl-notes { margin: 4px 0 0; color: var(--muted); font-size: 15px; }
-.tag { margin-left: 8px; font-size: 12px; font-weight: 600; color: var(--muted); border: 1px solid var(--line); border-radius: 99px; padding: 1px 8px; vertical-align: 2px; }
-.now-line {
-  position: absolute; left: 0; right: 0; top: 10px; height: 2px; background: var(--signal);
-}
-.now-line span {
-  position: absolute; left: 0; top: -10px; background: var(--signal); color: #1d1400;
-  font-size: 12px; font-weight: 700; padding: 1px 8px; border-radius: 99px;
-}
-
 /* Ticket stubs — the one bold element */
 .stack { display: grid; gap: 14px; }
 .ticket {
@@ -161,7 +127,6 @@ h2 { font-size: 19px; font-weight: 700; margin: 32px 0 12px; }
 .pill { flex: none; font-size: 12px; font-weight: 700; border-radius: 99px; padding: 2px 9px; }
 .pill-pending { background: var(--signal); color: #1d1400; }
 .pill-cancelled { background: var(--danger); color: #fff; }
-.tl-res .pill { margin-left: 4px; }
 
 /* Facts, actions, attachments */
 .facts { margin: 18px 0; display: grid; gap: 0; }
@@ -180,36 +145,69 @@ h2 { font-size: 19px; font-weight: 700; margin: 32px 0 12px; }
 .attachment img { display: block; width: 100%; border-radius: 10px; border: 1px solid var(--line); background: #fff; }
 
 /* Lists */
-.day-list, .rows { list-style: none; margin: 0; padding: 0; }
-.day-list li a, .rows li a, .row-button {
+.dest-list, .rows, .sched { list-style: none; margin: 0; padding: 0; }
+.dest-list li a, .rows li a {
   display: flex; align-items: center; gap: 14px; padding: 12px 0; color: inherit;
   border-bottom: 1px solid var(--line); width: 100%; background: none; border-left: 0; border-right: 0; border-top: 0; text-align: left; cursor: pointer;
 }
-.row-button:disabled { cursor: default; }
-.day-list li a:hover, .rows li a:hover { text-decoration: none; }
-.day-list svg, .rows svg, .row-button svg { flex: none; color: var(--muted); }
+.dest-list li a:hover, .rows li a:hover { text-decoration: none; }
+.dest-list svg, .rows svg { flex: none; color: var(--muted); }
 .day-num {
   flex: none; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center;
   font-weight: 700; border: 2px solid var(--line); font-variant-numeric: tabular-nums;
 }
-.day-list .is-today .day-num { background: var(--signal); border-color: var(--signal); color: #1d1400; }
-.day-list .is-past { opacity: 0.55; }
-.day-main, .row-main { flex: 1; display: grid; min-width: 0; }
+.dest-list .is-here .day-num { background: var(--signal); border-color: var(--signal); color: #1d1400; }
+.row-main { flex: 1; display: grid; min-width: 0; }
 .fold { margin-top: 24px; }
 .fold summary { cursor: pointer; font-weight: 600; color: var(--muted); padding: 8px 0 14px; }
 
-.pager { display: flex; justify-content: space-between; font-size: 15px; font-weight: 600; margin-top: 4px; }
-.pager a { display: inline-flex; align-items: center; gap: 2px; }
-
-.segmented { display: flex; gap: 6px; margin: 0 0 12px; overflow-x: auto; }
+.segmented { display: flex; gap: 6px; margin: 28px 0 0; overflow-x: auto; }
 .segmented button {
   flex: none; min-height: 40px; padding: 0 14px; border-radius: 99px; border: 1px solid var(--line);
   background: var(--surface); font-weight: 600; font-size: 15px; cursor: pointer;
 }
 .segmented button[aria-selected="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 
-.stay-name { font-size: 20px; font-weight: 700; }
-.stay .muted { margin: 2px 0 0; }
+/* Destinations */
+.here-card {
+  display: grid; gap: 2px; margin: 0 0 20px; padding: 14px 16px; color: inherit;
+  border-radius: var(--radius); border: 1px solid color-mix(in srgb, var(--signal) 55%, var(--line));
+  background: color-mix(in srgb, var(--signal) 10%, var(--surface));
+}
+.here-card:hover { text-decoration: none; }
+.here-label { font-size: 13px; font-weight: 700; color: color-mix(in srgb, var(--signal) 55%, var(--ink)); text-transform: uppercase; letter-spacing: 0.04em; }
+.here-card strong { font-size: 22px; font-weight: 800; }
+.lede .rich p:last-child { margin-bottom: 0; }
+
+/* Attractions */
+.row-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; margin: 2px 0; }
+.clamp { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.prio {
+  display: inline-flex; align-items: center; gap: 3px; font-size: 12px; font-weight: 700;
+  border-radius: 99px; padding: 1px 8px; border: 1px solid var(--line); color: var(--muted);
+}
+.prio-must { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.prio-maybe { border-style: dashed; }
+.attraction-maybe strong { color: var(--muted); font-weight: 600; }
+.booked { display: inline-flex; color: var(--accent); }
+.hero-tags { margin: 10px 0 0; }
+.body-text { font-size: 17px; }
+.ticket-icon-sm { width: 32px; height: 32px; border-radius: 8px; }
+.rows li a .pill { margin-left: -4px; }
+
+/* Schedule */
+.sched-day { padding: 4px 0 18px; border-bottom: 1px solid var(--line); }
+.sched-day h2 { margin: 2px 0 8px; font-size: 22px; }
+.sched-kicker { margin: 18px 0 0; color: var(--accent); font-weight: 600; font-size: 14px; }
+.sched-day.is-today .sched-kicker::before {
+  content: ""; display: inline-block; width: 9px; height: 9px; border-radius: 50%;
+  background: var(--signal); margin-right: 7px; vertical-align: 1px;
+}
+.sched-day.is-past { opacity: 0.55; }
+.sched-notes { margin-top: 10px; color: var(--muted); font-size: 15px; }
+.sched-notes .rich p:last-child { margin-bottom: 0; }
+.rows-tickets { margin-top: 4px; }
+.when-day { font-size: 18px; }
 
 /* Bottom tabs */
 .tabbar {

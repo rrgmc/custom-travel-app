@@ -1,103 +1,248 @@
 # yaml-language-server: $schema=./trip.schema.json
 #
 # SAMPLE TRIP — replace with the real one by running /new-trip in Claude Code.
-# All confirmation codes, names and prices below are made up.
-# Times are wall-clock times at the place where things happen (see docs/data-model.md).
+# Confirmation codes, hotel and restaurant names and prices are made up. Opening hours and tips are
+# illustrative, not checked. Times are wall-clock times at the place (see docs/data-model.md).
 
 trip:
   id: sample
-  title: Lisbon long weekend
+  title: Portugal in October
   subtitle: Sample trip
-  start: 2026-10-09
-  end: 2026-10-12
   timezone: Europe/Lisbon
   language: en
   currency: EUR
-  travelers:
-    - name: Traveler One
-    - name: Traveler Two
 
-places:
-  - id: lis-airport
-    name: Lisbon Airport (LIS)
-    kind: transport
-    city: Lisbon
-    location: { lat: 38.7742, lng: -9.1342 }
+categories:
+  - { id: sights, name: Things to do }
+  - { id: views, name: Viewpoints }
+  - { id: food, name: Restaurants }
+  - { id: cafes, name: Cafés & pastries }
 
-  - id: gru-airport
-    name: São Paulo Guarulhos (GRU)
-    kind: transport
-    city: São Paulo
-    location: { lat: -23.4356, lng: -46.4731 }
-
-  - id: hotel-alfama
-    name: Casa do Largo (sample hotel)
-    kind: lodging
-    city: Lisbon
-    address: Largo do Chafariz de Dentro, Alfama, Lisbon
-    location: { lat: 38.7115, lng: -9.1272 }
-    phone: "+351 210 000 000"
-    notes: Steep street — taxis stop at the bottom of the stairs.
-
-  - id: sao-jorge
-    name: Castelo de São Jorge
-    kind: attraction
-    city: Lisbon
-    location: { lat: 38.7139, lng: -9.1335 }
-    hours: 09:00–21:00 (last entry 20:30)
-    price: About €15 per adult
-    notes: Go early or near sunset; the queue peaks around 11:00.
-
-  - id: tram-28
-    name: Tram 28 (Martim Moniz stop)
-    kind: transport
-    city: Lisbon
-    location: { lat: 38.7160, lng: -9.1360 }
-    notes: Board at the first stop to get a seat. Watch for pickpockets.
-
-  - id: belem-tower
-    name: Torre de Belém
-    kind: attraction
-    city: Lisbon
-    location: { lat: 38.6916, lng: -9.2160 }
-
-  - id: pasteis-belem
-    name: Pastéis de Belém
-    kind: restaurant
-    city: Lisbon
-    location: { lat: 38.6975, lng: -9.2032 }
-    hours: 08:00–23:00
-    notes: The table-service line inside moves much faster than the takeaway line.
-
-  - id: taberna-sample
-    name: Taberna da Esquina (sample restaurant)
-    kind: restaurant
-    city: Lisbon
-    location: { lat: 38.7131, lng: -9.1300 }
-
-  - id: oceanario
-    name: Oceanário de Lisboa
-    kind: attraction
-    city: Lisbon
-    location: { lat: 38.7636, lng: -9.0937 }
-    hours: 10:00–20:00
-    notes: Good rain option.
+destinations:
+  - id: lisbon
+    name: Lisbon
+    country: Portugal
+    from: 2026-10-09
+    to: 2026-10-12
+    location: { lat: 38.7223, lng: -9.1393 }
+    summary: |
+      Hilly capital on the Tagus river. Old neighborhoods (Alfama, Baixa, Chiado) are walkable;
+      Belém, with the monuments, is a tram or bus ride west.
+    tips: |
+      - Wear shoes with grip: the stone pavements are slippery, especially when wet.
+      - Trams and buses take contactless cards; the Viva Viagem card is cheaper for many rides.
+      - Pickpockets work the crowded trams and viewpoints.
 
   - id: sintra
-    name: Sintra (Pena Palace)
-    kind: attraction
-    city: Sintra
+    name: Sintra
+    country: Portugal
+    from: 2026-10-12
+    to: 2026-10-13
+    location: { lat: 38.8029, lng: -9.3817 }
+    summary: |
+      Forested hills full of palaces, 40 minutes from Lisbon by train. Much calmer once the day
+      trippers leave in the late afternoon.
+    tips: |
+      - The palaces are uphill from the station: take the 434 bus or a tuk-tuk, not the walk.
+      - Timed tickets for Pena sell out on weekends.
+
+  - id: porto
+    name: Porto
+    country: Portugal
+    from: 2026-10-13
+    to: 2026-10-16
+    location: { lat: 41.1579, lng: -8.6291 }
+    summary: |
+      Granite city on the Douro river, famous for port wine. The old center slopes steeply down to
+      the Ribeira waterfront; the port cellars are across the bridge in Vila Nova de Gaia.
+    tips: |
+      - The metro from the airport to the center takes about 30 minutes.
+      - Crossing the upper deck of the Dom Luís I bridge on foot gives the classic view.
+
+attractions:
+  # Lisbon
+  - id: sao-jorge
+    destination: lisbon
+    category: sights
+    name: Castelo de São Jorge
+    priority: must
+    description: Moorish castle on the highest hill of the old town, with the best views over Lisbon.
+    tips: Go early or near sunset; the queue peaks around 11:00.
+    hours: 09:00–21:00 (sample, not checked)
+    price: About €15 per adult
+    duration: 1.5–2 h
+    location: { lat: 38.7139, lng: -9.1335 }
+
+  - id: jeronimos
+    destination: lisbon
+    category: sights
+    name: Mosteiro dos Jerónimos
+    priority: must
+    description: Huge 16th-century monastery in the ornate Manueline style. The cloister is the highlight.
+    closed: Mondays
+    duration: 1–1.5 h
+    booking: Buy tickets online to skip the ticket line.
+    location: { lat: 38.6979, lng: -9.2068 }
+
+  - id: belem-tower
+    destination: lisbon
+    category: sights
+    name: Torre de Belém
+    priority: want
+    description: Small fortress on the river, the symbol of the age of discoveries.
+    tips: The outside is the best part; skip the inside if the line is long.
+    duration: 30 min–1 h
+    location: { lat: 38.6916, lng: -9.2160 }
+
+  - id: tram-28
+    destination: lisbon
+    category: sights
+    name: Tram 28
+    priority: want
+    description: Old yellow tram rattling through Graça, Alfama and Estrela.
+    tips: Board at the first stop, Martim Moniz, to get a seat. Watch for pickpockets.
+    duration: 45 min end to end
+    location: { lat: 38.7160, lng: -9.1360 }
+
+  - id: oceanario
+    destination: lisbon
+    category: sights
+    name: Oceanário de Lisboa
+    priority: maybe
+    description: One of Europe's largest aquariums. A good plan for a rainy day.
+    duration: 2 h
+    location: { lat: 38.7636, lng: -9.0937 }
+
+  - id: senhora-monte
+    destination: lisbon
+    category: views
+    name: Miradouro da Senhora do Monte
+    priority: want
+    description: The highest viewpoint in the city, less crowded than the ones in Alfama.
+    tips: Best at sunset.
+    location: { lat: 38.7190, lng: -9.1328 }
+
+  - id: taberna-sample
+    destination: lisbon
+    category: food
+    name: Taberna da Esquina (sample restaurant)
+    priority: want
+    description: Small tavern with live fado in the evenings.
+    booking: Reserve for dinner; fado starts around 20:30.
+    location: { lat: 38.7131, lng: -9.1300 }
+
+  - id: pasteis-belem
+    destination: lisbon
+    category: cafes
+    name: Pastéis de Belém
+    priority: must
+    description: The original pastel de nata bakery, next to the Jerónimos monastery.
+    tips: The table-service line inside moves much faster than the takeaway line.
+    location: { lat: 38.6975, lng: -9.2032 }
+
+  # Sintra
+  - id: pena-palace
+    destination: sintra
+    category: sights
+    name: Palácio da Pena
+    priority: must
+    description: Colorful romantic palace on a hilltop, surrounded by a large park.
+    duration: 2–3 h with the park
+    booking: Timed tickets; buy online a few days ahead.
     location: { lat: 38.7876, lng: -9.3906 }
-    notes: Needs a full day. Timed tickets sell out on weekends.
-    wishlist: true
+
+  - id: quinta-regaleira
+    destination: sintra
+    category: sights
+    name: Quinta da Regaleira
+    priority: must
+    description: Mysterious estate with gardens, grottoes and the famous spiral initiation well.
+    tips: Arrive at opening time; the well gets a queue by mid-morning.
+    duration: 2 h
+    location: { lat: 38.7963, lng: -9.3960 }
+
+  - id: moorish-castle
+    destination: sintra
+    category: sights
+    name: Castelo dos Mouros
+    priority: maybe
+    description: Ruined castle walls along a ridge, with wide views to the coast.
+    duration: 1 h
+    location: { lat: 38.7925, lng: -9.3894 }
+
+  - id: piriquita
+    destination: sintra
+    category: cafes
+    name: Piriquita
+    priority: want
+    description: Old bakery known for travesseiros, puff pastry filled with almond cream.
+    location: { lat: 38.7978, lng: -9.3903 }
+
+  # Porto
+  - id: ribeira
+    destination: porto
+    category: sights
+    name: Ribeira
+    priority: must
+    description: Colorful riverside quarter under the Dom Luís I bridge.
+    duration: 1–2 h
+    location: { lat: 41.1405, lng: -8.6134 }
+
+  - id: port-cellars
+    destination: porto
+    category: sights
+    name: Port wine cellars (Vila Nova de Gaia)
+    priority: must
+    description: Tours and tastings at the historic port lodges across the river.
+    booking: Book a tour with tasting for a set time.
+    duration: 1.5 h per cellar
+    location: { lat: 41.1375, lng: -8.6130 }
+
+  - id: livraria-lello
+    destination: porto
+    category: sights
+    name: Livraria Lello
+    priority: want
+    description: Neo-Gothic bookshop with a famous red staircase.
+    booking: Entry needs a ticket bought online; the price is deducted from a book.
+    duration: 30 min
+    location: { lat: 41.1469, lng: -8.6149 }
+
+  - id: douro-valley
+    destination: porto
+    category: sights
+    name: Douro Valley day trip
+    priority: maybe
+    description: Terraced vineyards along the river, with wine tastings and a boat ride.
+    duration: Full day
+    booking: Organized tours pick up in the center; book a day or two ahead.
+    location: { lat: 41.1904, lng: -7.5451 }
+
+  - id: serra-pilar
+    destination: porto
+    category: views
+    name: Miradouro da Serra do Pilar
+    priority: want
+    description: Terrace above the bridge with the classic view of Porto.
+    tips: Go for sunset, then walk down to the Gaia waterfront.
+    location: { lat: 41.1386, lng: -8.6089 }
+
+  - id: francesinha-sample
+    destination: porto
+    category: food
+    name: Café do Bolhão (sample restaurant)
+    priority: want
+    description: Try the francesinha, Porto's heavy meat sandwich under melted cheese and beer sauce.
+    location: { lat: 41.1497, lng: -8.6057 }
 
 reservations:
   - id: flight-out
     type: flight
     title: GRU → LIS
     status: confirmed
-    place: gru-airport
-    to: lis-airport
+    destination: lisbon
+    from: São Paulo (GRU)
+    to: Lisbon (LIS)
     start: 2026-10-08T21:40
     startTimezone: America/Sao_Paulo
     end: 2026-10-09T11:55
@@ -110,11 +255,11 @@ reservations:
       - { label: Baggage, value: 1 × 23 kg each }
     payment: { status: paid }
 
-  - id: hotel-stay
+  - id: hotel-lisbon
     type: lodging
-    title: Casa do Largo
+    title: Casa do Largo (sample hotel)
     status: confirmed
-    place: hotel-alfama
+    destination: lisbon
     start: 2026-10-09T15:00
     end: 2026-10-12T11:00
     provider: Booking.com
@@ -128,12 +273,25 @@ reservations:
       notes: Tourist tax (€4/person/night) charged separately at check-in.
     cancellation: Free cancellation until 2026-10-06
     contact: "+351 210 000 000"
+    address: Largo do Chafariz de Dentro, Alfama, Lisbon
+    location: { lat: 38.7115, lng: -9.1272 }
+    notes: Steep street — taxis stop at the bottom of the stairs.
+
+  - id: lisboa-card
+    type: ticket
+    title: Lisboa Card, 72 hours
+    status: confirmed
+    destination: lisbon
+    confirmation: LC-551902
+    payment: { status: paid, amount: "€ 50,00" }
+    notes: Open date. It starts counting at the first use; covers trams, buses and many museums.
 
   - id: castle-tickets
     type: ticket
     title: Castelo de São Jorge tickets
     status: confirmed
-    place: sao-jorge
+    destination: lisbon
+    attraction: sao-jorge
     start: 2026-10-10T09:30
     confirmation: CSJ-77821
     payment: { status: paid, amount: "€ 30,00" }
@@ -142,82 +300,126 @@ reservations:
     type: restaurant
     title: Dinner with fado
     status: pending
-    place: taberna-sample
+    destination: lisbon
+    attraction: taberna-sample
     start: 2026-10-10T20:30
     details:
       - { label: People, value: "2" }
     notes: Waiting for email confirmation. Call if nothing by Thursday.
 
+  - id: hotel-sintra
+    type: lodging
+    title: Quinta Sample Guesthouse
+    status: confirmed
+    destination: sintra
+    start: 2026-10-12T14:00
+    end: 2026-10-13T11:00
+    confirmation: QS-2291
+    payment: { status: paid, amount: "€ 130,00" }
+    address: Rua Sample 12, Sintra
+    location: { lat: 38.7990, lng: -9.3880 }
+
+  - id: pena-tickets
+    type: ticket
+    title: Palácio da Pena, timed entry
+    status: confirmed
+    destination: sintra
+    attraction: pena-palace
+    start: 2026-10-12T15:30
+    confirmation: PENA-40317
+    payment: { status: paid, amount: "€ 40,00" }
+
+  - id: train-porto
+    type: train
+    title: Lisbon → Porto
+    status: confirmed
+    destination: porto
+    from: Lisboa Oriente
+    to: Porto Campanhã
+    start: 2026-10-13T15:09
+    end: 2026-10-13T18:05
+    provider: CP (Comboios de Portugal)
+    confirmation: CP-8841-2210
+    details:
+      - { label: Train, value: Alfa Pendular 133 }
+      - { label: Seats, value: "Car 4, seats 51 and 52" }
+    payment: { status: paid, amount: "€ 62,00" }
+
+  - id: hotel-porto
+    type: lodging
+    title: Ribeira Sample Apartments
+    status: confirmed
+    destination: porto
+    start: 2026-10-13T16:00
+    end: 2026-10-16T10:00
+    provider: Airbnb
+    confirmation: HMX4Q2PL
+    payment: { status: paid, amount: "€ 410,00" }
+    cancellation: Non-refundable
+    address: Rua Sample 88, Porto
+    location: { lat: 41.1412, lng: -8.6120 }
+    notes: Self check-in. The door code arrives by message on the day.
+
   - id: flight-back
     type: flight
-    title: LIS → GRU
+    title: OPO → GRU
     status: confirmed
-    place: lis-airport
-    to: gru-airport
-    start: 2026-10-12T13:25
+    destination: porto
+    from: Porto (OPO)
+    to: São Paulo (GRU)
+    start: 2026-10-16T12:10
     startTimezone: Europe/Lisbon
-    end: 2026-10-12T20:50
+    end: 2026-10-16T19:30
     endTimezone: America/Sao_Paulo
     provider: Sample Air
-    confirmation: ABC123
+    confirmation: DEF456
     details:
-      - { label: Flight, value: SA 8121 }
+      - { label: Flight, value: SA 8133 }
     payment: { status: paid }
 
-days:
+# Optional. Only when the user asks for a suggested schedule (/suggest-schedule).
+schedule:
   - date: 2026-10-09
+    destination: lisbon
     title: Arrival
-    base: hotel-alfama
-    items:
-      - { time: "11:55", title: Land in Lisbon, reservation: flight-out }
-      - { time: "13:00", title: Taxi to the hotel, notes: "About 25 min, €15–20." }
-      - { time: "15:00", title: Check in, reservation: hotel-stay }
-      - { time: "17:00", title: Walk around Alfama, optional: true }
+    attractions: [senhora-monte]
+    notes: Long flight — keep it light. Sunset at the viewpoint if there's energy left.
 
   - date: 2026-10-10
-    title: Castle and old town
-    base: hotel-alfama
-    items:
-      - { time: "09:30", end: "11:30", title: Castle visit, reservation: castle-tickets }
-      - { time: "12:00", title: Ride tram 28 to Estrela, place: tram-28 }
-      - { time: "15:00", title: Rest at the hotel, optional: true }
-      - { time: "20:30", title: Dinner with fado, reservation: dinner-fado }
+    destination: lisbon
+    title: Castle and Alfama
+    attractions: [sao-jorge, tram-28, taberna-sample]
 
   - date: 2026-10-11
+    destination: lisbon
     title: Belém
-    base: hotel-alfama
-    items:
-      - { time: "09:00", title: Pastéis de Belém breakfast, place: pasteis-belem }
-      - { time: "10:30", title: Torre de Belém, place: belem-tower }
-    alternatives:
-      - title: Rain plan
-        when: If it rains
-        items:
-          - { time: "10:00", title: Oceanário, place: oceanario }
-          - { time: "14:00", title: Lunch at Parque das Nações }
+    attractions: [jeronimos, pasteis-belem, belem-tower]
+    notes: If it rains, swap for the Oceanário.
 
   - date: 2026-10-12
-    title: Departure
-    items:
-      - { time: "10:30", title: Check out, reservation: hotel-stay }
-      - { time: "11:00", title: Taxi to the airport }
-      - { time: "13:25", title: Flight home, reservation: flight-back }
+    destination: sintra
+    title: Pena
+    attractions: [pena-palace, piriquita]
+    notes: Morning train from Lisbon Rossio, drop the bags, then up to Pena.
 
-contacts:
-  - name: Emergency (Portugal)
-    phone: "112"
-  - name: Brazilian consulate in Lisbon (sample)
-    role: Consulate
-    phone: "+351 210 000 001"
+  - date: 2026-10-13
+    destination: sintra
+    title: Regaleira, then Porto
+    attractions: [quinta-regaleira]
+    notes: Back to Lisbon after lunch for the afternoon train.
 
-info:
-  - title: Documents
-    body: |
-      - Passports (valid 3+ months after return)
-      - Travel insurance policy
-      - Printed return ticket
-  - title: Money
-    body: |
-      Cards work almost everywhere. Keep some cash for small cafés and trams.
+  - date: 2026-10-14
+    destination: porto
+    title: River and port wine
+    attractions: [ribeira, port-cellars, serra-pilar]
 
-      Tipping is optional; rounding up is common.
+  - date: 2026-10-15
+    destination: porto
+    title: Center
+    attractions: [livraria-lello, francesinha-sample]
+    notes: Or the Douro Valley day trip instead.
+
+  - date: 2026-10-16
+    destination: porto
+    title: Flight home
+    notes: Leave for the airport by 09:00.

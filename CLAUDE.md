@@ -1,8 +1,11 @@
 # Custom travel app
 
 This repo is a **template**. Each vacation gets its own repo created from it ("Use this template"),
-and that repo builds one Android app containing everything for that trip: destinations, places,
-reservations, daily plans, contacts and notes. The app works fully offline.
+and that repo builds one Android app for that trip: a **loose trip guide**. It lists the
+destinations; each destination has its attractions (things to do, restaurants…) grouped by the
+trip's categories and marked must-see / if there's time / maybe; reservations (stays, tickets,
+transport) have their own area; and, only if the user asks, a day-by-day schedule without times.
+The app works fully offline.
 
 The core idea: **the app is generic, the trip is data.** Everything specific to a vacation lives in
 `trip/`. Code in `src/` must never mention a specific trip, city, hotel or date.
@@ -25,7 +28,8 @@ docs/                   ← rules and references (imported below)
 - `npm run validate` — check trip.yaml. Run after every change to trip data and fix all errors.
   Report warnings to the user; don't silence them by deleting data.
 - `npm run dev` — web preview. Add `?now=2026-10-10T10:00` to the URL to simulate a moment during the
-  trip (interpreted in the trip timezone; it sticks for the browser session).
+  trip (it picks the "you're here now" destination and today's schedule day; it sticks for the
+  browser session).
 - `npm run build` — validate + icons + typecheck + production build into `dist/`.
 - `npm run android:sync` — build, copy into `android/`, apply the trip's app id/name/icon.
 - `npm run android:apk` — the above plus a debug APK (needs a local Android SDK). Otherwise CI builds it, only on a `v*` tag or a manual run.
@@ -33,9 +37,9 @@ docs/                   ← rules and references (imported below)
 ## Skills in this repo
 
 - `/new-trip` — start a new vacation from the template (replaces the sample trip).
-- `/import-booking` — turn confirmations in `inbox/` (or pasted text) into reservations, places and attachments.
-- `/plan-days` — build or rework the daily schedules and alternative plans.
-- `/check-trip` — full pre-trip review: validator, gaps, deadlines, things to confirm.
+- `/research` — propose attractions for a destination, let the user pick, then add them with details.
+- `/import-booking` — turn confirmations in `inbox/` (or pasted text) into reservations and attachments.
+- `/suggest-schedule` — the optional day-by-day schedule (destination + attractions, no times). Only when asked.
 - `/build-app` — produce the APK (locally or via GitHub Actions) and explain how to install it.
 - `/update-base` — pull app improvements from the template into a trip repo without touching `trip/`.
 
@@ -53,8 +57,8 @@ docs/                   ← rules and references (imported below)
   feature: update `trip/trip.schema.json`, `src/types.ts`, `scripts/validate.mjs`, `docs/data-model.md`
   and the sample in the template, in the same change. Never special-case a trip in `src/`.
 - **Times are wall-clock at the place.** Never convert trip times between zones for display.
-  Only `nowAtDestination()` in `src/lib/time.ts` touches real time; keep its offset logic in sync
-  with `scripts/validate.mjs`.
+  Only `nowIn()` in `src/lib/time.ts` touches real time; keep its offset logic in sync with
+  `scripts/validate.mjs`.
 - **All UI text goes through `src/lib/i18n.ts`**, in every supported language (`en`, `pt-BR`).
   User-visible text inside trip.yaml is written in `trip.language`.
 - **Design.** Tokens live at the top of `src/styles.css`. The ticket stub is the one bold element;
@@ -64,5 +68,6 @@ docs/                   ← rules and references (imported below)
   so each trip installs as a separate app. Don't hand-edit applicationId, app name or icons; run
   `npm run trip:apply`. Never change the Java `namespace` (`io.github.rrgmc.travel`).
 - Before finishing any change: `npm run build` must pass. For UI changes, check the affected screens
-  with `?now=` set before, during and after the trip, in light and dark mode.
+  with `?now=` set before and during the trip, in light and dark mode, and with and without a
+  `schedule`.
 - Never commit `inbox/`, `dist/`, keystores or anything in `.gitignore`.

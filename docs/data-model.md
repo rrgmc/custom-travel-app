@@ -5,40 +5,48 @@ The sample `trip/trip.yaml` in the template shows every field in use.
 
 ## Conventions
 
-- **IDs** are kebab-case (`hotel-alfama`, `flight-out`), unique within their list, and stable:
-  schedule items refer to them, so don't rename casually.
-- **Dates** are `YYYY-MM-DD`. **Times** are `HH:MM` (24h).
+- **IDs** are kebab-case (`sao-jorge`, `hotel-lisbon`), unique within their list, and stable:
+  other entries refer to them, so don't rename casually.
+- **Dates** are `YYYY-MM-DD`.
 - **Date-times** are `YYYY-MM-DDTHH:MM` with **no offset**: the wall-clock time at the place where
-  it happens, exactly as printed on the ticket. The app displays them as-is.
-  - Default zone is `trip.timezone`. When a reservation starts or ends elsewhere (e.g. a flight from
-    home), set `startTimezone` / `endTimezone`. The app then shows a small offset like `GMT-3`.
+  it happens, exactly as printed on the ticket. The app displays them as-is. Reservation `start`/`end`
+  may also be a bare date when there's no time.
+  - Default zone is the destination's `timezone`, else `trip.timezone`. When a reservation starts or
+    ends elsewhere (e.g. a flight from home), set `startTimezone` / `endTimezone`. The app then shows
+    a small offset like `GMT-3`.
+- Text fields (`summary`, `tips`, `description`, `notes`): a blank line starts a new paragraph and
+  lines starting with `- ` form a list.
 - YAML gotcha: inside `{ ... }` a comma ends the value. Quote any value containing a comma:
   `{ label: Seats, value: "24A, 24B" }`.
 
 ## Sections
 
-`trip` — id (lowercase slug, used in the Android app id), title (≤ 40 chars, it's the app name),
-subtitle, start, end, timezone (IANA), language (`en` | `pt-BR`), currency, travelers, accent
-(hex color for the app), icon (1–2 characters for the launcher icon).
+`trip` — id (lowercase letters and digits, used in the Android app id), title (≤ 40 chars, it's the
+app name), subtitle, timezone (IANA, default for everything), language (`en` | `pt-BR`), currency,
+accent (hex color for the app), icon (1–2 characters for the launcher icon).
 
-`places[]` — anything you might navigate to. `kind` is one of lodging, attraction, restaurant,
-transport, shopping, service, other. Give `location {lat, lng}` whenever possible (the map buttons
-use it); otherwise `address`. `wishlist: true` = worth visiting but not scheduled.
+`categories[]` — attraction categories for this trip, in display order: `{ id, name }`.
 
-`reservations[]` — everything booked or requested. `type` is one of lodging, flight, train, bus,
-car-rental, transfer, restaurant, activity, ticket, other. `status` is confirmed | pending |
-cancelled. `place` = where it starts; `to` = arrival for transport. `confirmation` is shown as a large
-copyable code. `details[]` holds labeled facts (seat, room, gate). `payment.status` is paid | partial |
-at-location | unpaid. `attachments[]` = `{ file, label, preview? }`, files under `trip/files/`.
+`destinations[]` — cities or regions **in travel order**: `{ id, name, country?, from?, to?,
+timezone?, location?, summary?, tips? }`. `from`/`to` are optional but go together. The app's home
+screen lists them and highlights the one whose dates include today.
 
-`days[]` — one per trip date, in order. `base` = where you sleep that night. `items[]` are the plan:
-`{ time?, end?, title, place?, reservation?, notes?, optional? }`, ordered by time.
-`alternatives[]` are other plans for the same day: `{ title, when?, items[] }`.
+`attractions[]` — what's worth doing or eating at each destination: `{ id, destination, category,
+name, priority, description?, tips?, hours?, closed?, price?, duration?, booking?, address?,
+location?, phone?, url? }`. `priority` is `must` (must-see), `want` (if there's time) or `maybe`.
 
-`contacts[]` — emergency numbers, hosts, guides: `{ name, role?, phone?, email?, notes? }`.
+`reservations[]` — everything booked or requested. `type` is one of lodging, ticket, flight, train,
+bus, car-rental, transfer, restaurant, other; the app groups them as Stays, Tickets, Transport and
+Other. `status` is confirmed | pending | cancelled. `destination` and `attraction` link it to where
+it's used. `start`/`end` are check-in/out, departure/arrival or entry time (leave out for
+open-dated tickets). `from`/`to` are the route for transport. `confirmation` is shown as a large
+copyable code. `details[]` holds labeled facts (seat, room). `payment.status` is paid | partial |
+at-location | unpaid. `address`/`location` feed the map buttons (hotels). `attachments[]` =
+`{ file, label, preview? }`, files under `trip/files/`.
 
-`info[]` — free notes: `{ title, body }`. In `body`, a blank line starts a new paragraph and lines
-starting with `- ` form a list.
+`schedule[]` — **optional**, only when the user asked for a suggested schedule. One entry per day:
+`{ date, destination, title?, attractions?: [ids in suggested order], notes? }`. No times.
+Reservations on that date are shown automatically. Without it, the app has no Schedule tab.
 
 ## Changing the model
 
