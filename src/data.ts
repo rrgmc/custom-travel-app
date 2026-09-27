@@ -10,11 +10,14 @@ export const destinationById = new Map<string, Destination>(data.destinations.ma
 export const attractionById = new Map<string, Attraction>(data.attractions.map((a) => [a.id, a]));
 export const reservationById = new Map<string, Reservation>(data.reservations.map((r) => [r.id, r]));
 
+/** The only destination, when the trip has just one place to stay: the app then opens on its page. */
+export const singleDestination: Destination | undefined = data.destinations.length === 1 ? data.destinations[0] : undefined;
+
 const PRIORITY_ORDER: Priority[] = ["must", "want", "maybe"];
 
 /** A destination's attractions grouped by category (trip order), must-see first within each group. */
-export function attractionsByCategory(destinationId: string, onlyMust = false): { category: Category; items: Attraction[] }[] {
-  const mine = data.attractions.filter((a) => a.destination === destinationId && (!onlyMust || a.priority === "must"));
+export function attractionsByCategory(destinationId: string): { category: Category; items: Attraction[] }[] {
+  const mine = data.attractions.filter((a) => a.destination === destinationId);
   return data.categories
     .map((category) => ({
       category,

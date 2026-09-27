@@ -1,4 +1,4 @@
-import { schedule, trip } from "./data";
+import { schedule, singleDestination, trip } from "./data";
 import { t } from "./lib/i18n";
 import { href, useRoute, type Page } from "./lib/router";
 import { Icon } from "./components/Icon";
@@ -19,9 +19,14 @@ export function App() {
     case "attractions": screen = <AttractionDetail key={route.id} id={route.id ?? ""} />; break;
     case "reservations": screen = route.id ? <ReservationDetail key={route.id} id={route.id} /> : <ReservationsList />; break;
     case "schedule": screen = <ScheduleScreen date={route.id} />; break;
-    default: screen = route.id ? <DestinationDetail key={route.id} id={route.id} /> : <DestinationsList />;
+    default:
+      // With a single place to stay, its page is the home screen instead of a one-item list.
+      screen = route.id || singleDestination
+        ? <DestinationDetail key={route.id ?? singleDestination!.id} id={route.id ?? singleDestination!.id} tab={route.tab} />
+        : <DestinationsList />;
   }
-  const isDetail = !!route.id && route.page !== "schedule";
+  const isHome = route.page === "destinations" && (!route.id || route.id === singleDestination?.id);
+  const isDetail = !!route.id && route.page !== "schedule" && !isHome;
   return (
     <div className="app">
       <header className="topbar">
@@ -38,7 +43,7 @@ export function App() {
         {TABS.map((tab) => (
           <a key={tab} href={href(tab)} aria-current={tabOf(route.page) === tab ? "page" : undefined}>
             <Icon name={tab} />
-            <span>{t[tab]}</span>
+            <span>{tab === "destinations" && singleDestination ? singleDestination.name : t[tab]}</span>
           </a>
         ))}
       </nav>

@@ -30,6 +30,7 @@ export function AttractionDetail({ id }: { id: string }) {
       [t.hours, a.hours],
       [t.closed, a.closed],
       [t.price, a.price],
+      [t.travelTime, a.travelTime],
       [t.duration, a.duration],
       [t.booking, a.booking],
       [t.address, a.address],
@@ -42,6 +43,7 @@ export function AttractionDetail({ id }: { id: string }) {
         <p className="hero-count">
           {dest && <a href={href("destinations", dest.id)}>{dest.name}</a>}
           {category && ` · ${category.name}`}
+          {a.town && a.town !== a.name && ` · ${a.town}`}
         </p>
         <h1>{a.name}</h1>
         <p className="hero-tags"><PriorityTag p={a.priority} /></p>

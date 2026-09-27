@@ -30,9 +30,13 @@ doing at each one, and the reservations. A day-by-day schedule exists only if th
 
 ## Destinations
 
-7. `destinations` are the cities or regions of the trip, **in travel order**. Dates (`from`/`to`)
-   are optional: add them when the user knows them. A travel day belongs to both destinations (one's
-   `to` equals the next one's `from`).
+7. A destination is **a place where you stay** (sleep in a hotel), in travel order. Dates
+   (`from`/`to`) are optional: add them when the user knows them. A travel day belongs to both
+   destinations (one's `to` equals the next one's `from`). Each destination normally has one
+   lodging reservation.
+   **Nearby towns visited from there are not destinations**: they're attractions of the place you
+   stay, with `town` set (e.g. staying in Gramado, Canela's sights are Gramado attractions with
+   `town: Canela`).
 8. Each destination gets a short `summary` (what it's like, why go) and, when useful, `tips`
    (getting around, money, safety, customs). Practical and brief.
 
@@ -50,32 +54,39 @@ doing at each one, and the reservations. A day-by-day schedule exists only if th
     `closed`, `price`, `duration` (how long a visit takes), `booking` (whether to book ahead and how),
     and `location` so the map buttons work. Add `address` if coordinates aren't certain.
 13. Restaurants and cafés are attractions too, in their own categories.
+14. **Travel time from where you stay** goes in `travelTime` with the mode the user will use
+    ("20 min by car", "40 min by train"). Always set it for attractions in another town; set it
+    for local ones when it helps (a far-off park, a restaurant across town).
+15. **A whole nearby town**: when there's little to do there, propose one attraction for the town
+    (name = the town, usually in a "Day trips" category, `description` covering what to see and
+    eat); when there's a lot, propose its individual sights, each with `town`. Suggest one or the
+    other per town and let the user decide.
 
 ## Reservations
 
-14. Link each reservation to its `destination` (where it's used) and, for tickets and restaurant
+16. Link each reservation to its `destination` (where it's used) and, for tickets and restaurant
     bookings, to its `attraction`. It then shows on that destination's and attraction's pages.
-15. Lodging has `start` (check-in) and `end` (check-out). Two stays can't cover the same night.
-16. Transport (flight, train, bus, transfer) has `from` and `to`. Anything crossing a timezone sets
+17. Lodging has `start` (check-in) and `end` (check-out). Two stays can't cover the same night.
+18. Transport (flight, train, bus, transfer) has `from` and `to`. Anything crossing a timezone sets
     `startTimezone`/`endTimezone`. Times are as printed on the ticket, never converted.
-17. Open-dated tickets (passes, museum cards) have no `start`.
-18. Copy vouchers, e-tickets and boarding passes into `trip/files/` as `<reservation-id>.pdf`. For a
+19. Open-dated tickets (passes, museum cards) have no `start`.
+20. Copy vouchers, e-tickets and boarding passes into `trip/files/` as `<reservation-id>.pdf`. For a
     PDF with a QR code or barcode, also save a PNG `preview` of that page
     (`pdftoppm -png -r 150 -f N -l N in.pdf trip/files/<id>`), so it shows instantly offline.
     Keep each file under ~2 MB.
 
 ## Schedule (only when asked)
 
-19. Never create `schedule` unless the user asks for it. It's a suggestion, one entry per day:
+21. Never create `schedule` unless the user asks for it. It's a suggestion, one entry per day:
     the destination and a few attractions in a sensible order. **No times.**
-20. Be realistic: 2–3 main attractions a day plus a meal, grouped by area. Put `must` attractions
+22. Be realistic: 2–3 main attractions a day plus a meal, grouped by area. Put `must` attractions
     first in the trip's days, respect `closed` days, and keep arrival and departure days light.
     Days with fixed reservations (timed tickets, trains) are planned around them.
-21. Use `notes` for what the list can't say: "Afternoon train to Porto", "If it rains, swap for the
+23. Use `notes` for what the list can't say: "Afternoon train to Porto", "If it rains, swap for the
     Oceanário".
 
 ## Writing
 
-22. Short, plain, useful on the street: "Board at the first stop to get a seat", not tourism copy.
-23. Everything the user will read is in `trip.language`. Place names stay in their local form.
-24. Money amounts are written as on the document, with currency: `R$ 1.240,00`, `€ 30,00`.
+24. Short, plain, useful on the street: "Board at the first stop to get a seat", not tourism copy.
+25. Everything the user will read is in `trip.language`. Place names stay in their local form.
+26. Money amounts are written as on the document, with currency: `R$ 1.240,00`, `€ 30,00`.

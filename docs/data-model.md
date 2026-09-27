@@ -27,13 +27,20 @@ accent (hex color for the app), icon (1–2 characters for the launcher icon).
 
 `categories[]` — attraction categories for this trip, in display order: `{ id, name }`.
 
-`destinations[]` — cities or regions **in travel order**: `{ id, name, country?, from?, to?,
-timezone?, location?, summary?, tips? }`. `from`/`to` are optional but go together. The app's home
-screen lists them and highlights the one whose dates include today.
+`destinations[]` — the **places you stay** (each with its hotel), **in travel order**:
+`{ id, name, country?, from?, to?, timezone?, location?, summary?, tips? }`. `from`/`to` are
+optional but go together. Nearby towns visited from there are attractions, not destinations. The
+home screen lists destinations and highlights the one whose dates include today; with a single
+destination the app opens straight on its page. A destination page has one tab per category with
+attractions, then "Booked here" and "About" (summary, map, tips). Category ids `booked` and `about`
+are reserved.
 
-`attractions[]` — what's worth doing or eating at each destination: `{ id, destination, category,
-name, priority, description?, tips?, hours?, closed?, price?, duration?, booking?, address?,
-location?, phone?, url? }`. `priority` is `must` (must-see), `want` (if there's time) or `maybe`.
+`attractions[]` — what's worth doing or eating at each destination, including nearby towns visited
+from it: `{ id, destination, category, name, priority, description?, tips?, hours?, closed?,
+price?, duration?, town?, travelTime?, booking?, address?, location?, phone?, url? }`. `priority` is
+`must` (must-see), `want` (if there's time) or `maybe`. `town` is set only when it's in another town
+than the destination; `travelTime` is from where you stay ("20 min by car"). A whole town can be a
+single attraction named after it.
 
 `reservations[]` — everything booked or requested. `type` is one of lodging, ticket, flight, train,
 bus, car-rental, transfer, restaurant, other; the app groups them as Stays, Tickets, Transport and

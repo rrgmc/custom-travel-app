@@ -2,8 +2,9 @@
 
 This repo is a **template**. Each vacation gets its own repo created from it ("Use this template"),
 and that repo builds one Android app for that trip: a **loose trip guide**. It lists the
-destinations; each destination has its attractions (things to do, restaurants…) grouped by the
-trip's categories and marked must-see / if there's time / maybe; reservations (stays, tickets,
+destinations, which are the **places you stay**; each destination has its attractions (things to
+do, restaurants, nearby towns visited from there…) in one tab per category, marked must-see / if
+there's time / maybe, with the town and travel time when they're elsewhere; reservations (stays, tickets,
 transport) have their own area; and, only if the user asks, a day-by-day schedule without times.
 The app works fully offline.
 
@@ -68,6 +69,6 @@ docs/                   ← rules and references (imported below)
   so each trip installs as a separate app. Don't hand-edit applicationId, app name or icons; run
   `npm run trip:apply`. Never change the Java `namespace` (`io.github.rrgmc.travel`).
 - Before finishing any change: `npm run build` must pass. For UI changes, check the affected screens
-  with `?now=` set before and during the trip, in light and dark mode, and with and without a
-  `schedule`.
+  with `?now=` set before and during the trip, in light and dark mode, with and without a
+  `schedule`, and with one and several destinations (one destination opens straight on its page).
 - Never commit `inbox/`, `dist/`, keystores or anything in `.gitignore`.

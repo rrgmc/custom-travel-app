@@ -9,13 +9,16 @@ The app is generic; the trip is data. Everything about a vacation lives in
 
 What the app shows:
 
-- **Destinations** (home): the cities or regions in travel order, with optional dates. During the
-  trip, the one you're in is highlighted at the top.
-- **Destination**: a short intro, what you've booked there, and its attractions grouped by the
-  trip's categories (Things to do, Restaurants…), marked **Must-see**, **If there's time** or
-  **Maybe**, with a must-see-only filter and practical tips.
-- **Attraction**: description, tips, hours, closed days, price, time needed, whether to book ahead,
-  one-tap map, directions, call and website, and its ticket if booked.
+- **Destinations** (home): the places you stay, in travel order, with optional dates. During the
+  trip, the one you're in is highlighted at the top. With a single place to stay, the app opens
+  straight on its page.
+- **Destination**: one tab per category (Things to do, Restaurants, Day trips…) listing its
+  attractions, including nearby towns visited from there, marked **Must-see**, **If there's time**
+  or **Maybe**, with the town and travel time when they're elsewhere; then a **Booked here** tab
+  and an **About** tab (intro, map, tips).
+- **Attraction**: description, tips, hours, closed days, price, time needed, travel time from where
+  you stay, whether to book ahead, one-tap map, directions, call and website, and its ticket if
+  booked.
 - **Reservations**: stays, tickets, transport and other bookings as ticket stubs with a big,
   tap-to-copy confirmation code, details, payment status, cancellation deadline and the voucher
   (QR codes readable offline).
@@ -28,8 +31,9 @@ runs fully offline. English and Brazilian Portuguese UI; light and dark mode.
 
 1. On GitHub: **Use this template → Create a new repository**. Make it **private**.
 2. Clone it and open [Claude Code](https://claude.com/claude-code) in the folder.
-3. Run `/new-trip` and list your destinations.
-4. `/research` each destination: Claude proposes attractions per category and you pick.
+3. Run `/new-trip` and say where you'll stay and which nearby towns you'll visit.
+4. `/research` each destination: Claude proposes attractions per category, nearby towns included,
+   and you pick.
 5. Drop booking confirmations (PDFs, emails, screenshots) into `inbox/` and run `/import-booking`.
    If you want a day-by-day plan, ask for it with `/suggest-schedule`.
 6. Push, then tag `v1` (or run `/build-app`). GitHub Actions builds the APK and publishes a Release

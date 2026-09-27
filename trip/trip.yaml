@@ -17,6 +17,7 @@ categories:
   - { id: views, name: Viewpoints }
   - { id: food, name: Restaurants }
   - { id: cafes, name: Cafés & pastries }
+  - { id: day-trips, name: Day trips }
 
 destinations:
   - id: lisbon
@@ -140,6 +141,19 @@ attractions:
     tips: The table-service line inside moves much faster than the takeaway line.
     location: { lat: 38.6975, lng: -9.2032 }
 
+  - id: cascais
+    destination: lisbon
+    category: day-trips
+    name: Cascais
+    town: Cascais
+    travelTime: 40 min by train from Cais do Sodré
+    priority: maybe
+    description: |
+      Seaside town west of Lisbon: a small old center, beaches and the coastal walk to Boca do Inferno.
+      An easy half day.
+    tips: Trains leave every 20 minutes; sit on the left for the sea view.
+    location: { lat: 38.6979, lng: -9.4215 }
+
   # Sintra
   - id: pena-palace
     destination: sintra
@@ -148,6 +162,7 @@ attractions:
     priority: must
     description: Colorful romantic palace on a hilltop, surrounded by a large park.
     duration: 2–3 h with the park
+    travelTime: 15 min by the 434 bus
     booking: Timed tickets; buy online a few days ahead.
     location: { lat: 38.7876, lng: -9.3906 }
 

@@ -8,7 +8,7 @@ description: Import booking confirmations (PDFs, emails, screenshots in inbox/ o
 Sources: files in `inbox/` (or the ones named in $ARGUMENTS), or text the user pasted.
 Read PDFs with `pdftotext -layout` first; look at pages as images when layout matters (QR codes,
 tables). Follow docs/business-rules.md strictly, especially rules 1 (never invent),
-3 (status), 5 (privacy) and 14–18 (reservations).
+3 (status), 5 (privacy) and 16–20 (reservations).
 
 For each booking:
 

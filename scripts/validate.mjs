@@ -98,6 +98,9 @@ function index(list, label) {
   return map;
 }
 const categoryById = index(categories, "categories");
+// The destination page uses these as tab names next to the category tabs.
+for (const reserved of ["booked", "about"])
+  if (categoryById.has(reserved)) err(`categories '${reserved}'`, "this id is reserved; use another one");
 const destById = index(destinations, "destinations");
 const attrById = index(attractions, "attractions");
 const resById = index(reservations, "reservations");
@@ -176,6 +179,13 @@ for (const r of reservations.filter((r) => r.type === "lodging" && r.status !== 
     if (nightOwner.has(n)) err("lodging", `'${r.id}' and '${nightOwner.get(n).id}' both cover the night of ${n}`);
     else nightOwner.set(n, r);
   }
+}
+
+// A destination is a place you stay: a dated one should have its lodging booked.
+for (const d of destinations) {
+  if (!d.from) continue;
+  const stays = reservations.some((r) => r.type === "lodging" && r.status !== "cancelled" && r.destination === d.id);
+  if (!stays) warn(`destinations '${d.id}'`, "no stay booked (lodging reservation with this destination)");
 }
 
 // Schedule (optional)

@@ -60,6 +60,10 @@ export interface Attraction {
   closed?: string;
   price?: string;
   duration?: string;
+  /** Only when it's in another town than the destination (a day trip from where you stay). */
+  town?: string;
+  /** From where you stay, e.g. "20 min by car". */
+  travelTime?: string;
   booking?: string;
   address?: string;
   location?: Location;

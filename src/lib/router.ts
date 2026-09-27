@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
 
 // Hash routes, so the Android back button walks back through screens.
-//   #/destinations  #/destinations/<id>  #/attractions/<id>
+//   #/destinations  #/destinations/<id>  #/destinations/<id>/<tab>  #/attractions/<id>
 //   #/reservations  #/reservations/<id>  #/schedule
 export type Page = "destinations" | "attractions" | "reservations" | "schedule";
-export type Route = { page: Page; id?: string };
+export type Route = { page: Page; id?: string; tab?: string };
 
 const PAGES: readonly string[] = ["destinations", "attractions", "reservations", "schedule"];
 
 function parse(): Route {
-  const [, page, id] = location.hash.replace(/^#/, "").split("/");
+  const [, page, id, tab] = location.hash.replace(/^#/, "").split("/");
   if (!PAGES.includes(page)) return { page: "destinations" };
-  return { page: page as Page, id: id ? decodeURIComponent(id) : undefined };
+  const dec = (v?: string) => (v ? decodeURIComponent(v) : undefined);
+  return { page: page as Page, id: dec(id), tab: dec(tab) };
 }
 
 export function useRoute(): Route {
@@ -27,4 +28,5 @@ export function useRoute(): Route {
   return route;
 }
 
-export const href = (page: Page, id?: string) => `#/${page}${id ? `/${encodeURIComponent(id)}` : ""}`;
+export const href = (page: Page, id?: string, tab?: string) =>
+  `#/${page}${id ? `/${encodeURIComponent(id)}` : ""}${id && tab ? `/${encodeURIComponent(tab)}` : ""}`;

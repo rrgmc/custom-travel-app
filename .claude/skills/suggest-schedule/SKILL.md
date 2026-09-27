@@ -6,7 +6,7 @@ description: Create or rework the optional day-by-day schedule in trip/trip.yaml
 # Suggest a schedule
 
 Scope: $ARGUMENTS (specific dates, a destination, or "all"; default: the whole trip).
-Only run when the user asked for a schedule (docs/business-rules.md rule 19). Follow rules 19–21.
+Only run when the user asked for a schedule (docs/business-rules.md rule 21). Follow rules 21–23.
 
 1. **Read before planning:** destinations and their dates (the days of the trip come from them; if
    destinations have no dates, ask for the trip dates and how many days per destination), every
@@ -16,8 +16,9 @@ Only run when the user asked for a schedule (docs/business-rules.md rule 19). Fo
 3. **Plan each day:** its `destination`, a short `title`, and 2–3 main `attractions` plus a place
    to eat, in a sensible order and grouped by area. Put `must` attractions early in the stay (so bad
    weather doesn't cost them), respect closed days, keep arrival and departure days light, and
-   build days with timed tickets around them. Use `notes` for travel between destinations and
-   weather swaps. **No times.**
+   build days with timed tickets around them. A day out to a nearby town keeps the place you stay
+   as `destination` and groups that town's attractions (`town`), with the drive in `notes`. Use
+   `notes` for travel between destinations and weather swaps. **No times.**
 4. For a whole-trip schedule or a big change, show a compact day-by-day summary in chat **before**
    writing it. Small edits can be made directly.
 5. Write `schedule` in date order (one entry per day), run `npm run validate`, fix errors, and point
