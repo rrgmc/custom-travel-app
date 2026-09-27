@@ -1,0 +1,223 @@
+# yaml-language-server: $schema=./trip.schema.json
+#
+# SAMPLE TRIP — replace with the real one by running /new-trip in Claude Code.
+# All confirmation codes, names and prices below are made up.
+# Times are wall-clock times at the place where things happen (see docs/data-model.md).
+
+trip:
+  id: sample
+  title: Lisbon long weekend
+  subtitle: Sample trip
+  start: 2026-10-09
+  end: 2026-10-12
+  timezone: Europe/Lisbon
+  language: en
+  currency: EUR
+  travelers:
+    - name: Traveler One
+    - name: Traveler Two
+
+places:
+  - id: lis-airport
+    name: Lisbon Airport (LIS)
+    kind: transport
+    city: Lisbon
+    location: { lat: 38.7742, lng: -9.1342 }
+
+  - id: gru-airport
+    name: São Paulo Guarulhos (GRU)
+    kind: transport
+    city: São Paulo
+    location: { lat: -23.4356, lng: -46.4731 }
+
+  - id: hotel-alfama
+    name: Casa do Largo (sample hotel)
+    kind: lodging
+    city: Lisbon
+    address: Largo do Chafariz de Dentro, Alfama, Lisbon
+    location: { lat: 38.7115, lng: -9.1272 }
+    phone: "+351 210 000 000"
+    notes: Steep street — taxis stop at the bottom of the stairs.
+
+  - id: sao-jorge
+    name: Castelo de São Jorge
+    kind: attraction
+    city: Lisbon
+    location: { lat: 38.7139, lng: -9.1335 }
+    hours: 09:00–21:00 (last entry 20:30)
+    price: About €15 per adult
+    notes: Go early or near sunset; the queue peaks around 11:00.
+
+  - id: tram-28
+    name: Tram 28 (Martim Moniz stop)
+    kind: transport
+    city: Lisbon
+    location: { lat: 38.7160, lng: -9.1360 }
+    notes: Board at the first stop to get a seat. Watch for pickpockets.
+
+  - id: belem-tower
+    name: Torre de Belém
+    kind: attraction
+    city: Lisbon
+    location: { lat: 38.6916, lng: -9.2160 }
+
+  - id: pasteis-belem
+    name: Pastéis de Belém
+    kind: restaurant
+    city: Lisbon
+    location: { lat: 38.6975, lng: -9.2032 }
+    hours: 08:00–23:00
+    notes: The table-service line inside moves much faster than the takeaway line.
+
+  - id: taberna-sample
+    name: Taberna da Esquina (sample restaurant)
+    kind: restaurant
+    city: Lisbon
+    location: { lat: 38.7131, lng: -9.1300 }
+
+  - id: oceanario
+    name: Oceanário de Lisboa
+    kind: attraction
+    city: Lisbon
+    location: { lat: 38.7636, lng: -9.0937 }
+    hours: 10:00–20:00
+    notes: Good rain option.
+
+  - id: sintra
+    name: Sintra (Pena Palace)
+    kind: attraction
+    city: Sintra
+    location: { lat: 38.7876, lng: -9.3906 }
+    notes: Needs a full day. Timed tickets sell out on weekends.
+    wishlist: true
+
+reservations:
+  - id: flight-out
+    type: flight
+    title: GRU → LIS
+    status: confirmed
+    place: gru-airport
+    to: lis-airport
+    start: 2026-10-08T21:40
+    startTimezone: America/Sao_Paulo
+    end: 2026-10-09T11:55
+    endTimezone: Europe/Lisbon
+    provider: Sample Air
+    confirmation: ABC123
+    details:
+      - { label: Flight, value: SA 8120 }
+      - { label: Seats, value: "24A, 24B" }
+      - { label: Baggage, value: 1 × 23 kg each }
+    payment: { status: paid }
+
+  - id: hotel-stay
+    type: lodging
+    title: Casa do Largo
+    status: confirmed
+    place: hotel-alfama
+    start: 2026-10-09T15:00
+    end: 2026-10-12T11:00
+    provider: Booking.com
+    confirmation: "4012 887 551"
+    details:
+      - { label: Room, value: Double with river view }
+      - { label: Breakfast, value: Included }
+    payment:
+      status: at-location
+      amount: "€ 540,00"
+      notes: Tourist tax (€4/person/night) charged separately at check-in.
+    cancellation: Free cancellation until 2026-10-06
+    contact: "+351 210 000 000"
+
+  - id: castle-tickets
+    type: ticket
+    title: Castelo de São Jorge tickets
+    status: confirmed
+    place: sao-jorge
+    start: 2026-10-10T09:30
+    confirmation: CSJ-77821
+    payment: { status: paid, amount: "€ 30,00" }
+
+  - id: dinner-fado
+    type: restaurant
+    title: Dinner with fado
+    status: pending
+    place: taberna-sample
+    start: 2026-10-10T20:30
+    details:
+      - { label: People, value: "2" }
+    notes: Waiting for email confirmation. Call if nothing by Thursday.
+
+  - id: flight-back
+    type: flight
+    title: LIS → GRU
+    status: confirmed
+    place: lis-airport
+    to: gru-airport
+    start: 2026-10-12T13:25
+    startTimezone: Europe/Lisbon
+    end: 2026-10-12T20:50
+    endTimezone: America/Sao_Paulo
+    provider: Sample Air
+    confirmation: ABC123
+    details:
+      - { label: Flight, value: SA 8121 }
+    payment: { status: paid }
+
+days:
+  - date: 2026-10-09
+    title: Arrival
+    base: hotel-alfama
+    items:
+      - { time: "11:55", title: Land in Lisbon, reservation: flight-out }
+      - { time: "13:00", title: Taxi to the hotel, notes: "About 25 min, €15–20." }
+      - { time: "15:00", title: Check in, reservation: hotel-stay }
+      - { time: "17:00", title: Walk around Alfama, optional: true }
+
+  - date: 2026-10-10
+    title: Castle and old town
+    base: hotel-alfama
+    items:
+      - { time: "09:30", end: "11:30", title: Castle visit, reservation: castle-tickets }
+      - { time: "12:00", title: Ride tram 28 to Estrela, place: tram-28 }
+      - { time: "15:00", title: Rest at the hotel, optional: true }
+      - { time: "20:30", title: Dinner with fado, reservation: dinner-fado }
+
+  - date: 2026-10-11
+    title: Belém
+    base: hotel-alfama
+    items:
+      - { time: "09:00", title: Pastéis de Belém breakfast, place: pasteis-belem }
+      - { time: "10:30", title: Torre de Belém, place: belem-tower }
+    alternatives:
+      - title: Rain plan
+        when: If it rains
+        items:
+          - { time: "10:00", title: Oceanário, place: oceanario }
+          - { time: "14:00", title: Lunch at Parque das Nações }
+
+  - date: 2026-10-12
+    title: Departure
+    items:
+      - { time: "10:30", title: Check out, reservation: hotel-stay }
+      - { time: "11:00", title: Taxi to the airport }
+      - { time: "13:25", title: Flight home, reservation: flight-back }
+
+contacts:
+  - name: Emergency (Portugal)
+    phone: "112"
+  - name: Brazilian consulate in Lisbon (sample)
+    role: Consulate
+    phone: "+351 210 000 001"
+
+info:
+  - title: Documents
+    body: |
+      - Passports (valid 3+ months after return)
+      - Travel insurance policy
+      - Printed return ticket
+  - title: Money
+    body: |
+      Cards work almost everywhere. Keep some cash for small cafés and trams.
+
+      Tipping is optional; rounding up is common.

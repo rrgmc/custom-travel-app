@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.DS_Store
+*.log
+
+# Raw booking emails/PDFs dropped for Claude to import. The useful parts are copied into trip/.
+inbox/*
+!inbox/README.md
+
+# Signing keys never go in git
+*.keystore
+*.jks
+
+# Claude Code local settings
+.claude/settings.local.json
