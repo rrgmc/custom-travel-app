@@ -189,11 +189,14 @@ h2 { font-size: 19px; font-weight: 700; margin: 32px 0 12px; }
   display: inline-flex; align-items: center; gap: 3px; font-size: 12px; font-weight: 700;
   border-radius: 99px; padding: 1px 8px; border: 1px solid var(--line); color: var(--muted);
 }
+.len {
+  display: inline-flex; align-items: center; gap: 3px; font-size: 12px; font-weight: 700; color: var(--muted);
+}
 .prio-must { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 .prio-maybe { border-style: dashed; }
 .attraction-maybe strong { color: var(--muted); font-weight: 600; }
 .booked { display: inline-flex; color: var(--accent); }
-.hero-tags { margin: 10px 0 0; }
+.hero-tags { display: flex; gap: 10px; align-items: center; margin: 10px 0 0; }
 .body-text { font-size: 17px; }
 .ticket-icon-sm { width: 32px; height: 32px; border-radius: 8px; }
 .rows li a .pill { margin-left: -4px; }

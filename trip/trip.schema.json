@@ -124,6 +124,10 @@
           "closed": { "type": "string", "description": "Closed days, e.g. 'Mondays'." },
           "price": { "type": "string" },
           "duration": { "type": "string", "description": "How long a visit takes, e.g. '2–3 h'." },
+          "length": {
+            "enum": ["quick", "hours", "half-day", "full-day"],
+            "description": "Visit length at a glance: quick (under 1 h), hours (a few hours), half-day, full-day. Not for restaurants and cafés."
+          },
           "town": { "type": "string", "description": "Town it's in, only when not the destination itself (a nearby town visited from there), e.g. 'Canela'." },
           "travelTime": { "type": "string", "description": "Travel time from where you stay, e.g. '20 min by car'." },
           "booking": { "type": "string", "description": "Whether and how to book ahead." },

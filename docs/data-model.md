@@ -39,8 +39,10 @@ are reserved.
 
 `attractions[]` — what's worth doing or eating at each destination, including nearby towns visited
 from it: `{ id, destination, category, name, priority, description?, tips?, hours?, closed?,
-price?, duration?, town?, travelTime?, booking?, address?, location?, phone?, url? }`. `priority` is
-`must` (must-see), `want` (if there's time) or `maybe`. `town` is set only when it's in another town
+price?, duration?, length?, town?, travelTime?, booking?, address?, location?, phone?, url? }`. `priority` is
+`must` (must-see), `want` (if there's time) or `maybe`. `length` is the visit length at a glance
+(`quick` | `hours` | `half-day` | `full-day`, shown as a tag next to the priority); `duration` is
+the detailed text ("1h–1h30"). `town` is set only when it's in another town
 than the destination; `travelTime` is from where you stay ("20 min by car"). A whole town can be a
 single attraction named after it.
 

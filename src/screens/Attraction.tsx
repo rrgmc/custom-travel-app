@@ -1,4 +1,4 @@
-import type { Priority } from "../types";
+import type { Priority, VisitLength } from "../types";
 import { attractionById, categoryById, destinationById, reservationsForAttraction, schedule, scheduleDaysFor } from "../data";
 import { t } from "../lib/i18n";
 import { href } from "../lib/router";
@@ -13,6 +13,15 @@ export function PriorityTag({ p }: { p: Priority }) {
     <span className={`prio prio-${p}`}>
       {p === "must" && <Icon name="star" size={13} />}
       {t.priority[p]}
+    </span>
+  );
+}
+
+export function LengthTag({ length }: { length: VisitLength }) {
+  return (
+    <span className="len">
+      <Icon name="clock" size={13} />
+      {t.length[length]}
     </span>
   );
 }
@@ -46,7 +55,10 @@ export function AttractionDetail({ id }: { id: string }) {
           {a.town && a.town !== a.name && ` · ${a.town}`}
         </p>
         <h1>{a.name}</h1>
-        <p className="hero-tags"><PriorityTag p={a.priority} /></p>
+        <p className="hero-tags">
+          <PriorityTag p={a.priority} />
+          {a.length && <LengthTag length={a.length} />}
+        </p>
       </section>
 
       {a.description && <div className="body-text"><RichText text={a.description} /></div>}
