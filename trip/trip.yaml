@@ -18,7 +18,6 @@ categories:
   - { id: views, name: Viewpoints }
   - { id: food, name: Restaurants }
   - { id: cafes, name: Cafés & pastries }
-  - { id: day-trips, name: Day trips }
 
 destinations:
   - id: lisbon
@@ -157,7 +156,7 @@ attractions:
 
   - id: cascais
     destination: lisbon
-    category: day-trips
+    category: sights
     name: Cascais
     town: Cascais
     travelTime: 40 min by train from Cais do Sodré

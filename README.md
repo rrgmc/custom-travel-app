@@ -12,7 +12,7 @@ What the app shows:
 - **Destinations** (home): the places you stay, in travel order, with optional dates. During the
   trip, the one you're in is highlighted at the top. With a single place to stay, the app opens
   straight on its page.
-- **Destination**: one tab per category (Things to do, Restaurants, Day trips…) listing its
+- **Destination**: one tab per category (Things to do, Restaurants, Cafés…) listing its
   attractions, including nearby towns visited from there, marked **Must-see**, **If there's time**
   or **Maybe**, with the town and travel time when they're elsewhere; then a **Booked here** tab
   and an **About** tab (intro, map, tips).

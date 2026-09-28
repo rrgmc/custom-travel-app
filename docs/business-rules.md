@@ -75,7 +75,8 @@ doing at each one, and the reservations. A day-by-day schedule exists only if th
     ("20 min by car", "40 min by train"). Always set it for attractions in another town; set it
     for local ones when it helps (a far-off park, a restaurant across town).
 15. **A whole nearby town**: when there's little to do there, propose one attraction for the town
-    (name = the town, usually in a "Day trips" category, `description` covering what to see and
+    (name = the town, in the category that fits it, usually "Things to do", with its `town`;
+    `description` covering what to see and
     eat); when there's a lot, propose its individual sights, each with `town`. Suggest one or the
     other per town and let the user decide.
 

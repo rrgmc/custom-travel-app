@@ -20,7 +20,8 @@ of it (rule 7). Do one destination at a time. Follow docs/business-rules.md, esp
    restaurant per night of the stay (at least 4; rule 13) and a few cafés.
 4. **Choose** what to recommend (rule 9): an honest priority for each (must / if there's time /
    maybe); for each nearby town, one day-trip entry or its individual sights (rule 15); new
-   categories if the destination calls for them (e.g. Beaches, Day trips). If the user asked to
+   categories if the destination calls for them (e.g. Beaches, Wineries; not a separate "Day trips" category: whole-town entries go in the
+   category that fits them). If the user asked to
    review first ($ARGUMENTS or the conversation), show a compact numbered list and add only what
    they keep; accept answers like "all but 4 and 7" or "only the musts".
 5. **Add them** to `attractions` with `destination`, `category`, `priority`, a short
