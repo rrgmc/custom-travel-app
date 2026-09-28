@@ -3,9 +3,19 @@ import { Icon } from "./Icon";
 import { t } from "../lib/i18n";
 import { setMark, useMarks, type MarkKind } from "../lib/marks";
 
-/** The "Done" tag after a done item's name. */
-export function DoneTag() {
-  return <span className="done-tag">{t.done}</span>;
+/**
+ * An item's name, with a "Done" tag after it when it's done. The tag is kept on the same line as the
+ * last word, so a long name never leaves it alone (and oddly indented) on a line of its own.
+ */
+export function NameWithDone({ name, done }: { name: string; done: boolean }) {
+  if (!done) return <>{name}</>;
+  const cut = name.lastIndexOf(" ") + 1;
+  return (
+    <>
+      {name.slice(0, cut)}
+      <span className="nowrap">{name.slice(cut)}<span className="done-tag">{t.done}</span></span>
+    </>
+  );
 }
 
 /** Done and Remove/Restore buttons for an item's own page. */

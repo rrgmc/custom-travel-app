@@ -8,7 +8,7 @@ import { Icon } from "../components/Icon";
 import { RichText } from "../components/Text";
 import { TicketRow } from "../components/Ticket";
 import { PlaceActions } from "../components/Actions";
-import { DoneTag, MarkMenu } from "../components/Marks";
+import { NameWithDone, MarkMenu } from "../components/Marks";
 import { removedLast, useMarks } from "../lib/marks";
 import { KidsTag, LengthTag, PriorityTag, RainTag } from "./Attraction";
 import { DayPlanList } from "./DayPlans";
@@ -158,7 +158,7 @@ function AttractionRow({ a }: { a: Attraction }) {
     <li className={`attraction attraction-${a.priority} markable${mark ? ` is-${mark}` : ""}`}>
       <a href={href("attractions", a.id)}>
         <span className="row-main">
-          <strong>{a.name}{mark === "done" && <DoneTag />}</strong>
+          <strong><NameWithDone name={a.name} done={mark === "done"} /></strong>
           <span className="row-meta">
             <PriorityTag p={a.priority} />
             {a.length && <LengthTag length={a.length} />}
