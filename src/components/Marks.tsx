@@ -3,9 +3,9 @@ import { Icon } from "./Icon";
 import { t } from "../lib/i18n";
 import { setMark, useMarks, type MarkKind } from "../lib/marks";
 
-/** The check in front of a done item's name. */
-export function DoneCheck() {
-  return <span className="done-check" aria-label={t.done}><Icon name="check" size={13} /></span>;
+/** The "Done" tag after a done item's name. */
+export function DoneTag() {
+  return <span className="done-tag">{t.done}</span>;
 }
 
 /** Done and Remove/Restore buttons for an item's own page. */

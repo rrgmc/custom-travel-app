@@ -8,7 +8,7 @@ import { RichText } from "../components/Text";
 import { LengthTag, PriorityTag, RainTag } from "./Attraction";
 import { AskClaudeButton } from "../components/Actions";
 import { planQuestion } from "../lib/prompts";
-import { DoneCheck, MarkButtons, MarkMenu } from "../components/Marks";
+import { DoneTag, MarkButtons, MarkMenu } from "../components/Marks";
 import { removedLast, useMarks } from "../lib/marks";
 
 /** Length, rain and towns of a plan, as one line of tags. */
@@ -42,7 +42,7 @@ export function DayPlanList({ plans }: { plans: DayPlan[] }) {
             <li className={`markable${mark ? ` is-${mark}` : ""}`}>
               <a className="plan-card" href={href("plans", plan.id)}>
                 <span className="row-main">
-                  <strong>{mark === "done" && <DoneCheck />}{plan.title}</strong>
+                  <strong>{plan.title}{mark === "done" && <DoneTag />}</strong>
                   <PlanTags plan={plan} />
                   <span className="chips">
                     {plan.attractions.map((id) => {
@@ -97,7 +97,7 @@ export function DayPlanDetail({ id }: { id: string }) {
             <li key={aid} className={`markable${mark ? ` is-${mark}` : ""}`}>
               <a href={href("attractions", aid)}>
                 <span className="row-main">
-                  <strong>{mark === "done" && <DoneCheck />}{a.name}</strong>
+                  <strong>{a.name}{mark === "done" && <DoneTag />}</strong>
                   {(a.priority === "must" || a.travelTime) && (
                     <span className="row-meta">
                       {a.priority === "must" && <PriorityTag p={a.priority} />}

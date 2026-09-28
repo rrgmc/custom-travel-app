@@ -9,6 +9,9 @@
   --on-accent: #ffffff;
   --signal: #f0a202;     /* here now / today / pending */
   --danger: #b3261e;
+  --done: #2f7d3b;       /* marked done */
+  --on-done: #ffffff;
+  --done-ink: #2f7d3b;
   --radius: 14px;
   --font: "Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, "Roboto Mono", monospace;
@@ -24,6 +27,9 @@
     --line: #2a3a3e;
     --accent: #3fb3ad;
     --on-accent: #06201f;
+    --done: #5cb86a;
+    --on-done: #0b2410;
+    --done-ink: #7fcf8b;
   }
 }
 
@@ -230,20 +236,19 @@ h2 { font-size: 19px; font-weight: 700; margin: 32px 0 12px; }
   background: none; border: 0; border-radius: 50%; color: var(--muted); cursor: pointer;
 }
 .more:active { background: var(--line); }
-.done-check {
-  display: inline-grid; place-items: center; width: 19px; height: 19px; margin-right: 7px; vertical-align: -3px;
-  border-radius: 50%; background: var(--accent);
+.done-tag {
+  display: inline-block; margin-left: 8px; padding: 1px 8px; vertical-align: 2px; border-radius: 99px;
+  font-size: 12px; font-weight: 700; line-height: 1.4; background: var(--done); color: var(--on-done);
 }
-.done-check svg, .rows .done-check svg { color: var(--on-accent); stroke-width: 2.6; }
 .is-removed .row-main { opacity: 0.5; }
 .is-removed strong { text-decoration: line-through; }
 .list-divider {
   padding: 24px 0 6px; border-bottom: 1px solid var(--line);
   font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em;
 }
-.chip-done { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); color: var(--accent); }
+.chip-done { border-color: color-mix(in srgb, var(--done) 55%, var(--line)); color: var(--done-ink); }
 .chip-removed { opacity: 0.5; text-decoration: line-through; }
-.action-on { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.action-on { background: var(--done); border-color: var(--done); color: var(--on-done); }
 .sheet {
   margin: auto auto 0; padding: 0; border: 0; width: 100%; max-width: 640px;
   background: transparent; color: var(--ink);
