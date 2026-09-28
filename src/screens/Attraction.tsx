@@ -1,8 +1,7 @@
 import type { Priority, Rain, VisitLength } from "../types";
-import { attractionById, categoryById, destinationById, reservationsForAttraction, schedule, scheduleDaysFor } from "../data";
+import { attractionById, categoryById, destinationById, plansWithAttraction, reservationsForAttraction } from "../data";
 import { t } from "../lib/i18n";
 import { href } from "../lib/router";
-import { formatDate } from "../lib/time";
 import { Icon } from "../components/Icon";
 import { RichText } from "../components/Text";
 import { Ticket } from "../components/Ticket";
@@ -50,7 +49,7 @@ export function AttractionDetail({ id }: { id: string }) {
   const dest = destinationById.get(a.destination);
   const category = categoryById.get(a.category);
   const tickets = reservationsForAttraction(id);
-  const days = scheduleDaysFor(id);
+  const plans = plansWithAttraction(id);
 
   const facts: [string, string][] = (
     [
@@ -106,16 +105,15 @@ export function AttractionDetail({ id }: { id: string }) {
         </section>
       )}
 
-      {days.length > 0 && (
+      {plans.length > 0 && (
         <section>
-          <h2>{t.inSchedule}</h2>
+          <h2>{t.inPlans}</h2>
           <ul className="rows">
-            {days.map((d) => (
-              <li key={d.date}>
-                <a href={href("schedule", d.date)}>
+            {plans.map((p) => (
+              <li key={p.id}>
+                <a href={href("destinations", p.destination, "plans")}>
                   <span className="row-main">
-                    <strong>{t.day} {schedule.indexOf(d) + 1} · {formatDate(d.date)}</strong>
-                    {d.title && <span className="muted">{d.title}</span>}
+                    <strong>{p.title}</strong>
                   </span>
                   <Icon name="chevron" size={18} />
                 </a>

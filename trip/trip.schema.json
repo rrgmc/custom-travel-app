@@ -218,23 +218,25 @@
         }
       }
     },
-    "schedule": {
+    "dayPlans": {
       "type": "array",
-      "description": "Optional suggested schedule, one entry per day. Only present when the user asked for one.",
+      "description": "Good combinations for a day or half day at a destination: attractions that go well together (same area, one outing), with a short why. Undated: the travelers pick one on the day.",
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["date", "destination"],
+        "required": ["id", "destination", "title", "attractions"],
         "properties": {
-          "date": { "$ref": "#/definitions/date" },
+          "id": { "$ref": "#/definitions/id" },
           "destination": { "$ref": "#/definitions/id" },
-          "title": { "type": "string" },
+          "title": { "type": "string", "minLength": 1 },
+          "length": { "enum": ["half-day", "full-day"] },
           "attractions": {
             "type": "array",
+            "minItems": 1,
             "items": { "$ref": "#/definitions/id" },
-            "description": "Attractions for the day, in suggested order."
+            "description": "In a sensible order, including a place to eat."
           },
-          "notes": { "$ref": "#/definitions/text" }
+          "notes": { "$ref": "#/definitions/text", "description": "Why these go together, the order, and what to check (closed days, weather, booking)." }
         }
       }
     }

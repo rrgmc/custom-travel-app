@@ -18,7 +18,7 @@ Replace it with the user's real trip. $ARGUMENTS may already contain some of the
    - reservations already made (they can drop the confirmations in `inbox/`)
    - optionally an accent color and a 1–2 letter icon
 2. **Reset `trip/trip.yaml`.** Keep the schema comment on the first line. Remove every sample
-   category, destination, attraction, reservation and the `schedule`. Fill in:
+   category, destination, attraction, reservation and day plan. Fill in:
    - `trip:` — derive `trip.id` from the main destination and year (lowercase letters and digits
      only, e.g. `portugal2026`), `trip.timezone` from the first destination, a short `title`.
    - `destinations:` — one entry per place they stay, in order, with `country`, `location`, and
@@ -26,7 +26,7 @@ Replace it with the user's real trip. $ARGUMENTS may already contain some of the
      `summary` and practical `tips` (rule 8 in docs/business-rules.md).
    - `categories:` — a short starting set that fits the trip (rule 10), e.g. Things to do,
      Restaurants. It can grow during research.
-   - `attractions: []` and `reservations: []`. **No `schedule`** (rule 21).
+   - `attractions: []`, `reservations: []` and `dayPlans: []` (research fills in the day plans).
 3. Delete the sample files from `trip/files/` (keep `.gitkeep`).
 4. If there is anything in `inbox/`, continue with the import-booking skill for each file.
 5. Run `npm run build` and `npm run trip:apply`. Fix errors; summarize warnings (empty destinations

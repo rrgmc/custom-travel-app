@@ -22,7 +22,8 @@ What the app shows:
 - **Reservations**: stays, tickets, transport and other bookings as ticket stubs with a big,
   tap-to-copy confirmation code, details, payment status, cancellation deadline and the voucher
   (QR codes readable offline).
-- **Schedule** (only if you ask for one): day by day, the destination and a few attractions, no times.
+- **Day plans** (a tab on each destination): good combinations of attractions for a day or half
+  day, with why they go together and a rain mark, to pick from on the day. No fixed dates.
 
 It's a React web app packaged into an Android APK with [Capacitor](https://capacitorjs.com), so it
 runs fully offline. English and Brazilian Portuguese UI; light and dark mode.
@@ -35,7 +36,7 @@ runs fully offline. English and Brazilian Portuguese UI; light and dark mode.
 4. `/research` each destination: Claude adds the attractions it recommends per category, nearby
    towns included, and you trim the list.
 5. Drop booking confirmations (PDFs, emails, screenshots) into `inbox/` and run `/import-booking`.
-   If you want a day-by-day plan, ask for it with `/suggest-schedule`.
+   Research also builds the day plans; rework them anytime with `/day-plans`.
 6. Push, then tag `v1` (or run `/build-app`). GitHub Actions builds the APK and publishes a Release
    you can download on the phone. Plain pushes don't build, to save Actions minutes (see
    [docs/android-build.md](docs/android-build.md), including one-time signing setup).
@@ -59,9 +60,9 @@ Mark this repository as a template in **Settings → General → Template reposi
 
 ```
 CLAUDE.md                 instructions Claude Code loads automatically
-.claude/skills/           /new-trip, /research, /import-booking, /suggest-schedule, /build-app, /update-base
+.claude/skills/           /new-trip, /research, /import-booking, /day-plans, /build-app, /update-base
 .claude/settings.json     allowed commands + a hook that re-validates trip.yaml after each edit
-docs/business-rules.md    what goes in a trip: destinations, attractions, reservations, schedule
+docs/business-rules.md    what goes in a trip: destinations, attractions, reservations, day plans
 docs/data-model.md        trip.yaml reference
 docs/android-build.md     building, installing, signing
 trip/                     the vacation (the only per-trip folder)

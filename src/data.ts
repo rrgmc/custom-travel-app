@@ -1,9 +1,9 @@
 import raw from "../trip/trip.yaml";
-import type { Trip, Attraction, Category, Destination, Priority, Reservation, ReservationType, ScheduleDay } from "./types";
+import type { Trip, Attraction, Category, Destination, Priority, Reservation, Rain, ReservationType, DayPlan } from "./types";
 
 export const data = raw as unknown as Trip;
 export const trip = data.trip;
-export const schedule: ScheduleDay[] = data.schedule ?? [];
+export const dayPlans: DayPlan[] = data.dayPlans ?? [];
 
 export const categoryById = new Map<string, Category>(data.categories.map((c) => [c.id, c]));
 export const destinationById = new Map<string, Destination>(data.destinations.map((d) => [d.id, d]));
@@ -53,12 +53,6 @@ export const reservationsFor = (destinationId: string) =>
 export const reservationsForAttraction = (attractionId: string) =>
   data.reservations.filter((r) => r.attraction === attractionId).sort(byStart);
 
-/** Reservations starting or ending on a date. */
-export const reservationsOn = (date: string) =>
-  data.reservations
-    .filter((r) => r.status !== "cancelled" && (r.start?.slice(0, 10) === date || r.end?.slice(0, 10) === date))
-    .sort(byStart);
-
 export type ReservationGroup = "stays" | "tickets" | "transport" | "other";
 const GROUP: Record<ReservationType, ReservationGroup> = {
   lodging: "stays", ticket: "tickets",
@@ -69,9 +63,22 @@ export const RESERVATION_GROUPS: ReservationGroup[] = ["stays", "tickets", "tran
 export const reservationsInGroup = (g: ReservationGroup) =>
   data.reservations.filter((r) => r.status !== "cancelled" && GROUP[r.type] === g).sort(byStart);
 
-/** A destination's days in the schedule. */
-export const scheduleFor = (destinationId: string) => schedule.filter((d) => d.destination === destinationId);
+/** A destination's day plans. */
+export const plansFor = (destinationId: string) => dayPlans.filter((p) => p.destination === destinationId);
 
-/** Schedule days that include an attraction. */
-export const scheduleDaysFor = (attractionId: string) =>
-  schedule.filter((d) => d.attractions?.includes(attractionId));
+/** Day plans that include an attraction. */
+export const plansWithAttraction = (attractionId: string) => dayPlans.filter((p) => p.attractions.includes(attractionId));
+
+/**
+ * How a day plan copes with rain, from its attractions (restaurants have no mark): outdoor if any part
+ * is outdoor, partly if any is partly covered, indoor when everything is covered.
+ */
+export function planRain(plan: DayPlan): Rain | undefined {
+  const marks = plan.attractions.map((id) => attractionById.get(id)?.rain).filter((r): r is Rain => !!r);
+  if (!marks.length) return undefined;
+  return marks.includes("outdoor") ? "outdoor" : marks.includes("partly") ? "partly" : "indoor";
+}
+
+/** Towns other than the destination that a plan goes to, e.g. ["Canela"]. */
+export const planTowns = (plan: DayPlan) =>
+  [...new Set(plan.attractions.map((id) => attractionById.get(id)?.town).filter((t): t is string => !!t))];

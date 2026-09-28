@@ -10,7 +10,7 @@ export interface Trip {
   destinations: Destination[];
   attractions: Attraction[];
   reservations: Reservation[];
-  schedule?: ScheduleDay[];
+  dayPlans?: DayPlan[];
 }
 
 export interface TripInfo {
@@ -117,10 +117,12 @@ export interface Reservation {
   notes?: string;
 }
 
-export interface ScheduleDay {
-  date: LocalDate;
+/** A good combination for a day or half day; undated, the travelers pick one on the day. */
+export interface DayPlan {
+  id: Id;
   destination: Id;
-  title?: string;
-  attractions?: Id[];
+  title: string;
+  length?: "half-day" | "full-day";
+  attractions: Id[];
   notes?: string;
 }

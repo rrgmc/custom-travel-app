@@ -86,7 +86,7 @@ function realDate(date) {
 }
 
 // ---------- semantic checks ----------
-const { trip, categories, destinations, attractions, reservations, schedule = [] } = data;
+const { trip, categories, destinations, attractions, reservations, dayPlans = [] } = data;
 
 /** Indexes a list by id, reporting duplicates. */
 function index(list, label) {
@@ -99,7 +99,7 @@ function index(list, label) {
 }
 const categoryById = index(categories, "categories");
 // The destination page uses these as tab names next to the category tabs.
-for (const reserved of ["schedule", "rainy-day", "booked", "about"])
+for (const reserved of ["plans", "rainy-day", "booked", "about"])
   if (categoryById.has(reserved)) err(`categories '${reserved}'`, "this id is reserved; use another one");
 const destById = index(destinations, "destinations");
 const attrById = index(attractions, "attractions");
@@ -188,26 +188,22 @@ for (const d of destinations) {
   if (!stays) warn(`destinations '${d.id}'`, "no stay booked (lodging reservation with this destination)");
 }
 
-// Schedule (optional)
-let prevDate = "";
-const seenDates = new Set();
-schedule.forEach((day, i) => {
-  const where = `schedule[${i}] ${day.date}`;
-  if (!realDate(day.date)) err(where, "not a real date");
-  if (seenDates.has(day.date)) err(where, "duplicate day");
-  seenDates.add(day.date);
-  if (day.date < prevDate) err(where, "days are not in date order");
-  prevDate = day.date;
-  checkRef(where, destById, day.destination, "destination");
-  const dest = destById.get(day.destination);
-  if (dest?.from && (day.date < dest.from || day.date > dest.to))
-    warn(where, `'${dest.id}' is dated ${dest.from} to ${dest.to}`);
-  (day.attractions ?? []).forEach((id) => {
+// Day plans: undated combinations of attractions at a destination
+const planIds = new Set();
+dayPlans.forEach((p, i) => {
+  const where = `dayPlans[${i}] '${p.id}'`;
+  if (planIds.has(p.id)) err(where, "duplicate day plan id");
+  planIds.add(p.id);
+  checkRef(where, destById, p.destination, "destination");
+  p.attractions.forEach((id) => {
     const a = attrById.get(id);
     if (!a) err(where, `attraction '${id}' does not exist`);
-    else if (a.destination !== day.destination) warn(where, `attraction '${id}' is in '${a.destination}', not '${day.destination}'`);
+    else if (a.destination !== p.destination) warn(where, `attraction '${id}' is in '${a.destination}', not '${p.destination}'`);
   });
 });
+for (const d of destinations)
+  if (attractionsPerDest.get(d.id) && !dayPlans.some((p) => p.destination === d.id))
+    warn(`destinations '${d.id}'`, "has attractions but no day plans yet");
 
 report();
 

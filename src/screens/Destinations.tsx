@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import type { Attraction } from "../types";
-import { attractionCount, attractionsByCategory, rainyDayAttractions, scheduleFor, data, destinationById, reservationsFor, trip } from "../data";
+import { attractionCount, attractionsByCategory, rainyDayAttractions, plansFor, data, destinationById, reservationsFor, trip } from "../data";
 import { t } from "../lib/i18n";
 import { href } from "../lib/router";
 import { currentDestination, formatRange } from "../lib/time";
@@ -9,7 +9,7 @@ import { RichText } from "../components/Text";
 import { TicketRow } from "../components/Ticket";
 import { PlaceActions } from "../components/Actions";
 import { KidsTag, LengthTag, PriorityTag, RainTag } from "./Attraction";
-import { ScheduleDays } from "./Schedule";
+import { DayPlanList } from "./DayPlans";
 
 const datesOf = (d: { from?: string; to?: string }) => (d.from && d.to ? formatRange(d.from, d.to) : "");
 
@@ -53,7 +53,7 @@ export function DestinationsList() {
 }
 
 /** Tabs after the category tabs. Category ids can't use these names (the validator checks). */
-export const SECTION_TABS = ["schedule", "rainy-day", "booked", "about"] as const;
+export const SECTION_TABS = ["plans", "rainy-day", "booked", "about"] as const;
 
 export function DestinationDetail({ id, tab }: { id: string; tab?: string }) {
   const d = destinationById.get(id);
@@ -61,12 +61,12 @@ export function DestinationDetail({ id, tab }: { id: string; tab?: string }) {
 
   const groups = attractionsByCategory(id);
   const rainy = rainyDayAttractions(id);
-  const days = scheduleFor(id);
+  const plans = plansFor(id);
   const booked = reservationsFor(id);
   const hasAbout = !!(d.summary || d.tips || d.location);
   const tabs: { key: string; label: string }[] = [
     ...groups.map((g) => ({ key: g.category.id, label: g.category.name })),
-    ...(days.length ? [{ key: "schedule", label: t.schedule }] : []),
+    ...(plans.length ? [{ key: "plans", label: t.plans }] : []),
     ...(rainy.length ? [{ key: "rainy-day", label: t.rainyDay }] : []),
     ...(booked.length ? [{ key: "booked", label: t.bookedHere }] : []),
     ...(hasAbout ? [{ key: "about", label: t.about }] : []),
@@ -88,7 +88,7 @@ export function DestinationDetail({ id, tab }: { id: string; tab?: string }) {
 
       {group && <ul className="rows">{group.items.map((a) => <AttractionRow key={a.id} a={a} />)}</ul>}
 
-      {current === "schedule" && <ScheduleDays days={days} />}
+      {current === "plans" && <DayPlanList plans={plans} />}
 
       {current === "rainy-day" && <ul className="rows">{rainy.map((a) => <AttractionRow key={a.id} a={a} />)}</ul>}
 

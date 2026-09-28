@@ -5,7 +5,8 @@ and that repo builds one Android app for that trip: a **loose trip guide**. It l
 destinations, which are the **places you stay**; each destination has its attractions (things to
 do, restaurants, nearby towns visited from there…) in one tab per category, marked must-see / if
 there's time / maybe, with the town and travel time when they're elsewhere; reservations (stays, tickets,
-transport) have their own area; and, only if the user asks, a day-by-day schedule without times.
+transport) have their own area; and each destination has a few undated **day plans**: attractions
+that go well together in one outing, to pick from on the day.
 The app works fully offline.
 
 The core idea: **the app is generic, the trip is data.** Everything specific to a vacation lives in
@@ -29,8 +30,7 @@ docs/                   ← rules and references (imported below)
 - `npm run validate` — check trip.yaml. Run after every change to trip data and fix all errors.
   Report warnings to the user; don't silence them by deleting data.
 - `npm run dev` — web preview. Add `?now=2026-10-10T10:00` to the URL to simulate a moment during the
-  trip (it picks the "you're here now" destination and today's schedule day; it sticks for the
-  browser session).
+  trip (it picks the "you're here now" destination; it sticks for the browser session).
 - `npm run build` — validate + icons + typecheck + production build into `dist/`.
 - `npm run android:sync` — build, copy into `android/`, apply the trip's app id/name/icon.
 - `npm run android:apk` — the above plus a debug APK (needs a local Android SDK). Otherwise CI builds it, only on a `v*` tag or a manual run.
@@ -40,7 +40,7 @@ docs/                   ← rules and references (imported below)
 - `/new-trip` — start a new vacation from the template (replaces the sample trip).
 - `/research` — add recommended attractions for a destination with details; the user trims the list.
 - `/import-booking` — turn confirmations in `inbox/` (or pasted text) into reservations and attachments.
-- `/suggest-schedule` — the optional day-by-day schedule (destination + attractions, no times). Only when asked.
+- `/day-plans` — create or rework a destination's day plans (combinations of attractions for a day, undated).
 - `/build-app` — produce the APK (locally or via GitHub Actions) and explain how to install it.
 - `/update-base` — pull app improvements from the template into a trip repo without touching `trip/`.
 
@@ -69,6 +69,6 @@ docs/                   ← rules and references (imported below)
   so each trip installs as a separate app. Don't hand-edit applicationId, app name or icons; run
   `npm run trip:apply`. Never change the Java `namespace` (`io.github.rrgmc.travel`).
 - Before finishing any change: `npm run build` must pass. For UI changes, check the affected screens
-  with `?now=` set before and during the trip, in light and dark mode, with and without a
-  `schedule`, and with one and several destinations (one destination opens straight on its page).
+  with `?now=` set before and during the trip, in light and dark mode, with and without day plans,
+  and with one and several destinations (one destination opens straight on its page).
 - Never commit `inbox/`, `dist/`, keystores or anything in `.gitignore`.

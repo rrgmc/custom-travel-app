@@ -32,7 +32,8 @@ of it (rule 7). Do one destination at a time. Follow docs/business-rules.md, esp
    `address`), `url`. Researched facts carry "(checked <Month Year>)". Add any new categories to
    `categories`.
 6. Keep attractions of the same destination together in the file, grouped by category.
+   Then build the destination's **day plans** (rules 21–22; the day-plans skill has the details).
 7. Run `npm run validate`, fix errors, and give the user a compact numbered summary per category
-   (name, priority, town and travel time) so they can trim it in one reply. Also say what you
+   (name, priority, town and travel time) and the day plans, so they can trim it in one reply. Also say what you
    weren't sure of (hours you couldn't confirm, places that need booking ahead, seasonal closures
    around the trip dates).

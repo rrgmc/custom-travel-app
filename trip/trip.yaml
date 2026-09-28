@@ -423,49 +423,69 @@ reservations:
       - { label: Flight, value: SA 8133 }
     payment: { status: paid }
 
-# Optional. Only when the user asks for a suggested schedule (/suggest-schedule).
-schedule:
-  - date: 2026-10-09
-    destination: lisbon
-    title: Arrival
-    attractions: [senhora-monte]
-    notes: Long flight — keep it light. Sunset at the viewpoint if there's energy left.
-
-  - date: 2026-10-10
+# Good combinations for a day or half day; the travelers pick one on the day.
+dayPlans:
+  - id: castle-alfama
     destination: lisbon
     title: Castle and Alfama
-    attractions: [sao-jorge, tram-28, taberna-sample]
+    length: full-day
+    attractions: [sao-jorge, tram-28, senhora-monte, taberna-sample]
+    notes: |
+      All in the old town on the hill. Castle early, before the queue; tram 28 from Martim Moniz;
+      sunset at the viewpoint, then fado dinner.
 
-  - date: 2026-10-11
+  - id: belem
     destination: lisbon
     title: Belém
+    length: half-day
     attractions: [jeronimos, pasteis-belem, belem-tower]
-    notes: If it rains, swap for the Oceanário.
+    notes: Monuments side by side by the river, 20 min by tram 15E. The monastery closes on Mondays.
 
-  - date: 2026-10-12
+  - id: lisbon-rain
+    destination: lisbon
+    title: Rainy day
+    length: half-day
+    attractions: [oceanario, jeronimos]
+    notes: Both covered. The Oceanário is in Parque das Nações; take the metro.
+
+  - id: cascais-day
+    destination: lisbon
+    title: Cascais by the sea
+    length: half-day
+    attractions: [cascais]
+    notes: Train from Cais do Sodré along the coast. Best on a sunny day.
+
+  - id: pena-moors
     destination: sintra
-    title: Pena
-    attractions: [pena-palace, piriquita]
-    notes: Morning train from Lisbon Rossio, drop the bags, then up to Pena.
+    title: Pena and the Moorish castle
+    length: full-day
+    attractions: [pena-palace, moorish-castle, piriquita]
+    notes: Both on the same hill; take the 434 bus up. Pena needs a timed ticket.
 
-  - date: 2026-10-13
+  - id: regaleira
     destination: sintra
-    title: Regaleira, then Porto
-    attractions: [quinta-regaleira]
-    notes: Back to Lisbon after lunch for the afternoon train.
+    title: Regaleira and the village
+    length: half-day
+    attractions: [quinta-regaleira, piriquita]
+    notes: A short walk from the center. Arrive at opening for the well.
 
-  - date: 2026-10-14
+  - id: river-port
     destination: porto
     title: River and port wine
+    length: full-day
     attractions: [ribeira, port-cellars, serra-pilar]
+    notes: Walk down to Ribeira, cross the bridge to Gaia for a cellar tour, sunset at Serra do Pilar.
 
-  - date: 2026-10-15
+  - id: porto-center
     destination: porto
     title: Center
+    length: half-day
     attractions: [livraria-lello, francesinha-sample]
-    notes: Or the Douro Valley day trip instead.
+    notes: Lello needs an online ticket; lunch nearby.
 
-  - date: 2026-10-16
+  - id: douro
     destination: porto
-    title: Flight home
-    notes: Leave for the airport by 09:00.
+    title: Douro Valley
+    length: full-day
+    attractions: [douro-valley]
+    notes: Organized tour from the center, or drive. Book a day or two ahead.

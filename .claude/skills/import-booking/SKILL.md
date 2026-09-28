@@ -28,8 +28,8 @@ For each booking:
    boarding pass), copy it to `trip/files/<reservation-id>.pdf` and generate a PNG `preview` of the
    page with the code (`pdftoppm -png -r 150 -f N -l N ...`). Otherwise don't attach it.
 6. **Dates.** If the booking contradicts a destination's dates (a hotel in Porto from the 13th but
-   Porto starts on the 14th), point it out and offer to adjust the destination dates. If there's a
-   `schedule` and the booking conflicts with it, tell the user what may need replanning.
+   Porto starts on the 14th), point it out and offer to adjust the destination dates. If a timed
+   booking changes what goes together, update the affected day plans (rule 23).
 7. Leave the source file in `inbox/` (it's never committed). Run `npm run validate`.
 
 Finish with a short summary per booking: what was added or changed, anything the document didn't

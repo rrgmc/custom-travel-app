@@ -1,7 +1,7 @@
 import { trip } from "../data";
 
 const en = {
-  destinations: "Destinations", reservations: "Reservations", schedule: "Schedule",
+  destinations: "Destinations", reservations: "Reservations", plans: "Day plans",
   hereNow: "You're here now",
   attractionsCount: (n: number) => (n === 1 ? "1 attraction" : `${n} attractions`),
   noAttractions: "No attractions yet.",
@@ -16,8 +16,7 @@ const en = {
   groups: { stays: "Stays", tickets: "Tickets", transport: "Transport", other: "Other" },
   noReservations: "No reservations yet.",
   hours: "Hours", closed: "Closed", price: "Price", duration: "Time needed", travelTime: "Getting there", booking: "Booking", address: "Address",
-  inSchedule: "In the schedule",
-  day: "Day",
+  inPlans: "In day plans",
   map: "Map", directions: "Directions", call: "Call", website: "Website",
   copy: "Copy", copied: "Copied",
   confirmation: "Confirmation",
@@ -36,7 +35,7 @@ const en = {
 };
 
 const ptBR: typeof en = {
-  destinations: "Destinos", reservations: "Reservas", schedule: "Roteiro",
+  destinations: "Destinos", reservations: "Reservas", plans: "Roteiros",
   hereNow: "Você está aqui agora",
   attractionsCount: (n: number) => (n === 1 ? "1 atração" : `${n} atrações`),
   noAttractions: "Nenhuma atração ainda.",
@@ -51,8 +50,7 @@ const ptBR: typeof en = {
   groups: { stays: "Hospedagem", tickets: "Ingressos", transport: "Transporte", other: "Outras" },
   noReservations: "Nenhuma reserva ainda.",
   hours: "Horário", closed: "Fechado", price: "Preço", duration: "Tempo de visita", travelTime: "Como chegar", booking: "Reserva", address: "Endereço",
-  inSchedule: "No roteiro",
-  day: "Dia",
+  inPlans: "Nos roteiros",
   map: "Mapa", directions: "Rotas", call: "Ligar", website: "Site",
   copy: "Copiar", copied: "Copiado",
   confirmation: "Confirmação",

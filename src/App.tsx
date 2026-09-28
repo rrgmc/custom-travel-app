@@ -1,15 +1,13 @@
-import { schedule, singleDestination, trip } from "./data";
+import { singleDestination, trip } from "./data";
 import { t } from "./lib/i18n";
 import { href, useRoute, type Page } from "./lib/router";
 import { Icon } from "./components/Icon";
 import { DestinationDetail, DestinationsList } from "./screens/Destinations";
 import { AttractionDetail } from "./screens/Attraction";
 import { ReservationDetail, ReservationsList } from "./screens/Reservations";
-import { ScheduleScreen } from "./screens/Schedule";
 
-type Tab = "destinations" | "reservations" | "schedule";
-// The Schedule tab only exists when the trip has one.
-const TABS: Tab[] = schedule.length ? ["destinations", "reservations", "schedule"] : ["destinations", "reservations"];
+type Tab = "destinations" | "reservations";
+const TABS: Tab[] = ["destinations", "reservations"];
 const tabOf = (page: Page): Tab => (page === "attractions" ? "destinations" : page);
 
 export function App() {
@@ -18,7 +16,6 @@ export function App() {
   switch (route.page) {
     case "attractions": screen = <AttractionDetail key={route.id} id={route.id ?? ""} />; break;
     case "reservations": screen = route.id ? <ReservationDetail key={route.id} id={route.id} /> : <ReservationsList />; break;
-    case "schedule": screen = <ScheduleScreen date={route.id} />; break;
     default:
       // With a single place to stay, its page is the home screen instead of a one-item list.
       screen = route.id || singleDestination
@@ -26,7 +23,7 @@ export function App() {
         : <DestinationsList />;
   }
   const isHome = route.page === "destinations" && (!route.id || route.id === singleDestination?.id);
-  const isDetail = !!route.id && route.page !== "schedule" && !isHome;
+  const isDetail = !!route.id && !isHome;
   return (
     <div className="app">
       <header className="topbar">

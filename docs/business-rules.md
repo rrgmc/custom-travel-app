@@ -4,7 +4,8 @@ These govern what goes into a trip. `scripts/validate.mjs` enforces the mechanic
 are judgment calls Claude is expected to follow.
 
 The app is a **loose trip guide**, not an hour-by-hour plan: a list of destinations, what's worth
-doing at each one, and the reservations. A day-by-day schedule exists only if the user asks for one.
+doing at each one, the reservations, and a few **day plans**: good combinations of attractions for a
+day, to pick from on the day. There is no dated schedule.
 
 ## Truth and sources
 
@@ -49,7 +50,7 @@ doing at each one, and the reservations. A day-by-day schedule exists only if th
    everything is not a license to pad the list.
    **List every good option**: for things to do, include as many *good* attractions as the place
    offers, with no fixed cap; about two per day of the stay (at least 5) is the minimum. The
-   travelers pick on the spot by mood and weather, and a schedule uses only some of them. Skip
+   travelers pick on the spot by mood and weather, and the day plans use only some of them. Skip
    only what's closed, poorly reviewed or clearly not worth the time. Don't leave out well-known,
    popular attractions because they seem aimed at someone else (adults-only feel, "touristy"):
    add them with an honest priority, usually `maybe`, and say why in `tips`.
@@ -98,15 +99,19 @@ doing at each one, and the reservations. A day-by-day schedule exists only if th
     (`pdftoppm -png -r 150 -f N -l N in.pdf trip/files/<id>`), so it shows instantly offline.
     Keep each file under ~2 MB.
 
-## Schedule (only when asked)
+## Day plans (always, with research)
 
-21. Never create `schedule` unless the user asks for it. It's a suggestion, one entry per day:
-    the destination and a few attractions in a sensible order. **No times.**
-22. Be realistic: 2–3 main attractions a day plus a meal, grouped by area. Put `must` attractions
-    first in the trip's days, respect `closed` days, and keep arrival and departure days light.
-    Days with fixed reservations (timed tickets, trains) are planned around them.
-23. Use `notes` for what the list can't say: "Afternoon train to Porto", "If it rains, swap for the
-    Oceanário".
+21. Each destination gets **day plans**: undated combinations of attractions that go well together
+    in one outing (same area or road, one drive), each with a `title`, a `length` (`half-day` or
+    `full-day`) and `notes` saying in a line or two why they go together, the order, and what to
+    check (closed days, weather, booking). No dates and no times: the travelers pick a plan on the
+    day. The app shows each plan's rain mark from its attractions.
+22. Make as many as the list supports, usually 5–10 per destination: cover every `must`, each
+    nearby town, and include at least one **rainy-day** plan (covered attractions). Be realistic:
+    2–3 main attractions plus a place to eat; lighter with young children. Plans may share
+    attractions and don't need to cover the whole list.
+23. When a new attraction, a closure or a booking changes what goes together (a timed ticket, a day
+    it's closed), update the affected plans.
 
 ## Writing
 
