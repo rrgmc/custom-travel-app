@@ -109,7 +109,21 @@ day, to pick from on the day. There is no dated schedule.
 22. Make as many as the list supports, usually 5–10 per destination: cover every `must`, each
     nearby town, and include at least one **rainy-day** plan (covered attractions). Be realistic:
     2–3 main attractions plus a place to eat; lighter with young children. Plans may share
-    attractions and don't need to cover the whole list.
+    attractions and don't need to cover the whole list. Kinds of plan that usually belong:
+    - **the center on foot**: park once and walk, with a meal there;
+    - **one per road or nearby town**: everything along the same drive, in driving order;
+    - **near where you stay**: half-day plans a few minutes away, for a slow morning or a tired
+      afternoon;
+    - **rainy day**: only `indoor`/`partly` attractions, plus a long covered meal;
+    - **an evening**: a show, light show, event or themed dinner, when the place has them;
+    - with children, **kid-first plans** built around a park or themed attraction and a
+      `kidFriendly` meal.
+    Put each plan's meal where the plan is (lunch on the way, dinner at the end), and prefer
+    `kidFriendly` places when the trip has children.
+    Plan `notes` always say what can break the plan: closed days of its attractions, booking lead
+    time (timed tickets, "buy 48 h ahead", "arrive by 11:30"), weather or fog checks (webcams),
+    and age or height limits that matter. Titles are short and say where or what ("Caminho do
+    Caracol", "Chocolate e magia").
 23. When a new attraction, a closure or a booking changes what goes together (a timed ticket, a day
     it's closed), update the affected plans.
 

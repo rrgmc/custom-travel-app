@@ -12,13 +12,14 @@ docs/business-rules.md rules 21–23. There are no dates or times: the travelers
    `closed`, food places with `kidFriendly`), `trip.travelers`, its reservations (timed tickets are
    fixed points) and any existing plans (keep what still works).
 2. **Group by outing:** attractions on the same road or in the same area, reachable in one drive
-   (e.g. the Caracol road in Canela; the downtown walk; a nearby town). Each plan: 2–3 main
+   (e.g. a road with several sights; the downtown walk; a nearby town). Each plan: 2–3 main
    attractions plus a place to eat nearby, in a sensible order. Lighter with young children.
-3. **Cover:** every `must` in at least one plan, each nearby town, and at least one rainy-day plan
-   made of `indoor`/`partly` attractions. Usually 5–10 plans per destination; plans may share
+3. **Cover** (rule 22): every `must` in at least one plan, each nearby town, and the usual kinds:
+   the center on foot, one per road or town, near where you stay, rainy day, an evening, and
+   kid-first plans when there are children. Usually 5–10 plans per destination; plans may share
    attractions and don't need to cover the whole list.
-4. **Write** each plan with `id`, `destination`, a short `title` ("Caminho do Caracol"), `length`
+4. **Write** each plan with `id`, `destination`, a short `title` that says where or what, `length`
    (`half-day` or `full-day`), `attractions` in order, and `notes`: one or two lines on why they go
-   together and what to check (closed days, webcam/fog, booking, child limits).
+   together, then what can break it (closed days, booking lead time, weather or fog, child limits).
 5. Run `npm run validate`, fix errors, and list the plans for the user in a compact form (title,
    length, attractions) so they can adjust them in one reply.
