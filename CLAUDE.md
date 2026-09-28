@@ -53,7 +53,9 @@ docs/                   ← rules and references (imported below)
 
 - **Offline only.** The app must never need the network: no fetch to remote APIs, no CDNs, no remote
   fonts, images or map tiles. Fonts come from `@fontsource/*` packages. Things that genuinely need
-  another app (maps, phone calls, websites, PDFs) go through `src/lib/native.ts`.
+  another app (maps, phone calls, websites, PDFs, "Ask Claude") go through `src/lib/native.ts`.
+  "Ask Claude" shares a question built by `src/lib/prompts.ts` to the Claude app through Android's
+  share system (native plugin `android/.../AskClaudePlugin.java`); no link can pre-fill a Claude chat.
 - **Generic code, data-driven behavior.** If a trip needs something the app can't show, add a generic
   feature: update `trip/trip.schema.json`, `src/types.ts`, `scripts/validate.mjs`, `docs/data-model.md`
   and the sample in the template, in the same change. Never special-case a trip in `src/`.

@@ -1,6 +1,6 @@
 import { Icon } from "./Icon";
 import { t } from "../lib/i18n";
-import { openExternal, mapUrl, directionsUrl, telUrl, type Mappable } from "../lib/native";
+import { askClaude, openExternal, mapUrl, directionsUrl, telUrl, type Mappable } from "../lib/native";
 
 export function ActionButton({ icon, label, onClick }: { icon: string; label: string; onClick: () => void }) {
   return (
@@ -8,6 +8,15 @@ export function ActionButton({ icon, label, onClick }: { icon: string; label: st
       <Icon name={icon} size={18} />
       <span>{label}</span>
     </button>
+  );
+}
+
+/** "Ask Claude" about an item: the question is built by the caller (src/lib/prompts.ts). */
+export function AskClaudeButton({ question }: { question: () => string }) {
+  return (
+    <div className="actions">
+      <ActionButton icon="chat" label={t.askClaude} onClick={() => askClaude(question(), { title: t.askClaude, copied: t.askClaudeCopied })} />
+    </div>
   );
 }
 

@@ -5,6 +5,8 @@ import { href } from "../lib/router";
 import { Icon } from "../components/Icon";
 import { RichText } from "../components/Text";
 import { LengthTag, PriorityTag, RainTag } from "./Attraction";
+import { AskClaudeButton } from "../components/Actions";
+import { planQuestion } from "../lib/prompts";
 
 /** Length, rain and towns of a plan, as one line of tags. */
 function PlanTags({ plan }: { plan: DayPlan }) {
@@ -65,6 +67,7 @@ export function DayPlanDetail({ id }: { id: string }) {
         <p className="hero-tags"><PlanTags plan={plan} /></p>
       </section>
       {plan.notes && <div className="note"><RichText text={plan.notes} /></div>}
+      <AskClaudeButton question={() => planQuestion(plan)} />
       <ul className="rows">
         {plan.attractions.map((aid) => {
           const a = attractionById.get(aid);

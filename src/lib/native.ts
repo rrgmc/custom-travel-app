@@ -1,4 +1,4 @@
-import { Capacitor } from "@capacitor/core";
+import { Capacitor, registerPlugin } from "@capacitor/core";
 import { App } from "@capacitor/app";
 import { AppLauncher } from "@capacitor/app-launcher";
 import { Clipboard } from "@capacitor/clipboard";
@@ -27,6 +27,26 @@ export function handleBackButton() {
     if (canGoBack) history.back();
     else App.exitApp();
   });
+}
+
+/** App-local plugin (android/.../AskClaudePlugin.java): shares text to the Claude app. */
+const AskClaude = registerPlugin<{ share(o: { text: string; title?: string }): Promise<{ target: string }> }>("AskClaude");
+
+/**
+ * Sends a question to Claude. On Android it goes straight to the Claude app as shared text (a new
+ * chat with the question ready), or to the share sheet if Claude isn't installed. Elsewhere it copies
+ * the question and opens claude.ai, since no link can pre-fill a regular Claude chat.
+ */
+export async function askClaude(text: string, messages: { title: string; copied: string }) {
+  if (isNative) {
+    try {
+      await AskClaude.share({ text, title: messages.title });
+      return;
+    } catch { /* fall back to copy + web */ }
+  }
+  try { await copyText(text); } catch { /* the page may not allow clipboard access */ }
+  alert(messages.copied);
+  window.open("https://claude.ai/new", "_blank", "noopener");
 }
 
 /** Opens a URL in the right app (Maps, dialer, browser). */

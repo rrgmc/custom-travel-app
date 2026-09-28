@@ -5,7 +5,8 @@ import { href } from "../lib/router";
 import { Icon } from "../components/Icon";
 import { RichText } from "../components/Text";
 import { Ticket } from "../components/Ticket";
-import { PlaceActions } from "../components/Actions";
+import { AskClaudeButton, PlaceActions } from "../components/Actions";
+import { attractionQuestion } from "../lib/prompts";
 
 export function PriorityTag({ p }: { p: Priority }) {
   return (
@@ -97,6 +98,7 @@ export function AttractionDetail({ id }: { id: string }) {
         </dl>
       )}
       {a.tips && <div className="note"><RichText text={a.tips} /></div>}
+      <AskClaudeButton question={() => attractionQuestion(a)} />
 
       {tickets.length > 0 && (
         <section>

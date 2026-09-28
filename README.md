@@ -18,7 +18,8 @@ What the app shows:
   and an **About** tab (intro, map, tips).
 - **Attraction**: description, tips, hours, closed days, price, time needed, travel time from where
   you stay, whether to book ahead, one-tap map, directions, call and website, and its ticket if
-  booked.
+  booked, and an **Ask Claude** button that opens the Claude app with a question about it (with
+  the trip's context: where you stay, dates, who's traveling). Day plans have one too.
 - **Reservations**: stays, tickets, transport and other bookings as ticket stubs with a big,
   tap-to-copy confirmation code, details, payment status, cancellation deadline and the voucher
   (QR codes readable offline).
