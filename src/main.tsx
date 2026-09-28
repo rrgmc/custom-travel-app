@@ -7,11 +7,13 @@ import "@fontsource/ibm-plex-mono/500.css";
 import "./styles.css";
 import { App } from "./App";
 import { trip } from "./data";
-import { isNative } from "./lib/native";
+import { handleBackButton, isNative } from "./lib/native";
 
 document.title = trip.title;
 document.documentElement.lang = trip.language;
 if (trip.accent) document.documentElement.style.setProperty("--accent", trip.accent);
+
+handleBackButton();
 
 // Offline support for the web/PWA version. The native app already has every file locally.
 if (!isNative && import.meta.env.PROD) {

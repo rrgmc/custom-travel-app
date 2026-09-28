@@ -1,4 +1,5 @@
 import { Capacitor } from "@capacitor/core";
+import { App } from "@capacitor/app";
 import { AppLauncher } from "@capacitor/app-launcher";
 import { Clipboard } from "@capacitor/clipboard";
 import { Filesystem, Directory } from "@capacitor/filesystem";
@@ -15,6 +16,18 @@ export interface Mappable {
 }
 
 export const isNative = Capacitor.isNativePlatform();
+
+/**
+ * Android's Back key: step back through the app's screens (they are hash routes, so they're in the
+ * WebView history) and leave the app only from the first one. Without this, Back closes the app.
+ */
+export function handleBackButton() {
+  if (!isNative) return;
+  App.addListener("backButton", ({ canGoBack }) => {
+    if (canGoBack) history.back();
+    else App.exitApp();
+  });
+}
 
 /** Opens a URL in the right app (Maps, dialer, browser). */
 export async function openExternal(url: string) {
