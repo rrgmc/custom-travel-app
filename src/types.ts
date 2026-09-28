@@ -22,6 +22,7 @@ export interface TripInfo {
   currency?: string;
   accent?: string;
   icon?: string;
+  travelers?: string;
 }
 
 export interface Category {

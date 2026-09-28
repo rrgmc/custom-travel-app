@@ -13,6 +13,7 @@ Replace it with the user's real trip. $ARGUMENTS may already contain some of the
    - where they'll stay: each place with a hotel, in travel order, with dates if known
      (a destination is a place you stay, rule 7)
    - nearby towns they plan to visit from there, and how they'll get around (car, tours…)
+   - who's traveling: children and their ages, anyone with mobility needs (goes in `trip.travelers`)
    - language for the app text (`en` or `pt-BR`)
    - reservations already made (they can drop the confirmations in `inbox/`)
    - optionally an accent color and a 1–2 letter icon

@@ -52,9 +52,13 @@ doing at each one, and the reservations. A day-by-day schedule exists only if th
     live in `categories`, in display order.
 11. **Priority is required**: `must` (must-see, would regret missing), `want` (if there's time),
     `maybe` (only if it fits or for a rainy day). Be selective with `must`; a few per destination.
+    Priorities reflect **who's traveling** (`trip.travelers`): with young children, kid-friendly
+    places rise, and long hikes, late dinners and fragile or adults-only places drop.
 12. Each attraction gets a `description` (what it is, why go) and, when useful: `tips`, `hours`,
     `closed`, `price`, `duration` (how long a visit takes), `booking` (whether to book ahead and how),
     and `location` so the map buttons work. Add `address` if coordinates aren't certain.
+    With children, `price` includes the child price for their age and `tips` any age or height
+    limits (rides, platforms) and what's hard for them (long staircases, cold, late hours).
 13. Restaurants and cafés are attractions too, in their own categories.
     Every other attraction gets a `length`, the visit length at a glance: `quick` (under 1 h),
     `hours` (a few hours), `half-day` or `full-day`, counting the visit itself, not the drive.

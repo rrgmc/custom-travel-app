@@ -11,6 +11,7 @@ trip:
   timezone: Europe/Lisbon
   language: en
   currency: EUR
+  travelers: 2 adults
 
 categories:
   - { id: sights, name: Things to do }

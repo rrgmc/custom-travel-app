@@ -13,6 +13,8 @@ Only run when the user asked for a schedule (docs/business-rules.md rule 21). Fo
    attraction with its priority and `closed` days, and all reservations — timed tickets, trains and
    check-in/out are fixed points.
 2. **Ask once, briefly, only if unknown:** pace (relaxed or full days), whether there's a car.
+   With young children (`trip.travelers`), plan fewer and shorter stops, a rest or playground
+   break, and early dinners.
 3. **Plan each day:** its `destination`, a short `title`, and 2–3 main `attractions` plus a place
    to eat, in a sensible order and grouped by area. Put `must` attractions early in the stay (so bad
    weather doesn't cost them), respect closed days, keep arrival and departure days light, and

@@ -9,10 +9,11 @@ Scope: $ARGUMENTS (destination names or ids; default: destinations with no attra
 A destination is a place the user stays; nearby towns they visit from there are researched as part
 of it (rule 7). Do one destination at a time. Follow docs/business-rules.md, especially rules 2 and 9–15.
 
-1. **Read first:** the destination's entry, its existing attractions (don't propose duplicates),
+1. **Read first:** `trip.travelers` (children's ages shape priorities, prices and tips, rules 11–12),
+   the destination's entry, its existing attractions (don't propose duplicates),
    the trip's `categories`, and its reservations (booked tickets are already decided).
 2. **Ask once, briefly, only if unknown:** interests (history, food, nature, nightlife…), pace,
-   who's traveling (kids? mobility?), budget level, how they get around (car, public transport,
+   who's traveling if `trip.travelers` is missing (kids' ages? mobility?), budget level, how they get around (car, public transport,
    tours) and which nearby towns they plan to visit. Skip what the conversation already answered.
 3. **Research** on the web. For each category, gather candidates worth the user's time, favoring
    variety over quantity: roughly 5–10 things to do and 3–6 places to eat per city, fewer for
