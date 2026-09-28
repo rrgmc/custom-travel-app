@@ -124,7 +124,9 @@ function TabRow({ tabs, current, onSelect }: { tabs: { key: string; label: strin
   return (
     <div className="segmented tabs" role="tablist" ref={row}>
       {tabs.map((x) => (
-        <button key={x.key} role="tab" aria-selected={x.key === current} onClick={() => onSelect(x.key)}>
+        // Section tabs (day plans, rainy day, booked, about) are tinted apart from the category tabs.
+        <button key={x.key} role="tab" aria-selected={x.key === current} onClick={() => onSelect(x.key)}
+          className={(SECTION_TABS as readonly string[]).includes(x.key) ? "tab-section" : undefined}>
           {x.label}
         </button>
       ))}

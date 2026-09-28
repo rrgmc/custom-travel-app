@@ -187,6 +187,11 @@ h2 { font-size: 19px; font-weight: 700; margin: 32px 0 12px; }
 .tabs::-webkit-scrollbar { display: none; }
 .hero-tight { margin-bottom: 16px; }
 .segmented button[aria-selected="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+/* Section tabs (Day plans, Rainy day, Booked, About): a light accent tint marks them as the app's own. */
+.segmented .tab-section:not([aria-selected="true"]) {
+  background: color-mix(in srgb, var(--accent) 13%, var(--surface));
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+}
 
 /* Destinations */
 .here-card {
