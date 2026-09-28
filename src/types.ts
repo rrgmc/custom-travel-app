@@ -49,6 +49,7 @@ export interface Destination {
 
 export type Priority = "must" | "want" | "maybe";
 export type VisitLength = "quick" | "hours" | "half-day" | "full-day";
+export type Rain = "indoor" | "partly" | "outdoor";
 
 export interface Attraction {
   id: Id;
@@ -64,6 +65,9 @@ export interface Attraction {
   duration?: string;
   /** Visit length at a glance; not set for restaurants and cafés. */
   length?: VisitLength;
+  /** How it works in rain; not set for restaurants and cafés. */
+  rain?: Rain;
+  rainNote?: string;
   /** Only when it's in another town than the destination (a day trip from where you stay). */
   town?: string;
   /** From where you stay, e.g. "20 min by car". */

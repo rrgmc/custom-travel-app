@@ -1,4 +1,4 @@
-import type { Priority, VisitLength } from "../types";
+import type { Priority, Rain, VisitLength } from "../types";
 import { attractionById, categoryById, destinationById, reservationsForAttraction, schedule, scheduleDaysFor } from "../data";
 import { t } from "../lib/i18n";
 import { href } from "../lib/router";
@@ -26,6 +26,15 @@ export function LengthTag({ length }: { length: VisitLength }) {
   );
 }
 
+export function RainTag({ rain }: { rain: Rain }) {
+  return (
+    <span className={`len rain-${rain}`}>
+      <Icon name={rain === "outdoor" ? "sun" : "umbrella"} size={13} />
+      {t.rain[rain]}
+    </span>
+  );
+}
+
 export function AttractionDetail({ id }: { id: string }) {
   const a = attractionById.get(id);
   if (!a) return <p className="empty">{t.notFound}: {id}</p>;
@@ -41,6 +50,7 @@ export function AttractionDetail({ id }: { id: string }) {
       [t.price, a.price],
       [t.travelTime, a.travelTime],
       [t.duration, a.duration],
+      [t.inRain, a.rainNote],
       [t.booking, a.booking],
       [t.address, a.address],
     ] as [string, string | undefined][]
@@ -58,6 +68,7 @@ export function AttractionDetail({ id }: { id: string }) {
         <p className="hero-tags">
           <PriorityTag p={a.priority} />
           {a.length && <LengthTag length={a.length} />}
+          {a.rain && <RainTag rain={a.rain} />}
         </p>
       </section>
 

@@ -196,6 +196,7 @@ h2 { font-size: 19px; font-weight: 700; margin: 32px 0 12px; }
 .prio-maybe { border-style: dashed; }
 .attraction-maybe strong { color: var(--muted); font-weight: 600; }
 .booked { display: inline-flex; color: var(--accent); }
+.rain-indoor, .rain-partly { color: var(--accent); }
 .hero-tags { display: flex; gap: 10px; align-items: center; margin: 10px 0 0; }
 .body-text { font-size: 17px; }
 .ticket-icon-sm { width: 32px; height: 32px; border-radius: 8px; }

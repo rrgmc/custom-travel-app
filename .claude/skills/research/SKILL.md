@@ -24,7 +24,8 @@ of it (rule 7). Do one destination at a time. Follow docs/business-rules.md, esp
    review first ($ARGUMENTS or the conversation), show a compact numbered list and add only what
    they keep; accept answers like "all but 4 and 7" or "only the musts".
 5. **Add them** to `attractions` with `destination`, `category`, `priority`, a short
-   `description`, `length` (rule 13; not for restaurants and cafés), and what's known and useful:
+   `description`, `length` and `rain` (rule 13; not for restaurants and cafés), and what's known
+   and useful: `rainNote`,
    `tips`, `hours`, `closed`, `price`, `duration`,
    `booking`, `town` and `travelTime` (rule 14), `location` (coordinates you're sure of; otherwise
    `address`), `url`. Researched facts carry "(checked <Month Year>)". Add any new categories to

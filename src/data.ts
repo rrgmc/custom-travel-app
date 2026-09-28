@@ -28,6 +28,14 @@ export function attractionsByCategory(destinationId: string): { category: Catego
     .filter((g) => g.items.length > 0);
 }
 
+/** What still works in rain at a destination: covered first, then partly covered; by priority within each. */
+export const rainyDayAttractions = (destinationId: string): Attraction[] =>
+  data.attractions
+    .filter((a) => a.destination === destinationId && (a.rain === "indoor" || a.rain === "partly"))
+    .sort((a, b) =>
+      (a.rain === b.rain ? 0 : a.rain === "indoor" ? -1 : 1) ||
+      PRIORITY_ORDER.indexOf(a.priority) - PRIORITY_ORDER.indexOf(b.priority));
+
 export const attractionCount = (destinationId: string) =>
   data.attractions.filter((a) => a.destination === destinationId).length;
 

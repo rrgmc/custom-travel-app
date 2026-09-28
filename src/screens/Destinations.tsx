@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import type { Attraction } from "../types";
-import { attractionCount, attractionsByCategory, data, destinationById, reservationsFor, trip } from "../data";
+import { attractionCount, attractionsByCategory, rainyDayAttractions, data, destinationById, reservationsFor, trip } from "../data";
 import { t } from "../lib/i18n";
 import { href } from "../lib/router";
 import { currentDestination, formatRange } from "../lib/time";
@@ -8,7 +8,7 @@ import { Icon } from "../components/Icon";
 import { RichText } from "../components/Text";
 import { TicketRow } from "../components/Ticket";
 import { PlaceActions } from "../components/Actions";
-import { LengthTag, PriorityTag } from "./Attraction";
+import { LengthTag, PriorityTag, RainTag } from "./Attraction";
 
 const datesOf = (d: { from?: string; to?: string }) => (d.from && d.to ? formatRange(d.from, d.to) : "");
 
@@ -52,17 +52,19 @@ export function DestinationsList() {
 }
 
 /** Tabs after the category tabs. Category ids can't use these names (the validator checks). */
-export const SECTION_TABS = ["booked", "about"] as const;
+export const SECTION_TABS = ["rainy-day", "booked", "about"] as const;
 
 export function DestinationDetail({ id, tab }: { id: string; tab?: string }) {
   const d = destinationById.get(id);
   if (!d) return <p className="empty">{t.notFound}: {id}</p>;
 
   const groups = attractionsByCategory(id);
+  const rainy = rainyDayAttractions(id);
   const booked = reservationsFor(id);
   const hasAbout = !!(d.summary || d.tips || d.location);
   const tabs: { key: string; label: string }[] = [
     ...groups.map((g) => ({ key: g.category.id, label: g.category.name })),
+    ...(rainy.length ? [{ key: "rainy-day", label: t.rainyDay }] : []),
     ...(booked.length ? [{ key: "booked", label: t.bookedHere }] : []),
     ...(hasAbout ? [{ key: "about", label: t.about }] : []),
   ];
@@ -82,6 +84,8 @@ export function DestinationDetail({ id, tab }: { id: string; tab?: string }) {
       {tabs.length > 1 && <TabRow tabs={tabs} current={current} onSelect={select} />}
 
       {group && <ul className="rows">{group.items.map((a) => <AttractionRow key={a.id} a={a} />)}</ul>}
+
+      {current === "rainy-day" && <ul className="rows">{rainy.map((a) => <AttractionRow key={a.id} a={a} />)}</ul>}
 
       {current === "booked" && <ul className="rows">{booked.map((r) => <TicketRow key={r.id} r={r} />)}</ul>}
 
@@ -133,6 +137,7 @@ function AttractionRow({ a }: { a: Attraction }) {
           <span className="row-meta">
             <PriorityTag p={a.priority} />
             {a.length && <LengthTag length={a.length} />}
+            {a.rain && <RainTag rain={a.rain} />}
             {meta && <span className="muted">{meta}</span>}
             {hasTicket && <span className="booked"><Icon name="ticket" size={15} /></span>}
           </span>

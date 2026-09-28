@@ -133,6 +133,11 @@
             "enum": ["quick", "hours", "half-day", "full-day"],
             "description": "Visit length at a glance: quick (under 1 h), hours (a few hours), half-day, full-day. Not for restaurants and cafés."
           },
+          "rain": {
+            "enum": ["indoor", "partly", "outdoor"],
+            "description": "How it works in rain: indoor (covered, fine), partly (some covered parts or fine in light rain), outdoor (not worth it in rain). Not for restaurants and cafés."
+          },
+          "rainNote": { "type": "string", "description": "What rain or fog changes here, e.g. 'Com neblina a cascata some'." },
           "town": { "type": "string", "description": "Town it's in, only when not the destination itself (a nearby town visited from there), e.g. 'Canela'." },
           "travelTime": { "type": "string", "description": "Travel time from where you stay, e.g. '20 min by car'." },
           "booking": { "type": "string", "description": "Whether and how to book ahead." },

@@ -69,6 +69,8 @@ attractions:
     name: Castelo de São Jorge
     priority: must
     length: hours
+    rain: outdoor
+    rainNote: Walls and paths get slippery and the view disappears in low cloud.
     description: Moorish castle on the highest hill of the old town, with the best views over Lisbon.
     tips: Go early or near sunset; the queue peaks around 11:00.
     hours: 09:00–21:00 (sample, not checked)
@@ -82,6 +84,7 @@ attractions:
     name: Mosteiro dos Jerónimos
     priority: must
     length: hours
+    rain: indoor
     description: Huge 16th-century monastery in the ornate Manueline style. The cloister is the highlight.
     closed: Mondays
     duration: 1–1.5 h
@@ -94,6 +97,7 @@ attractions:
     name: Torre de Belém
     priority: want
     length: quick
+    rain: outdoor
     description: Small fortress on the river, the symbol of the age of discoveries.
     tips: The outside is the best part; skip the inside if the line is long.
     duration: 30 min–1 h
@@ -105,6 +109,7 @@ attractions:
     name: Tram 28
     priority: want
     length: quick
+    rain: partly
     description: Old yellow tram rattling through Graça, Alfama and Estrela.
     tips: Board at the first stop, Martim Moniz, to get a seat. Watch for pickpockets.
     duration: 45 min end to end
@@ -116,6 +121,7 @@ attractions:
     name: Oceanário de Lisboa
     priority: maybe
     length: hours
+    rain: indoor
     description: One of Europe's largest aquariums. A good plan for a rainy day.
     duration: 2 h
     location: { lat: 38.7636, lng: -9.0937 }
@@ -126,6 +132,7 @@ attractions:
     name: Miradouro da Senhora do Monte
     priority: want
     length: quick
+    rain: outdoor
     description: The highest viewpoint in the city, less crowded than the ones in Alfama.
     tips: Best at sunset.
     location: { lat: 38.7190, lng: -9.1328 }
@@ -156,6 +163,7 @@ attractions:
     travelTime: 40 min by train from Cais do Sodré
     priority: maybe
     length: half-day
+    rain: outdoor
     description: |
       Seaside town west of Lisbon: a small old center, beaches and the coastal walk to Boca do Inferno.
       An easy half day.
@@ -169,6 +177,7 @@ attractions:
     name: Palácio da Pena
     priority: must
     length: half-day
+    rain: partly
     description: Colorful romantic palace on a hilltop, surrounded by a large park.
     duration: 2–3 h with the park
     travelTime: 15 min by the 434 bus
@@ -181,6 +190,7 @@ attractions:
     name: Quinta da Regaleira
     priority: must
     length: hours
+    rain: outdoor
     description: Mysterious estate with gardens, grottoes and the famous spiral initiation well.
     tips: Arrive at opening time; the well gets a queue by mid-morning.
     duration: 2 h
@@ -192,6 +202,7 @@ attractions:
     name: Castelo dos Mouros
     priority: maybe
     length: quick
+    rain: outdoor
     description: Ruined castle walls along a ridge, with wide views to the coast.
     duration: 1 h
     location: { lat: 38.7925, lng: -9.3894 }
@@ -211,6 +222,7 @@ attractions:
     name: Ribeira
     priority: must
     length: hours
+    rain: outdoor
     description: Colorful riverside quarter under the Dom Luís I bridge.
     duration: 1–2 h
     location: { lat: 41.1405, lng: -8.6134 }
@@ -221,6 +233,7 @@ attractions:
     name: Port wine cellars (Vila Nova de Gaia)
     priority: must
     length: hours
+    rain: indoor
     description: Tours and tastings at the historic port lodges across the river.
     booking: Book a tour with tasting for a set time.
     duration: 1.5 h per cellar
@@ -232,6 +245,7 @@ attractions:
     name: Livraria Lello
     priority: want
     length: quick
+    rain: indoor
     description: Neo-Gothic bookshop with a famous red staircase.
     booking: Entry needs a ticket bought online; the price is deducted from a book.
     duration: 30 min
@@ -243,6 +257,7 @@ attractions:
     name: Douro Valley day trip
     priority: maybe
     length: full-day
+    rain: partly
     description: Terraced vineyards along the river, with wine tastings and a boat ride.
     duration: Full day
     booking: Organized tours pick up in the center; book a day or two ahead.
@@ -254,6 +269,7 @@ attractions:
     name: Miradouro da Serra do Pilar
     priority: want
     length: quick
+    rain: outdoor
     description: Terrace above the bridge with the classic view of Porto.
     tips: Go for sunset, then walk down to the Gaia waterfront.
     location: { lat: 41.1386, lng: -8.6089 }

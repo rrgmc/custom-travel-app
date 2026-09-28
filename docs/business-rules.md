@@ -62,7 +62,10 @@ doing at each one, and the reservations. A day-by-day schedule exists only if th
 13. Restaurants and cafés are attractions too, in their own categories.
     Every other attraction gets a `length`, the visit length at a glance: `quick` (under 1 h),
     `hours` (a few hours), `half-day` or `full-day`, counting the visit itself, not the drive.
-    Restaurants and cafés don't get one.
+    It also gets `rain`: `indoor` (covered, fine in rain), `partly` (some covered parts, or fine in
+    light rain) or `outdoor` (not worth it in rain), and a `rainNote` when rain or fog changes the
+    visit ("Com neblina a cascata some"). The app lists `indoor` and `partly` ones in a "Rainy day"
+    tab. Restaurants and cafés get neither.
 14. **Travel time from where you stay** goes in `travelTime` with the mode the user will use
     ("20 min by car", "40 min by train"). Always set it for attractions in another town; set it
     for local ones when it helps (a far-off park, a restaurant across town).
