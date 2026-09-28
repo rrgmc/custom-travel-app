@@ -59,6 +59,8 @@ jobs:
             } >> "$GITHUB_ENV"
           elif [ -f android/signing/release.jks ]; then
             echo "ANDROID_KEYSTORE_PATH=$GITHUB_WORKSPACE/android/signing/release.jks" >> "$GITHUB_ENV"
+            # Keep the passwords out of the job log, as GitHub does for secrets.
+            grep -E '^ANDROID_KEY(STORE)?_PASSWORD=' android/signing/signing.env | cut -d= -f2- | sed 's/^/::add-mask::/'
             grep -E '^ANDROID_[A-Z_]+=' android/signing/signing.env >> "$GITHUB_ENV"
           else
             echo "No signing key: building a debug APK (updates need an uninstall first)."
