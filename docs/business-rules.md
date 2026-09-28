@@ -47,6 +47,10 @@ doing at each one, and the reservations. A day-by-day schedule exists only if th
    category so they can remove what they don't want ("drop 4 and 9", "no maybes"). If the user asks
    to review first, show the list and add only what they keep. Be selective up front: recommending
    everything is not a license to pad the list.
+   **More choices than days**: for things to do, aim for about two per day of the stay (at least
+   5), so the travelers can pick on the spot by mood and weather. Don't leave out well-known,
+   popular attractions because they seem aimed at someone else (adults-only feel, "touristy"):
+   add them with an honest priority, usually `maybe`, and say why in `tips`.
 10. **Categories are per trip.** Pick ones that fit the trip ("Things to do", "Restaurants",
     "Beaches", "Wineries"…), keep the list short, and reuse them across destinations. Categories
     live in `categories`, in display order.
