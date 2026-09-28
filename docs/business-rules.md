@@ -63,6 +63,9 @@ day, to pick from on the day. There is no dated schedule.
     `maybe` (only if it fits or for a rainy day). Be selective with `must`; a few per destination.
     Priorities reflect **who's traveling** (`trip.travelers`): with young children, kid-friendly
     places rise, and long hikes, late dinners and fragile or adults-only places drop.
+    `trip.preferences` (likes and dislikes, e.g. "no rodízio") are hard rules for research: don't add
+    what they exclude, and when the user states a new one, record it there and replace what it rules
+    out.
 12. Each attraction gets a `description` (what it is, why go) and, when useful: `tips`, `hours`,
     `closed`, `price`, `duration` (how long a visit takes), `booking` (whether to book ahead and how),
     and `location` so the map buttons work. Add `address` if coordinates aren't certain.

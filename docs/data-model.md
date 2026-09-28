@@ -26,7 +26,8 @@ The sample `trip/trip.yaml` in the template shows every field in use.
 `trip` — id (lowercase letters and digits, used in the Android app id), title (≤ 40 chars, it's the
 app name), subtitle, timezone (IANA, default for everything), language (`en` | `pt-BR`), currency,
 accent (hex color for the app), icon (1–2 characters for the launcher icon), travelers (who's
-traveling, with children's ages and mobility needs; it guides research and planning).
+traveling, with children's ages and mobility needs; it guides research and planning), preferences
+(likes and dislikes, e.g. "no all-you-can-eat / rodízio"; research follows them).
 
 `categories[]` — attraction categories for this trip, in display order: `{ id, name }`.
 

@@ -15,6 +15,7 @@ function tripContext(destinationId: string): string {
     d?.from && d.to && (pt ? `Datas: ${formatRange(d.from, d.to)}` : `Dates: ${formatRange(d.from, d.to)}`),
     hotel && (pt ? `Hospedagem: ${hotel.title}` : `Staying at: ${hotel.title}`),
     trip.travelers && (pt ? `Quem vai: ${trip.travelers}` : `Traveling: ${trip.travelers}`),
+    trip.preferences && (pt ? `Preferências: ${trip.preferences}` : `Preferences: ${trip.preferences}`),
   ];
   return parts.filter(Boolean).join("\n");
 }

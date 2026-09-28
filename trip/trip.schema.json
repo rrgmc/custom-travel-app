@@ -64,6 +64,11 @@
         "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
         "accent": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" },
         "icon": { "type": "string", "minLength": 1, "maxLength": 2, "description": "1–2 characters for the launcher icon." },
+        "preferences": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Likes and dislikes that should shape research, in trip.language, e.g. 'Não gostamos de rodízio; preferimos à la carte'."
+        },
         "travelers": {
           "type": "string",
           "minLength": 1,

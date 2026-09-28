@@ -23,6 +23,7 @@ export interface TripInfo {
   accent?: string;
   icon?: string;
   travelers?: string;
+  preferences?: string;
 }
 
 export interface Category {
