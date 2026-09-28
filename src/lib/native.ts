@@ -24,7 +24,10 @@ export const isNative = Capacitor.isNativePlatform();
 export function handleBackButton() {
   if (!isNative) return;
   App.addListener("backButton", ({ canGoBack }) => {
-    if (canGoBack) history.back();
+    // An open bottom sheet (src/components/Marks.tsx) closes first, like on any Android app.
+    const sheet = document.querySelector<HTMLDialogElement>("dialog[open]");
+    if (sheet) sheet.close();
+    else if (canGoBack) history.back();
     else App.exitApp();
   });
 }

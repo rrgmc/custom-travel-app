@@ -6,7 +6,8 @@ The sample `trip/trip.yaml` in the template shows every field in use.
 ## Conventions
 
 - **IDs** are kebab-case (`sao-jorge`, `hotel-lisbon`), unique within their list, and stable:
-  other entries refer to them, so don't rename casually.
+  other entries refer to them, and the done/removed marks saved on the phone use them, so don't
+  rename casually.
 - **Dates** are `YYYY-MM-DD`.
 - **Date-times** are `YYYY-MM-DDTHH:MM` with **no offset**: the wall-clock time at the place where
   it happens, exactly as printed on the ticket. The app displays them as-is. Reservation `start`/`end`
@@ -65,6 +66,9 @@ at-location | unpaid. `address`/`location` feed the map buttons (hotels). `attac
 notes? }`. The destination's "Day plans" tab lists them as cards (title, length, a rain mark
 computed from the attractions, towns, and the attractions as pills); tapping one opens the plan with
 its notes and attractions. An attraction's page links to the plans it's in.
+
+Done/removed marks are not in this file: the travelers set them in the app, on each phone
+(`src/lib/marks.ts`). Removed attractions and plans move to the bottom of their list, faded.
 
 ## Changing the model
 

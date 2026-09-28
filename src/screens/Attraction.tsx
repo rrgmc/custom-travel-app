@@ -7,6 +7,8 @@ import { RichText } from "../components/Text";
 import { Ticket } from "../components/Ticket";
 import { AskClaudeButton, PlaceActions } from "../components/Actions";
 import { attractionQuestion } from "../lib/prompts";
+import { DoneCheck, MarkButtons } from "../components/Marks";
+import { useMarks } from "../lib/marks";
 
 export function PriorityTag({ p }: { p: Priority }) {
   return (
@@ -45,6 +47,7 @@ export function KidsTag() {
 }
 
 export function AttractionDetail({ id }: { id: string }) {
+  const markOf = useMarks();
   const a = attractionById.get(id);
   if (!a) return <p className="empty">{t.notFound}: {id}</p>;
   const dest = destinationById.get(a.destination);
@@ -82,6 +85,7 @@ export function AttractionDetail({ id }: { id: string }) {
           {a.kidFriendly && <KidsTag />}
         </p>
       </section>
+      <MarkButtons kind="attraction" id={a.id} />
 
       {a.description && <div className="body-text"><RichText text={a.description} /></div>}
       <PlaceActions
@@ -112,10 +116,10 @@ export function AttractionDetail({ id }: { id: string }) {
           <h2>{t.inPlans}</h2>
           <ul className="rows">
             {plans.map((p) => (
-              <li key={p.id}>
+              <li key={p.id} className={markOf("plan", p.id) ? `is-${markOf("plan", p.id)}` : undefined}>
                 <a href={href("plans", p.id)}>
                   <span className="row-main">
-                    <strong>{p.title}</strong>
+                    <strong>{markOf("plan", p.id) === "done" && <DoneCheck />}{p.title}</strong>
                   </span>
                   <Icon name="chevron" size={18} />
                 </a>

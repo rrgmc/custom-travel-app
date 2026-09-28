@@ -222,6 +222,46 @@ h2 { font-size: 19px; font-weight: 700; margin: 32px 0 12px; }
 .chip-must { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); color: var(--accent); font-weight: 600; }
 .when-day { font-size: 18px; }
 
+/* Done / removed marks (src/lib/marks.ts): done stays in place with a check, removed fades to the bottom */
+.markable { display: flex; align-items: center; border-bottom: 1px solid var(--line); }
+.rows li.markable a, .markable .plan-card { flex: 1; min-width: 0; border-bottom: 0; }
+.more {
+  flex: none; width: 44px; height: 44px; margin-right: -12px; display: grid; place-items: center;
+  background: none; border: 0; border-radius: 50%; color: var(--muted); cursor: pointer;
+}
+.more:active { background: var(--line); }
+.done-check {
+  display: inline-grid; place-items: center; width: 19px; height: 19px; margin-right: 7px; vertical-align: -3px;
+  border-radius: 50%; background: var(--accent);
+}
+.done-check svg, .rows .done-check svg { color: var(--on-accent); stroke-width: 2.6; }
+.is-removed .row-main { opacity: 0.5; }
+.is-removed strong { text-decoration: line-through; }
+.list-divider {
+  padding: 24px 0 6px; border-bottom: 1px solid var(--line);
+  font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em;
+}
+.chip-done { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); color: var(--accent); }
+.chip-removed { opacity: 0.5; text-decoration: line-through; }
+.action-on { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.sheet {
+  margin: auto auto 0; padding: 0; border: 0; width: 100%; max-width: 640px;
+  background: transparent; color: var(--ink);
+}
+.sheet::backdrop { background: rgb(0 0 0 / 0.45); }
+.sheet-body {
+  display: grid; gap: 2px; padding: 18px 16px calc(env(safe-area-inset-bottom) + 14px);
+  background: var(--surface); border-radius: 18px 18px 0 0;
+}
+.sheet-title { font-size: 17px; padding: 0 12px 8px; }
+.sheet-item {
+  display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 0 12px;
+  background: none; border: 0; border-radius: 12px; text-align: left; font-weight: 600; color: var(--accent); cursor: pointer;
+}
+.sheet-item:active { background: var(--bg); }
+.rows .sheet-item svg { color: inherit; }
+.sheet-cancel { justify-content: center; margin-top: 8px; border: 1px solid var(--line); color: var(--muted); }
+
 /* Bottom tabs */
 .tabbar {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;

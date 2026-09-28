@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { Fragment, useEffect, useRef } from "react";
 import type { Attraction } from "../types";
 import { attractionCount, attractionsByCategory, rainyDayAttractions, plansFor, data, destinationById, reservationsFor, trip } from "../data";
 import { t } from "../lib/i18n";
@@ -8,6 +8,8 @@ import { Icon } from "../components/Icon";
 import { RichText } from "../components/Text";
 import { TicketRow } from "../components/Ticket";
 import { PlaceActions } from "../components/Actions";
+import { DoneCheck, MarkMenu } from "../components/Marks";
+import { removedLast, useMarks } from "../lib/marks";
 import { KidsTag, LengthTag, PriorityTag, RainTag } from "./Attraction";
 import { DayPlanList } from "./DayPlans";
 
@@ -86,11 +88,11 @@ export function DestinationDetail({ id, tab }: { id: string; tab?: string }) {
 
       {tabs.length > 1 && <TabRow tabs={tabs} current={current} onSelect={select} />}
 
-      {group && <ul className="rows">{group.items.map((a) => <AttractionRow key={a.id} a={a} />)}</ul>}
+      {group && <AttractionList items={group.items} />}
 
       {current === "plans" && <DayPlanList plans={plans} />}
 
-      {current === "rainy-day" && <ul className="rows">{rainy.map((a) => <AttractionRow key={a.id} a={a} />)}</ul>}
+      {current === "rainy-day" && <AttractionList items={rainy} />}
 
       {current === "booked" && <ul className="rows">{booked.map((r) => <TicketRow key={r.id} r={r} />)}</ul>}
 
@@ -130,15 +132,33 @@ function TabRow({ tabs, current, onSelect }: { tabs: { key: string; label: strin
   );
 }
 
+/** Attractions in their order, with the removed ones faded at the bottom under a small heading. */
+function AttractionList({ items }: { items: Attraction[] }) {
+  const markOf = useMarks();
+  const sorted = removedLast(items, "attraction", markOf);
+  const firstRemoved = sorted.find((a) => markOf("attraction", a.id) === "removed");
+  return (
+    <ul className="rows">
+      {sorted.map((a) => (
+        <Fragment key={a.id}>
+          {a === firstRemoved && <li className="list-divider">{t.removed}</li>}
+          <AttractionRow a={a} />
+        </Fragment>
+      ))}
+    </ul>
+  );
+}
+
 function AttractionRow({ a }: { a: Attraction }) {
+  const mark = useMarks()("attraction", a.id);
   const hasTicket = data.reservations.some((r) => r.attraction === a.id && r.status !== "cancelled");
   // Another town and how far it is matter more in a list than how long the visit takes.
   const meta = [a.town !== a.name && a.town, a.travelTime ?? a.duration].filter(Boolean).join(" · ");
   return (
-    <li className={`attraction attraction-${a.priority}`}>
+    <li className={`attraction attraction-${a.priority} markable${mark ? ` is-${mark}` : ""}`}>
       <a href={href("attractions", a.id)}>
         <span className="row-main">
-          <strong>{a.name}</strong>
+          <strong>{mark === "done" && <DoneCheck />}{a.name}</strong>
           <span className="row-meta">
             <PriorityTag p={a.priority} />
             {a.length && <LengthTag length={a.length} />}
@@ -149,8 +169,8 @@ function AttractionRow({ a }: { a: Attraction }) {
           </span>
           {a.description && <span className="muted clamp">{a.description}</span>}
         </span>
-        <Icon name="chevron" size={18} />
       </a>
+      <MarkMenu kind="attraction" id={a.id} name={a.name} />
     </li>
   );
 }
