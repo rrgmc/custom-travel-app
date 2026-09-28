@@ -68,6 +68,9 @@ export interface Attraction {
   /** How it works in rain; not set for restaurants and cafés. */
   rain?: Rain;
   rainNote?: string;
+  /** Restaurants and cafés, when the trip has children. */
+  kidFriendly?: boolean;
+  kidsNote?: string;
   /** Only when it's in another town than the destination (a day trip from where you stay). */
   town?: string;
   /** From where you stay, e.g. "20 min by car". */

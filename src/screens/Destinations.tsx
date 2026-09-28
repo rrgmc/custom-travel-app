@@ -8,7 +8,7 @@ import { Icon } from "../components/Icon";
 import { RichText } from "../components/Text";
 import { TicketRow } from "../components/Ticket";
 import { PlaceActions } from "../components/Actions";
-import { LengthTag, PriorityTag, RainTag } from "./Attraction";
+import { KidsTag, LengthTag, PriorityTag, RainTag } from "./Attraction";
 
 const datesOf = (d: { from?: string; to?: string }) => (d.from && d.to ? formatRange(d.from, d.to) : "");
 
@@ -138,6 +138,7 @@ function AttractionRow({ a }: { a: Attraction }) {
             <PriorityTag p={a.priority} />
             {a.length && <LengthTag length={a.length} />}
             {a.rain && <RainTag rain={a.rain} />}
+            {a.kidFriendly && <KidsTag />}
             {meta && <span className="muted">{meta}</span>}
             {hasTicket && <span className="booked"><Icon name="ticket" size={15} /></span>}
           </span>

@@ -16,8 +16,8 @@ of it (rule 7). Do one destination at a time. Follow docs/business-rules.md, esp
    who's traveling if `trip.travelers` is missing (kids' ages? mobility?), budget level, how they get around (car, public transport,
    tours) and which nearby towns they plan to visit. Skip what the conversation already answered.
 3. **Research** on the web. For each category, gather candidates worth the user's time, favoring
-   variety over quantity: roughly 5–10 things to do and 3–6 places to eat per city, fewer for
-   small places.
+   variety over quantity: roughly 5–10 things to do per city (fewer for small places), about one
+   restaurant per night of the stay (at least 4; rule 13) and a few cafés.
 4. **Choose** what to recommend (rule 9): an honest priority for each (must / if there's time /
    maybe); for each nearby town, one day-trip entry or its individual sights (rule 15); new
    categories if the destination calls for them (e.g. Beaches, Day trips). If the user asked to
@@ -25,7 +25,7 @@ of it (rule 7). Do one destination at a time. Follow docs/business-rules.md, esp
    they keep; accept answers like "all but 4 and 7" or "only the musts".
 5. **Add them** to `attractions` with `destination`, `category`, `priority`, a short
    `description`, `length` and `rain` (rule 13; not for restaurants and cafés), and what's known
-   and useful: `rainNote`,
+   and useful: `rainNote`, `kidFriendly` and `kidsNote` (restaurants and cafés, with children),
    `tips`, `hours`, `closed`, `price`, `duration`,
    `booking`, `town` and `travelTime` (rule 14), `location` (coordinates you're sure of; otherwise
    `address`), `url`. Researched facts carry "(checked <Month Year>)". Add any new categories to

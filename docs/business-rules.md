@@ -66,6 +66,11 @@ doing at each one, and the reservations. A day-by-day schedule exists only if th
     light rain) or `outdoor` (not worth it in rain), and a `rainNote` when rain or fog changes the
     visit ("Com neblina a cascata some"). The app lists `indoor` and `partly` ones in a "Rainy day"
     tab. Restaurants and cafés get neither.
+    **Restaurants: about one per night of the stay** (at least 4), mixing lunch and dinner places,
+    price levels and styles; cafés come on top. When the trip has children, each restaurant and
+    café that suits them gets `kidFriendly: true`, and `kidsNote` says why or what to know (kids'
+    menu, play area, child price, early opening); places that don't suit them say so in `kidsNote`
+    without the flag.
 14. **Travel time from where you stay** goes in `travelTime` with the mode the user will use
     ("20 min by car", "40 min by train"). Always set it for attractions in another town; set it
     for local ones when it helps (a far-off park, a restaurant across town).

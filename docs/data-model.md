@@ -40,11 +40,12 @@ attractions, then "Rainy day" (when any attraction is covered or partly covered)
 
 `attractions[]` — what's worth doing or eating at each destination, including nearby towns visited
 from it: `{ id, destination, category, name, priority, description?, tips?, hours?, closed?,
-price?, duration?, length?, rain?, rainNote?, town?, travelTime?, booking?, address?, location?, phone?, url? }`. `priority` is
+price?, duration?, length?, rain?, rainNote?, kidFriendly?, kidsNote?, town?, travelTime?, booking?, address?, location?, phone?, url? }`. `priority` is
 `must` (must-see), `want` (if there's time) or `maybe`. `length` is the visit length at a glance
 (`quick` | `hours` | `half-day` | `full-day`, shown as a tag next to the priority); `duration` is
 the detailed text ("1h–1h30"). `rain` is `indoor` | `partly` | `outdoor`; covered and partly covered
-attractions also appear in the destination's "Rainy day" tab. `town` is set only when it's in another town
+attractions also appear in the destination's "Rainy day" tab. `kidFriendly` (restaurants and cafés,
+when the trip has children) shows a "Good for kids" tag; `kidsNote` explains. `town` is set only when it's in another town
 than the destination; `travelTime` is from where you stay ("20 min by car"). A whole town can be a
 single attraction named after it.
 

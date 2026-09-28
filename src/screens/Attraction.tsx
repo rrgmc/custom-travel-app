@@ -35,6 +35,15 @@ export function RainTag({ rain }: { rain: Rain }) {
   );
 }
 
+export function KidsTag() {
+  return (
+    <span className="len kids">
+      <Icon name="kids" size={13} />
+      {t.kidFriendly}
+    </span>
+  );
+}
+
 export function AttractionDetail({ id }: { id: string }) {
   const a = attractionById.get(id);
   if (!a) return <p className="empty">{t.notFound}: {id}</p>;
@@ -51,6 +60,7 @@ export function AttractionDetail({ id }: { id: string }) {
       [t.travelTime, a.travelTime],
       [t.duration, a.duration],
       [t.inRain, a.rainNote],
+      [t.withKids, a.kidsNote],
       [t.booking, a.booking],
       [t.address, a.address],
     ] as [string, string | undefined][]
@@ -69,6 +79,7 @@ export function AttractionDetail({ id }: { id: string }) {
           <PriorityTag p={a.priority} />
           {a.length && <LengthTag length={a.length} />}
           {a.rain && <RainTag rain={a.rain} />}
+          {a.kidFriendly && <KidsTag />}
         </p>
       </section>
 
