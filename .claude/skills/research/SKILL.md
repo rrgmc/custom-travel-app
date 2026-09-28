@@ -16,8 +16,7 @@ of it (rule 7). Do one destination at a time. Follow docs/business-rules.md, esp
    who's traveling if `trip.travelers` is missing (kids' ages? mobility?), budget level, how they get around (car, public transport,
    tours) and which nearby towns they plan to visit. Skip what the conversation already answered.
 3. **Research** on the web. For each category, gather candidates worth the user's time, favoring
-   variety: about two things to do per day of the stay (at least 5; rule 9), so there are more
-   choices than days, about one restaurant per night (at least 4; rule 13) and a few cafés.
+   variety: every good thing to do the place offers (at least two per day of the stay; rule 9), about one restaurant per night (at least 4; rule 13) and a few cafés.
    Include the well-known, popular attractions even when they seem off-profile (as `maybe`).
 4. **Choose** what to recommend (rule 9): an honest priority for each (must / if there's time /
    maybe); for each nearby town, one day-trip entry or its individual sights (rule 15); new
