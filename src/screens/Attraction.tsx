@@ -111,7 +111,7 @@ export function AttractionDetail({ id }: { id: string }) {
           <ul className="rows">
             {plans.map((p) => (
               <li key={p.id}>
-                <a href={href("destinations", p.destination, "plans")}>
+                <a href={href("plans", p.id)}>
                   <span className="row-main">
                     <strong>{p.title}</strong>
                   </span>

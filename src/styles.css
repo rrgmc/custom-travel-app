@@ -203,10 +203,18 @@ h2 { font-size: 19px; font-weight: 700; margin: 32px 0 12px; }
 .rows li a .pill { margin-left: -4px; }
 
 /* Schedule */
-.plan { padding: 6px 0 18px; border-bottom: 1px solid var(--line); }
-.plan h2 { margin: 18px 0 4px; font-size: 21px; }
-.plan-notes { margin: 6px 0 4px; color: var(--muted); font-size: 15px; }
-.plan-notes .rich p:last-child { margin-bottom: 0; }
+.plan-card {
+  display: flex; align-items: center; gap: 12px; padding: 14px 0; color: inherit; border-bottom: 1px solid var(--line);
+}
+.plan-card:hover { text-decoration: none; }
+.plan-card strong { font-size: 18px; }
+.plan-card > svg { flex: none; color: var(--muted); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 3px; font-size: 13px; line-height: 1.3;
+  padding: 3px 9px; border-radius: 99px; background: var(--surface); border: 1px solid var(--line); color: var(--ink);
+}
+.chip-must { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); color: var(--accent); font-weight: 600; }
 .when-day { font-size: 18px; }
 
 /* Bottom tabs */

@@ -5,16 +5,18 @@ import { Icon } from "./components/Icon";
 import { DestinationDetail, DestinationsList } from "./screens/Destinations";
 import { AttractionDetail } from "./screens/Attraction";
 import { ReservationDetail, ReservationsList } from "./screens/Reservations";
+import { DayPlanDetail } from "./screens/DayPlans";
 
 type Tab = "destinations" | "reservations";
 const TABS: Tab[] = ["destinations", "reservations"];
-const tabOf = (page: Page): Tab => (page === "attractions" ? "destinations" : page);
+const tabOf = (page: Page): Tab => (page === "attractions" || page === "plans" ? "destinations" : page);
 
 export function App() {
   const route = useRoute();
   let screen;
   switch (route.page) {
     case "attractions": screen = <AttractionDetail key={route.id} id={route.id ?? ""} />; break;
+    case "plans": screen = <DayPlanDetail key={route.id} id={route.id ?? ""} />; break;
     case "reservations": screen = route.id ? <ReservationDetail key={route.id} id={route.id} /> : <ReservationsList />; break;
     default:
       // With a single place to stay, its page is the home screen instead of a one-item list.

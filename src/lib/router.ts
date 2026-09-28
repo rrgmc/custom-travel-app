@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 
 // Hash routes, so the Android back button walks back through screens.
 //   #/destinations  #/destinations/<id>  #/destinations/<id>/<tab>  #/attractions/<id>
-//   #/reservations  #/reservations/<id>
-export type Page = "destinations" | "attractions" | "reservations";
+//   #/reservations  #/reservations/<id>  #/plans/<id>
+export type Page = "destinations" | "attractions" | "reservations" | "plans";
 export type Route = { page: Page; id?: string; tab?: string };
 
-const PAGES: readonly string[] = ["destinations", "attractions", "reservations"];
+const PAGES: readonly string[] = ["destinations", "attractions", "reservations", "plans"];
 
 function parse(): Route {
   const [, page, id, tab] = location.hash.replace(/^#/, "").split("/");

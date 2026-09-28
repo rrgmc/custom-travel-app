@@ -9,6 +9,7 @@ export const categoryById = new Map<string, Category>(data.categories.map((c) =>
 export const destinationById = new Map<string, Destination>(data.destinations.map((d) => [d.id, d]));
 export const attractionById = new Map<string, Attraction>(data.attractions.map((a) => [a.id, a]));
 export const reservationById = new Map<string, Reservation>(data.reservations.map((r) => [r.id, r]));
+export const planById = new Map<string, DayPlan>((data.dayPlans ?? []).map((p) => [p.id, p]));
 
 /** The only destination, when the trip has just one place to stay: the app then opens on its page. */
 export const singleDestination: Destination | undefined = data.destinations.length === 1 ? data.destinations[0] : undefined;

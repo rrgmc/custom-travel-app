@@ -61,9 +61,9 @@ at-location | unpaid. `address`/`location` feed the map buttons (hotels). `attac
 
 `dayPlans[]` — good combinations for a day or half day at a destination, undated:
 `{ id, destination, title, length?: half-day | full-day, attractions: [ids in a sensible order],
-notes? }`. Shown in the destination's "Day plans" tab with a rain mark computed from the
-attractions (outdoor if any part is outdoor, partly, or indoor); an attraction's page lists the plans
-it's in.
+notes? }`. The destination's "Day plans" tab lists them as cards (title, length, a rain mark
+computed from the attractions, towns, and the attractions as pills); tapping one opens the plan with
+its notes and attractions. An attraction's page links to the plans it's in.
 
 ## Changing the model
 
