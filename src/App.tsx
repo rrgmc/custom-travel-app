@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { singleDestination, trip } from "./data";
 import { t } from "./lib/i18n";
 import { href, useRoute, type Page } from "./lib/router";
@@ -13,6 +14,17 @@ const tabOf = (page: Page): Tab => (page === "attractions" || page === "plans" ?
 
 export function App() {
   const route = useRoute();
+  // The top bar's height depends on the phone's status-bar inset; sticky tabs sit right under it.
+  const topbar = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const el = topbar.current;
+    if (!el) return;
+    const set = () => document.documentElement.style.setProperty("--topbar-h", `${el.offsetHeight}px`);
+    set();
+    const ro = new ResizeObserver(set);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
   let screen;
   switch (route.page) {
     case "attractions": screen = <AttractionDetail key={route.id} id={route.id ?? ""} />; break;
@@ -28,7 +40,7 @@ export function App() {
   const isDetail = !!route.id && !isHome;
   return (
     <div className="app">
-      <header className="topbar">
+      <header className="topbar" ref={topbar}>
         {isDetail ? (
           <button className="back" onClick={() => (history.length > 1 ? history.back() : (location.hash = href(tabOf(route.page))))}>
             <Icon name="back" size={20} /> {t.back}
