@@ -19,11 +19,17 @@ export function App() {
   useEffect(() => {
     const el = topbar.current;
     if (!el) return;
-    const set = () => document.documentElement.style.setProperty("--topbar-h", `${el.offsetHeight}px`);
+    const set = () => document.documentElement.style.setProperty("--topbar-h", `${el.getBoundingClientRect().height}px`);
     set();
+    // border-box: on Android the status-bar inset arrives later as padding, which a content-box
+    // observer never sees; that left the tabs half hidden under the bar.
     const ro = new ResizeObserver(set);
-    ro.observe(el);
-    return () => ro.disconnect();
+    ro.observe(el, { box: "border-box" });
+    window.addEventListener("resize", set);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", set);
+    };
   }, []);
   let screen;
   switch (route.page) {
