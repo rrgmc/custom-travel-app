@@ -12,6 +12,9 @@
   --done: #2f7d3b;       /* marked done */
   --on-done: #ffffff;
   --done-ink: #2f7d3b;
+  --todo: #cc4e0c;       /* marked to do */
+  --on-todo: #ffffff;
+  --todo-ink: #b8460a;
   --radius: 14px;
   --font: "Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, "Roboto Mono", monospace;
@@ -30,6 +33,9 @@
     --done: #5cb86a;
     --on-done: #0b2410;
     --done-ink: #7fcf8b;
+    --todo: #f08a3e;
+    --on-todo: #2a1200;
+    --todo-ink: #f6a466;
   }
 }
 
@@ -228,7 +234,7 @@ h2 { font-size: 19px; font-weight: 700; margin: 32px 0 12px; }
 .chip-must { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); color: var(--accent); font-weight: 600; }
 .when-day { font-size: 18px; }
 
-/* Done / removed marks (src/lib/marks.ts): done stays in place with a check, removed fades to the bottom */
+/* Marks (src/lib/marks.ts): to do moves to the top, done stays in place, removed fades to the bottom */
 .markable { display: flex; align-items: center; border-bottom: 1px solid var(--line); }
 .rows li.markable a, .markable .plan-card { flex: 1; min-width: 0; border-bottom: 0; }
 .more {
@@ -237,16 +243,16 @@ h2 { font-size: 19px; font-weight: 700; margin: 32px 0 12px; }
 }
 .more:active { background: var(--line); }
 .nowrap { white-space: nowrap; }
-.done-tag {
+.mark-tag {
   display: inline-block; margin-left: 8px; padding: 1px 8px; vertical-align: 2px; border-radius: 99px;
-  font-size: 12px; font-weight: 700; line-height: 1.4; background: var(--done); color: var(--on-done);
+  font-size: 12px; font-weight: 700; line-height: 1.4;
 }
-/* Done rows are a green band edge to edge, with a solid bar on the left: visible at a glance. */
-li.is-done {
-  margin: 0 -20px; padding: 0 20px;
-  background: color-mix(in srgb, var(--done) 11%, var(--bg));
-  box-shadow: inset 5px 0 0 var(--done);
-}
+.tag-done { background: var(--done); color: var(--on-done); }
+.tag-todo { background: var(--todo); color: var(--on-todo); }
+/* To do and done rows are a colored band edge to edge, with a solid bar on the left: visible at a glance. */
+li.is-done, li.is-todo { margin: 0 -20px; padding: 0 20px; }
+li.is-done { background: color-mix(in srgb, var(--done) 11%, var(--bg)); box-shadow: inset 5px 0 0 var(--done); }
+li.is-todo { background: color-mix(in srgb, var(--todo) 11%, var(--bg)); box-shadow: inset 5px 0 0 var(--todo); }
 .is-removed .row-main { opacity: 0.5; }
 .is-removed strong { text-decoration: line-through; }
 .list-divider {
@@ -254,8 +260,12 @@ li.is-done {
   font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em;
 }
 .chip-done { border-color: color-mix(in srgb, var(--done) 55%, var(--line)); color: var(--done-ink); }
+.chip-todo { border-color: color-mix(in srgb, var(--todo) 55%, var(--line)); color: var(--todo-ink); }
 .chip-removed { opacity: 0.5; text-decoration: line-through; }
-.action-on { background: var(--done); border-color: var(--done); color: var(--on-done); }
+.mark-actions { gap: 6px; }
+.mark-actions .action { padding: 0 13px; gap: 5px; }
+.action-done { background: var(--done); border-color: var(--done); color: var(--on-done); }
+.action-todo { background: var(--todo); border-color: var(--todo); color: var(--on-todo); }
 .sheet {
   margin: auto auto 0; padding: 0; border: 0; width: 100%; max-width: 640px;
   background: transparent; color: var(--ink);

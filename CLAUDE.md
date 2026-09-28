@@ -56,7 +56,7 @@ docs/                   ← rules and references (imported below)
   another app (maps, phone calls, websites, PDFs, "Ask Claude") go through `src/lib/native.ts`.
   "Ask Claude" shares a question built by `src/lib/prompts.ts` to the Claude app through Android's
   share system (native plugin `android/.../AskClaudePlugin.java`); no link can pre-fill a Claude chat.
-- **The trip is read-only; marks are the only app state.** Done/removed marks live on the phone
+- **The trip is read-only; marks are the only app state.** To do/done/removed marks live on the phone
   (`src/lib/marks.ts`, `@capacitor/preferences`, keyed by `trip.id` and item id), survive upgrades,
   and never go into trip.yaml. Renaming an attraction or plan id loses its mark.
 - **Generic code, data-driven behavior.** If a trip needs something the app can't show, add a generic

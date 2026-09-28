@@ -8,8 +8,8 @@ import { RichText } from "../components/Text";
 import { LengthTag, PriorityTag, RainTag } from "./Attraction";
 import { AskClaudeButton } from "../components/Actions";
 import { planQuestion } from "../lib/prompts";
-import { NameWithDone, MarkButtons, MarkMenu } from "../components/Marks";
-import { removedLast, useMarks } from "../lib/marks";
+import { NameWithMark, MarkButtons, MarkMenu } from "../components/Marks";
+import { sortByMark, useMarks } from "../lib/marks";
 
 /** Length, rain and towns of a plan, as one line of tags. */
 function PlanTags({ plan }: { plan: DayPlan }) {
@@ -30,7 +30,7 @@ function PlanTags({ plan }: { plan: DayPlan }) {
  */
 export function DayPlanList({ plans }: { plans: DayPlan[] }) {
   const markOf = useMarks();
-  const sorted = removedLast(plans, "plan", markOf);
+  const sorted = sortByMark(plans, "plan", markOf);
   const firstRemoved = sorted.find((p) => markOf("plan", p.id) === "removed");
   return (
     <ul className="plans">
@@ -42,7 +42,7 @@ export function DayPlanList({ plans }: { plans: DayPlan[] }) {
             <li className={`markable${mark ? ` is-${mark}` : ""}`}>
               <a className="plan-card" href={href("plans", plan.id)}>
                 <span className="row-main">
-                  <strong><NameWithDone name={plan.title} done={mark === "done"} /></strong>
+                  <strong><NameWithMark name={plan.title} mark={mark} /></strong>
                   <PlanTags plan={plan} />
                   <span className="chips">
                     {plan.attractions.map((id) => {
@@ -52,7 +52,7 @@ export function DayPlanList({ plans }: { plans: DayPlan[] }) {
                       const cls = ["chip", a.priority === "must" && "chip-must", am && `chip-${am}`].filter(Boolean).join(" ");
                       return (
                         <span key={id} className={cls}>
-                          {am === "done" ? <Icon name="check" size={11} /> : a.priority === "must" && <Icon name="star" size={11} />}
+                          {am === "done" ? <Icon name="check" size={11} /> : am === "todo" ? <Icon name="flag" size={11} /> : a.priority === "must" && <Icon name="star" size={11} />}
                           {a.name}
                         </span>
                       );
@@ -97,7 +97,7 @@ export function DayPlanDetail({ id }: { id: string }) {
             <li key={aid} className={`markable${mark ? ` is-${mark}` : ""}`}>
               <a href={href("attractions", aid)}>
                 <span className="row-main">
-                  <strong><NameWithDone name={a.name} done={mark === "done"} /></strong>
+                  <strong><NameWithMark name={a.name} mark={mark} /></strong>
                   {(a.priority === "must" || a.travelTime) && (
                     <span className="row-meta">
                       {a.priority === "must" && <PriorityTag p={a.priority} />}

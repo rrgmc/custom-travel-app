@@ -7,7 +7,7 @@ import { RichText } from "../components/Text";
 import { Ticket } from "../components/Ticket";
 import { AskClaudeButton, PlaceActions } from "../components/Actions";
 import { attractionQuestion } from "../lib/prompts";
-import { NameWithDone, MarkButtons } from "../components/Marks";
+import { NameWithMark, MarkButtons } from "../components/Marks";
 import { useMarks } from "../lib/marks";
 
 export function PriorityTag({ p }: { p: Priority }) {
@@ -119,7 +119,7 @@ export function AttractionDetail({ id }: { id: string }) {
               <li key={p.id} className={markOf("plan", p.id) ? `is-${markOf("plan", p.id)}` : undefined}>
                 <a href={href("plans", p.id)}>
                   <span className="row-main">
-                    <strong><NameWithDone name={p.title} done={markOf("plan", p.id) === "done"} /></strong>
+                    <strong><NameWithMark name={p.title} mark={markOf("plan", p.id)} /></strong>
                   </span>
                   <Icon name="chevron" size={18} />
                 </a>

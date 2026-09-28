@@ -8,8 +8,8 @@ import { Icon } from "../components/Icon";
 import { RichText } from "../components/Text";
 import { TicketRow } from "../components/Ticket";
 import { PlaceActions } from "../components/Actions";
-import { NameWithDone, MarkMenu } from "../components/Marks";
-import { removedLast, useMarks } from "../lib/marks";
+import { NameWithMark, MarkMenu } from "../components/Marks";
+import { sortByMark, useMarks } from "../lib/marks";
 import { KidsTag, LengthTag, PriorityTag, RainTag } from "./Attraction";
 import { DayPlanList } from "./DayPlans";
 
@@ -135,7 +135,7 @@ function TabRow({ tabs, current, onSelect }: { tabs: { key: string; label: strin
 /** Attractions in their order, with the removed ones faded at the bottom under a small heading. */
 function AttractionList({ items }: { items: Attraction[] }) {
   const markOf = useMarks();
-  const sorted = removedLast(items, "attraction", markOf);
+  const sorted = sortByMark(items, "attraction", markOf);
   const firstRemoved = sorted.find((a) => markOf("attraction", a.id) === "removed");
   return (
     <ul className="rows">
@@ -158,7 +158,7 @@ function AttractionRow({ a }: { a: Attraction }) {
     <li className={`attraction attraction-${a.priority} markable${mark ? ` is-${mark}` : ""}`}>
       <a href={href("attractions", a.id)}>
         <span className="row-main">
-          <strong><NameWithDone name={a.name} done={mark === "done"} /></strong>
+          <strong><NameWithMark name={a.name} mark={mark} /></strong>
           <span className="row-meta">
             <PriorityTag p={a.priority} />
             {a.length && <LengthTag length={a.length} />}

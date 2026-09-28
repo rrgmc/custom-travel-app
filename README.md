@@ -25,9 +25,10 @@ What the app shows:
   (QR codes readable offline).
 - **Day plans** (a tab on each destination): good combinations of attractions for a day or half
   day, with why they go together and a rain mark, to pick from on the day. No fixed dates.
-- **Done and removed**: any attraction or day plan can be marked **done** (it stays in place, as a
-  green band with a "Done" tag) or **removed** (faded and moved to the bottom, restorable), from its page or the ⋯ button
-  on its row. Marks are saved on the phone: they survive app upgrades, not an uninstall, and each
+- **To do, done and removed**: any attraction or day plan can be marked **to do** (an orange band
+  with a "To do" tag, moved to the top of its list), **done** (a green band with a "Done" tag, in
+  its place) or **removed** (faded and moved to the bottom), from its page or the ⋯ button on its
+  row. One mark at a time: marking a to-do done or removed puts it back in its place. Marks are saved on the phone: they survive app upgrades, not an uninstall, and each
   phone keeps its own.
 
 It's a React web app packaged into an Android APK with [Capacitor](https://capacitorjs.com), so it

@@ -3,13 +3,14 @@ import { Preferences } from "@capacitor/preferences";
 import { trip } from "../data";
 
 /**
- * What the travelers marked on this phone: an attraction or day plan is "done" (stays in place) or
- * "removed" (faded, moved to the bottom). This is the app's only state. It lives on the phone
+ * What the travelers marked on this phone: an attraction or day plan is "todo" (moved to the top),
+ * "done" (stays in place) or "removed" (faded, moved to the bottom). One mark per item: marking a
+ * to-do done or removed takes it out of the top. This is the app's only state. It lives on the phone
  * (Android SharedPreferences through @capacitor/preferences, localStorage on the web), so it survives
  * app upgrades but not an uninstall, and each phone has its own. Keyed by id: renaming an id in
  * trip.yaml loses its mark.
  */
-export type Mark = "done" | "removed";
+export type Mark = "todo" | "done" | "removed";
 export type MarkKind = "attraction" | "plan";
 type Marks = Partial<Record<MarkKind, Record<string, Mark>>>;
 
@@ -45,7 +46,9 @@ export function useMarks() {
   return (kind: MarkKind, id: string): Mark | undefined => current[kind]?.[id];
 }
 
-/** The same order, with removed items moved to the end. */
-export function removedLast<T extends { id: string }>(items: T[], kind: MarkKind, markOf: ReturnType<typeof useMarks>) {
-  return [...items.filter((x) => markOf(kind, x.id) !== "removed"), ...items.filter((x) => markOf(kind, x.id) === "removed")];
+/** The same order, with to-do items moved to the top and removed ones to the end. */
+export function sortByMark<T extends { id: string }>(items: T[], kind: MarkKind, markOf: ReturnType<typeof useMarks>) {
+  const RANK: Record<Mark, number> = { todo: 0, done: 1, removed: 2 };
+  const rank = (x: T) => { const m = markOf(kind, x.id); return m ? RANK[m] : 1; };
+  return [...items].sort((a, b) => rank(a) - rank(b)); // stable: original order within each group
 }
