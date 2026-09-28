@@ -71,4 +71,6 @@ docs/                   ← rules and references (imported below)
 - Before finishing any change: `npm run build` must pass. For UI changes, check the affected screens
   with `?now=` set before and during the trip, in light and dark mode, with and without day plans,
   and with one and several destinations (one destination opens straight on its page).
-- Never commit `inbox/`, `dist/`, keystores or anything in `.gitignore`.
+- Never commit `inbox/`, `dist/`, keystores or anything in `.gitignore`. The one exception: a private
+  trip repo may commit its own signing key created by `npm run signing:create` (`android/signing/`),
+  when the user asks for it. Never in the template.

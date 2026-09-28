@@ -39,9 +39,26 @@ them the file directly.
 
 ## Stable signing (recommended)
 
+Android installs an update only over an app signed with the same key. There are two ways to give
+every build the same key.
+
+### Option A: key committed to the trip repo (simplest, private repos only)
+
+```sh
+npm run signing:create
+git add android/signing .gitignore && git commit -m "Signing key"
+```
+
+This creates `android/signing/release.jks` and `android/signing/signing.env` (random passwords)
+and adds a `.gitignore` exception for the keystore. CI uses them when there are no signing
+secrets. Anyone who can read the repo can sign an app as yours, so only do this in a private repo.
+Never run it in the template. Keep the key for the life of the trip: a new key breaks updates.
+
+### Option B: repository secrets
+
 Without a signing key, CI builds a debug APK signed with a random key each run, and Android won't
 install an update over an app signed with a different key (you must uninstall first).
-Create one key and reuse it for all trips:
+Create one key on your computer and reuse it for all trips:
 
 ```sh
 keytool -genkeypair -v -keystore travel.jks -alias travel -keyalg RSA -keysize 2048 -validity 10000

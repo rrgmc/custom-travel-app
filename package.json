@@ -12,7 +12,8 @@
     "trip:apply": "node scripts/apply-trip-identity.mjs",
     "android:sync": "npm run build && npx cap sync android && npm run trip:apply",
     "android:apk": "npm run android:sync && cd android && ./gradlew assembleDebug",
-    "icons": "node scripts/icons.mjs"
+    "icons": "node scripts/icons.mjs",
+    "signing:create": "node scripts/create-signing-key.mjs"
   },
   "dependencies": {
     "@capacitor/android": "^8.5.2",

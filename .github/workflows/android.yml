@@ -21,7 +21,6 @@ jobs:
     env:
       VERSION_CODE: ${{ github.run_number }}
       VERSION_NAME: ${{ github.ref_type == 'tag' && github.ref_name || format('build-{0}', github.run_number) }}
-      HAS_SIGNING_KEY: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -41,21 +40,35 @@ jobs:
       # validate + icons + typecheck + web build + copy into android/ + apply trip identity
       - run: npm run android:sync
 
+      # Stable signing, so new versions install over old ones: repository secrets if set, otherwise a
+      # key committed to this (private) repo by `npm run signing:create`, otherwise a throwaway debug key.
       - name: Signing key
-        if: env.HAS_SIGNING_KEY == 'true'
+        env:
+          KS_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          KS_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KS_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KS_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: |
-          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > "$RUNNER_TEMP/release.jks"
-          echo "ANDROID_KEYSTORE_PATH=$RUNNER_TEMP/release.jks" >> "$GITHUB_ENV"
+          if [ -n "$KS_BASE64" ]; then
+            echo "$KS_BASE64" | base64 -d > "$RUNNER_TEMP/release.jks"
+            {
+              echo "ANDROID_KEYSTORE_PATH=$RUNNER_TEMP/release.jks"
+              echo "ANDROID_KEYSTORE_PASSWORD=$KS_PASSWORD"
+              echo "ANDROID_KEY_ALIAS=$KS_ALIAS"
+              echo "ANDROID_KEY_PASSWORD=$KS_KEY_PASSWORD"
+            } >> "$GITHUB_ENV"
+          elif [ -f android/signing/release.jks ]; then
+            echo "ANDROID_KEYSTORE_PATH=$GITHUB_WORKSPACE/android/signing/release.jks" >> "$GITHUB_ENV"
+            grep -E '^ANDROID_[A-Z_]+=' android/signing/signing.env >> "$GITHUB_ENV"
+          else
+            echo "No signing key: building a debug APK (updates need an uninstall first)."
+          fi
 
       - name: Build APK
         working-directory: android
-        env:
-          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
-          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: |
           chmod +x gradlew
-          if [ "$HAS_SIGNING_KEY" = "true" ]; then
+          if [ -n "$ANDROID_KEYSTORE_PATH" ]; then
             ./gradlew assembleRelease --no-daemon
             src=app/build/outputs/apk/release/app-release.apk
           else
