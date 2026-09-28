@@ -241,6 +241,12 @@ h2 { font-size: 19px; font-weight: 700; margin: 32px 0 12px; }
   display: inline-block; margin-left: 8px; padding: 1px 8px; vertical-align: 2px; border-radius: 99px;
   font-size: 12px; font-weight: 700; line-height: 1.4; background: var(--done); color: var(--on-done);
 }
+/* Done rows are a green band edge to edge, with a solid bar on the left: visible at a glance. */
+li.is-done {
+  margin: 0 -20px; padding: 0 20px;
+  background: color-mix(in srgb, var(--done) 11%, var(--bg));
+  box-shadow: inset 5px 0 0 var(--done);
+}
 .is-removed .row-main { opacity: 0.5; }
 .is-removed strong { text-decoration: line-through; }
 .list-divider {

@@ -25,8 +25,8 @@ What the app shows:
   (QR codes readable offline).
 - **Day plans** (a tab on each destination): good combinations of attractions for a day or half
   day, with why they go together and a rain mark, to pick from on the day. No fixed dates.
-- **Done and removed**: any attraction or day plan can be marked **done** (it stays in place with a
-  green "Done" tag after its name) or **removed** (faded and moved to the bottom, restorable), from its page or the ⋯ button
+- **Done and removed**: any attraction or day plan can be marked **done** (it stays in place, as a
+  green band with a "Done" tag) or **removed** (faded and moved to the bottom, restorable), from its page or the ⋯ button
   on its row. Marks are saved on the phone: they survive app upgrades, not an uninstall, and each
   phone keeps its own.
 
