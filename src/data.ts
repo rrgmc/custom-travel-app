@@ -69,6 +69,9 @@ export const RESERVATION_GROUPS: ReservationGroup[] = ["stays", "tickets", "tran
 export const reservationsInGroup = (g: ReservationGroup) =>
   data.reservations.filter((r) => r.status !== "cancelled" && GROUP[r.type] === g).sort(byStart);
 
+/** A destination's days in the schedule. */
+export const scheduleFor = (destinationId: string) => schedule.filter((d) => d.destination === destinationId);
+
 /** Schedule days that include an attraction. */
 export const scheduleDaysFor = (attractionId: string) =>
   schedule.filter((d) => d.attractions?.includes(attractionId));

@@ -99,7 +99,7 @@ function index(list, label) {
 }
 const categoryById = index(categories, "categories");
 // The destination page uses these as tab names next to the category tabs.
-for (const reserved of ["rainy-day", "booked", "about"])
+for (const reserved of ["schedule", "rainy-day", "booked", "about"])
   if (categoryById.has(reserved)) err(`categories '${reserved}'`, "this id is reserved; use another one");
 const destById = index(destinations, "destinations");
 const attrById = index(attractions, "attractions");

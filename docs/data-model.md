@@ -35,8 +35,9 @@ traveling, with children's ages and mobility needs; it guides research and plann
 optional but go together. Nearby towns visited from there are attractions, not destinations. The
 home screen lists destinations and highlights the one whose dates include today; with a single
 destination the app opens straight on its page. A destination page has one tab per category with
-attractions, then "Rainy day" (when any attraction is covered or partly covered), "Booked here" and
-"About" (summary, map, tips). Category ids `rainy-day`, `booked` and `about` are reserved.
+attractions, then "Schedule" (that destination's days, when there is a schedule), "Rainy day" (when
+any attraction is covered or partly covered), "Booked here" and "About" (summary, map, tips).
+Category ids `schedule`, `rainy-day`, `booked` and `about` are reserved.
 
 `attractions[]` — what's worth doing or eating at each destination, including nearby towns visited
 from it: `{ id, destination, category, name, priority, description?, tips?, hours?, closed?,
@@ -60,7 +61,8 @@ at-location | unpaid. `address`/`location` feed the map buttons (hotels). `attac
 
 `schedule[]` — **optional**, only when the user asked for a suggested schedule. One entry per day:
 `{ date, destination, title?, attractions?: [ids in suggested order], notes? }`. No times.
-Reservations on that date are shown automatically. Without it, the app has no Schedule tab.
+Reservations on that date are shown automatically. The whole trip's days are in the bottom Schedule
+tab and each destination's days in its own "Schedule" tab; without a schedule, neither exists.
 
 ## Changing the model
 

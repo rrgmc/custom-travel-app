@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import type { ScheduleDay } from "../types";
 import { attractionById, destinationById, reservationsOn, schedule, trip } from "../data";
 import { t } from "../lib/i18n";
 import { href } from "../lib/router";
@@ -18,44 +19,53 @@ export function ScheduleScreen({ date }: { date?: string }) {
   return (
     <>
       <h1 className="screen-title">{t.schedule}</h1>
-      <ol className="sched">
-        {schedule.map((day, i) => {
-          const dest = destinationById.get(day.destination);
-          const today = todayIn(dest?.timezone ?? trip.timezone);
-          const state = day.date === today ? "is-today" : day.date < today ? "is-past" : "";
-          const bookings = reservationsOn(day.date);
-          return (
-            <li key={day.date} id={`day-${day.date}`} className={`sched-day ${state}`}>
-              <p className="sched-kicker">
-                {t.day} {i + 1} · {formatDate(day.date)}
-                {dest && <> · <a href={href("destinations", dest.id)}>{dest.name}</a></>}
-              </p>
-              <h2>{day.title ?? dest?.name}</h2>
-              {day.attractions?.length ? (
-                <ul className="rows">
-                  {day.attractions.map((id) => {
-                    const a = attractionById.get(id);
-                    if (!a) return null;
-                    return (
-                      <li key={id}>
-                        <a href={href("attractions", id)}>
-                          <span className="row-main">
-                            <strong>{a.name}</strong>
-                            {a.priority === "must" && <span className="row-meta"><PriorityTag p={a.priority} /></span>}
-                          </span>
-                          <Icon name="chevron" size={18} />
-                        </a>
-                      </li>
-                    );
-                  })}
-                </ul>
-              ) : null}
-              {bookings.length > 0 && <ul className="rows rows-tickets">{bookings.map((r) => <TicketRow key={r.id} r={r} />)}</ul>}
-              {day.notes && <div className="sched-notes"><RichText text={day.notes} /></div>}
-            </li>
-          );
-        })}
-      </ol>
+      <ScheduleDays days={schedule} />
     </>
+  );
+}
+
+/** A list of schedule days: the whole trip, or one destination's days on its page. */
+export function ScheduleDays({ days }: { days: ScheduleDay[] }) {
+  return (
+    <ol className="sched">
+      {days.map((day) => {
+        // Day numbers count from the start of the trip, also on a destination's own list.
+        const i = schedule.indexOf(day);
+        const dest = destinationById.get(day.destination);
+        const today = todayIn(dest?.timezone ?? trip.timezone);
+        const state = day.date === today ? "is-today" : day.date < today ? "is-past" : "";
+        const bookings = reservationsOn(day.date);
+        return (
+          <li key={day.date} id={`day-${day.date}`} className={`sched-day ${state}`}>
+            <p className="sched-kicker">
+              {t.day} {i + 1} · {formatDate(day.date)}
+              {dest && <> · <a href={href("destinations", dest.id)}>{dest.name}</a></>}
+            </p>
+            <h2>{day.title ?? dest?.name}</h2>
+            {day.attractions?.length ? (
+              <ul className="rows">
+                {day.attractions.map((id) => {
+                  const a = attractionById.get(id);
+                  if (!a) return null;
+                  return (
+                    <li key={id}>
+                      <a href={href("attractions", id)}>
+                        <span className="row-main">
+                          <strong>{a.name}</strong>
+                          {a.priority === "must" && <span className="row-meta"><PriorityTag p={a.priority} /></span>}
+                        </span>
+                        <Icon name="chevron" size={18} />
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            ) : null}
+            {bookings.length > 0 && <ul className="rows rows-tickets">{bookings.map((r) => <TicketRow key={r.id} r={r} />)}</ul>}
+            {day.notes && <div className="sched-notes"><RichText text={day.notes} /></div>}
+          </li>
+        );
+      })}
+    </ol>
   );
 }
