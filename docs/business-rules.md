@@ -15,6 +15,8 @@ day, to pick from on the day. There is no dated schedule.
 2. **Researched facts are labeled.** Opening hours, prices and closed days found on the web go in
    `hours`, `price`, `closed` with the month they were checked, e.g. `09:00–18:00 (checked Sep 2026)`.
    If you couldn't confirm something, leave it out or say so rather than guessing.
+   Before adding a place, check it's still open under that name (closures and replacements are
+   common); say when you couldn't confirm it.
 3. **Keep status honest.** A reservation is `confirmed` only when there is a confirmation (code,
    email or voucher). Requests waiting for an answer are `pending`. Cancelled reservations stay in the
    file with `status: cancelled` rather than being deleted, so nobody wonders later.

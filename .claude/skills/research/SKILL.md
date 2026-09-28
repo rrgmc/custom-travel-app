@@ -18,6 +18,8 @@ of it (rule 7). Do one destination at a time. Follow docs/business-rules.md, esp
 3. **Research** on the web. For each category, gather candidates worth the user's time, favoring
    variety: every good thing to do the place offers (at least two per day of the stay; rule 9), about one restaurant per night (at least 4; rule 13) and a few cafés.
    Include the well-known, popular attractions even when they seem off-profile (as `maybe`).
+   Check that each place is **still operating** under that name: restaurants and parks close,
+   move or get replaced (look for a recent review, post or official page from the last months).
 4. **Choose** what to recommend (rule 9): an honest priority for each (must / if there's time /
    maybe); for each nearby town, one day-trip entry or its individual sights (rule 15); new
    categories if the destination calls for them (e.g. Beaches, Wineries; not a separate "Day trips" category: whole-town entries go in the
