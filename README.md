@@ -7,6 +7,15 @@ most of the work, following the rules in [`CLAUDE.md`](CLAUDE.md) and [`docs/`](
 The app is generic; the trip is data. Everything about a vacation lives in
 [`trip/trip.yaml`](trip/trip.yaml) plus the vouchers in `trip/files/`.
 
+<p>
+  <img src="docs/screenshots/destinations.png" width="200" alt="Destinations: the places you stay, with the current one highlighted">
+  <img src="docs/screenshots/destination.png" width="200" alt="A destination: attractions in category tabs">
+  <img src="docs/screenshots/attraction.png" width="200" alt="An attraction: details, marks, map and Ask Claude">
+  <img src="docs/screenshots/reservation.png" width="200" alt="A reservation as a ticket stub with its confirmation code">
+</p>
+
+The screenshots show the sample trip in `trip/trip.yaml`.
+
 What the app shows:
 
 - **Destinations** (home): the places you stay, in travel order, with optional dates. During the
